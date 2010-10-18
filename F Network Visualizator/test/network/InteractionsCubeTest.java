@@ -5,12 +5,12 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-public class InteractionCubeTest {
-	private InteractionCube interactionCube;
+public class InteractionsCubeTest {
+	private InteractionsCube interactionCube;
 
 	@Before
 	public void setup() {
-		interactionCube = new InteractionCube();
+		interactionCube = new InteractionsCube();
 	}
 
 	@Test

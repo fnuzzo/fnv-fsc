@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
 
-
+//TODO mettere i percorsi delel immagini in Constants
 /**
  * @author free fab
  */
@@ -327,7 +327,7 @@ public class Interface extends JFrame {
 				((GridBagLayout)footer.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
 
 				//---- play ----
-				play.setSelectedIcon(new ImageIcon(getClass().getResource("/com/grap/img/play.png")));
+				play.setSelectedIcon(new ImageIcon(getClass().getResource("/fnv/gui/img/play.png")));
 				play.setToolTipText("Run");
 				play.addActionListener(new ActionListener() {
 					@Override
@@ -340,7 +340,7 @@ public class Interface extends JFrame {
 					new Insets(0, 0, 0, 5), 0, 0));
 
 				//---- pause ----
-				pause.setSelectedIcon(new ImageIcon(getClass().getResource("/com/grap/img/pause.png")));
+				pause.setSelectedIcon(new ImageIcon(getClass().getResource("/fnv/gui/img/pause.png")));
 				pause.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -352,7 +352,7 @@ public class Interface extends JFrame {
 					new Insets(0, 0, 0, 5), 0, 0));
 
 				//---- stop ----
-				stop.setSelectedIcon(new ImageIcon(getClass().getResource("/com/grap/img/stop.png")));
+				stop.setSelectedIcon(new ImageIcon(getClass().getResource("/fnv/gui/img/stop.png")));
 				stop.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {

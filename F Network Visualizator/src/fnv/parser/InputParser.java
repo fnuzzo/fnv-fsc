@@ -1,14 +1,10 @@
-package parser;
+package fnv.parser;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import network.InteractionsCube;
-import network.Network;
-import network.Node;
-import network.NodesList;
 
 import org.jdom.DataConversionException;
 import org.jdom.Document;
@@ -16,7 +12,12 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
-import utils.Constants;
+import fnv.network.InteractionsCube;
+import fnv.network.Network;
+import fnv.network.Node;
+import fnv.network.NodesList;
+import fnv.utils.Constants;
+
 
 public class InputParser {
 	

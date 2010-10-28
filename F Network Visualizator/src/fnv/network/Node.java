@@ -1,4 +1,4 @@
-package network;
+package fnv.network;
 
 /*
  * Struttura dati che rappresenta un nodo della rete

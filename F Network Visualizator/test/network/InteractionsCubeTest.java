@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import fnv.network.InteractionsCube;
+
 public class InteractionsCubeTest {
 	private InteractionsCube interactionCube;
 

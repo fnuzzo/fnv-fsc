@@ -7,10 +7,13 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import network.InteractionsCube;
-import network.Network;
-import network.Node;
-import network.NodesList;
+
+import fnv.network.InteractionsCube;
+import fnv.network.Network;
+import fnv.network.Node;
+import fnv.network.NodesList;
+import fnv.parser.InputParser;
+
 
 public class InputParserTest {
 
@@ -49,7 +52,7 @@ public class InputParserTest {
 	
 	@Test
 	public void testParse() {
-		network.Network parsedNetwork = InputParser.parse(inputFilename);
+		fnv.network.Network parsedNetwork = InputParser.parse(inputFilename);
 		
 		assertEquals(network, parsedNetwork);
 	}

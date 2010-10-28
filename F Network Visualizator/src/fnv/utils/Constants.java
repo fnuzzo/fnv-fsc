@@ -1,4 +1,4 @@
-package utils;
+package fnv.utils;
 
 public final class Constants {
 	/* tag XML del file di input */

@@ -1,4 +1,4 @@
-package network;
+package fnv.network;
 
 import java.util.HashMap;
 

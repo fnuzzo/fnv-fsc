@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Maven: org.processing:processing-core:1.2.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/core.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

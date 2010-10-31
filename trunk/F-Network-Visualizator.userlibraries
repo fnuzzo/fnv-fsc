@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eclipse-userlibraries>
+  <library name="Maven: org.processing:processing-core:1.2.1">
+    <archive path="/home/giacomo/IdeaProjects/F-Network-Visualizator/lib/core.jar" />
+  </library>
+  <library name="Maven: org.jdom:jdom:1.1">
+    <archive path="/home/giacomo/IdeaProjects/F-Network-Visualizator/lib/jdom.jar" />
+  </library>
+</eclipse-userlibraries>
+

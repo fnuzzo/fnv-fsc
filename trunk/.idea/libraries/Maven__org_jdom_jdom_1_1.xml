@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Maven: org.jdom:jdom:1.1">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/jdom.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

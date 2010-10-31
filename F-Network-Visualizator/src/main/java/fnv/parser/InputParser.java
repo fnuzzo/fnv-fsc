@@ -2,6 +2,7 @@ package fnv.parser;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -30,9 +31,9 @@ public class InputParser {
 	 * Ritorna un oggetto di tipo Network con tutte le informazioni al suo interno
 	 */
 	//TODO validation con XMLSchema prima di fare parsing
-	public static Network parse(String inputFilename) {
+	public static Network parse(InputStream inputStream) {
 		 try {
-			Document document = new SAXBuilder().build(new File(inputFilename));
+			Document document = new SAXBuilder().build(inputStream);
 			Element rootElement = document.getRootElement();
 			
 			for (Iterator<Element> childrenIterator = rootElement.getChildren().iterator(); childrenIterator.hasNext();) {

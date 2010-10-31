@@ -2,6 +2,7 @@ package parser;
 
 import static org.junit.Assert.*;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import org.junit.Before;
@@ -17,7 +18,7 @@ import fnv.parser.InputParser;
 
 public class InputParserTest {
 
-	private String inputFilename = "networks/network-test-01.xml";
+	private String inputFilename = "/network-test-01.xml";
 	private Network network;
 	
 	@Before
@@ -52,7 +53,9 @@ public class InputParserTest {
 	
 	@Test
 	public void testParse() {
-		fnv.network.Network parsedNetwork = InputParser.parse(inputFilename);
+        InputStream inputStream = getClass().getResourceAsStream(inputFilename);
+
+		fnv.network.Network parsedNetwork = InputParser.parse(inputStream);
 		
 		assertEquals(network, parsedNetwork);
 	}

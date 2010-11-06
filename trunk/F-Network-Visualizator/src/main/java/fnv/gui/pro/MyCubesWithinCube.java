@@ -88,7 +88,7 @@ public class MyCubesWithinCube extends PApplet {
 	int zoom = 500;
 	public void mouseWheel(int delta) {
 		zoom = zoom + (delta * 50);
-		println(zoom);
+		//println(zoom);
 	}
 
 
@@ -180,7 +180,7 @@ public class MyCubesWithinCube extends PApplet {
 			this.d = d;
 
 			//c= color(int(random(0,1)),int(random(0,1)),int(random(0,1)));
-			println(random(0,1));
+			//println(random(0,1));
 			c = color(random(0,1));
 
 			// cube composed of 6 quads
@@ -256,7 +256,7 @@ public class MyCubesWithinCube extends PApplet {
 			this.d = d;
 
 			//c= color(int(random(0,1)),int(random(0,1)),int(random(0,1)));
-			println(random(0,1));
+			//println(random(0,1));
 			c = color(random(0,1));
 		}
 

@@ -20,6 +20,11 @@
             <artifactId>processing-core</artifactId>
             <version>1.2.1</version>
         </dependency>
+	<dependency>
+	    <groupId>com.mrfeinberg</groupId>
+            <artifactId>peasycam</artifactId>
+            <version>0.91</version>
+	</dependency>
         <dependency>
             <groupId>org.jdom</groupId>
             <artifactId>jdom</artifactId>
@@ -84,13 +89,29 @@
                 <artifactId>maven-install-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>hack-binary</id>
+                        <id>hack-processing</id>
                         <phase>validate</phase>
                         <configuration>
                             <groupId>org.processing</groupId>
                             <artifactId>processing-core</artifactId>
                             <version>1.2.1</version>
                             <file>${basedir}/lib/core.jar</file>
+                            <repositoryLayout>default</repositoryLayout>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                    </execution>
+	            <execution>
+                        <id>hack-PeasyCam</id>
+                        <phase>validate</phase>
+                        <configuration>
+                            <groupId>com.mrfeinberg</groupId>
+                            <artifactId>peasycam</artifactId>
+                            <version>0.91</version>
+                            <file>${basedir}/lib/PeasyCam.jar</file>
                             <repositoryLayout>default</repositoryLayout>
                             <packaging>jar</packaging>
                             <generatePom>true</generatePom>

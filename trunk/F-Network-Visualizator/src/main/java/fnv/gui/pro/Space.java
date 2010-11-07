@@ -12,12 +12,14 @@ import peasy.*;
 public class Space extends PApplet {
 
 	//Lato dello spazio in box
-	int box = 10;
+	int boxN = 10;
+	//Lato di un box in px
+	int box = 30;
 	//Lato dello spazio in px
-	int spaceBox = 30*box;
+	int spaceBox = box*boxN;
 	
 	//Numero nodi
-	int nodeN = 2;
+	int nodeN = 3;
 	//Lato dei nodi in px
 	int nodesize = 10;
 	//Distanza fra nodi
@@ -52,6 +54,8 @@ public class Space extends PApplet {
 
 		nodeX[1] = nodeDist;
 		nodeY[1] = nodeZ[1] = 0;
+		
+		nodeX[2] = nodeY[2] = nodeZ[2] = 2;
 
 		// Arco 0 -> 1
 		edgeX[0][1] = nodeX[0];
@@ -102,16 +106,19 @@ public class Space extends PApplet {
 	
 	//Disegna il Cubo dello spazio
 	public void draw3DSpace() {
+		pushMatrix();
 		//Spazio 3D
 		stroke(255);
-		translate(0,0,0);
+		translate(spaceBox/2,-spaceBox/2,spaceBox/2);
 		box(spaceBox);
+		popMatrix();
 		
-		stroke(0, 0, 255);
-		for (int i = 0; i <= spaceBox; i += spaceBox/box ) {
-			line(-spaceBox/2 + i, spaceBox/2, spaceBox/2, -spaceBox/2 + i, spaceBox/2, -spaceBox/2);
-			line(-spaceBox/2, spaceBox/2, -spaceBox/2 + i, spaceBox/2, spaceBox/2, -spaceBox/2 + i);
+		stroke(255, 0, 255);
+		for (int i = 0; i <= spaceBox; i += spaceBox/boxN ) {
+			line(0 + i, 0, 0, 0 + i, 0, spaceBox);//Linee verticali
+			line(0, 0, 0 + i, spaceBox, 0, 0 + i);//Linee orizzontali
 		}
+		
 		
 	}
 	
@@ -124,10 +131,19 @@ public class Space extends PApplet {
 		background(0);
 		
 		draw3DSpace();
+		
+		pushMatrix();
+		fill(0,0,255);
+		stroke(0);
+		translate(nodeX[2]*box, 0-(nodesize/2), nodeZ[2]*box);
+		box(nodesize);
+		
+		popMatrix();
+		
 
 		for (int i = 0; i < nodeN; i++) {
 			pushMatrix();
-			fill(i * 255, 255, 0);
+			fill(i * 100, 255, 255 / (i+1));
 			stroke(0);
 			translate(nodeX[i], nodeY[i], nodeZ[i]);
 			box(nodesize);
@@ -139,8 +155,7 @@ public class Space extends PApplet {
 			if (i < nodeN - 1) {
 				stroke(255);
 
-				line(nodeX[i], nodeY[i], nodeZ[i], nodeX[i + 1], nodeY[i + 1],
-						nodeZ[i + 1]);
+				//line(nodeX[i], nodeY[i], nodeZ[i], nodeX[i + 1], nodeY[i + 1], nodeZ[i + 1]);
 				bezier(nodeX[i], nodeY[i], nodeZ[i], edgeX[i][i + 1],
 						edgeY[i][i + 1], edgeZ[i][i + 1], edgeX[i + 1][i],
 						edgeY[i + 1][i], edgeZ[i + 1][i], nodeX[i + 1],

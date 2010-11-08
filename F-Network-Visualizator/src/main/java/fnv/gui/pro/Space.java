@@ -25,10 +25,11 @@ public class Space extends PApplet {
 	//Distanza fra nodi
 	int nodeDist = 15;
 	
-	
 	int[] nodeX = new int[nodeN];
 	int[] nodeY = new int[nodeN];
 	int[] nodeZ = new int[nodeN];
+	
+	int[] edge = new int[nodeN];
 
 	// Punti di controllo
 	float[][] edgeX = new float[nodeN][nodeN];
@@ -49,11 +50,18 @@ public class Space extends PApplet {
 		cam.setMaximumDistance(700);
 		
 
-		nodeX[0] = nodeY[0] = nodeZ[0] = 0;
+		nodeY[0] = nodeX[0] = 6;
+		nodeZ[0] = 1;
 		nodeX[1] = nodeY[1] = 2;
 		nodeZ[1] = 1;
 		nodeX[2] = nodeY[2] = nodeZ[2] = 2;
-		nodeX[3] = nodeY[3] = nodeZ[3] = 3;
+		nodeZ[3] = 4; 
+		nodeX[3] = nodeY[3] = 3;
+	
+		edge[0] = 1;
+		edge[1] = 2;
+		edge[2] = 0;
+		edge[3] = 0;
 		
 		// Arco 0 -> 1
 		edgeX[0][1] = nodeX[0];
@@ -112,10 +120,16 @@ public class Space extends PApplet {
 		box(spaceBox);
 		popMatrix();
 		
-		stroke(255, 0, 255);
 		for (int i = 0; i <= spaceBox; i += spaceBox/boxN ) {
+			stroke(255, 0, 255);
 			line(0 + i, 0, 0, 0 + i, 0, spaceBox);//Linee verticali
 			line(0, 0, 0 + i, spaceBox, 0, 0 + i);//Linee orizzontali
+			stroke(80);
+			line(0 + i, 0, spaceBox, spaceBox, 0, 0 + i);//Linee trasversali
+			line(0 + i, 0, 0, 0, 0, 0 + i);
+			
+			stroke(0,0,255);
+			line(0, i*-1, 0, spaceBox, i*-1, 0);
 		}
 		
 		
@@ -136,19 +150,33 @@ public class Space extends PApplet {
 			pushMatrix();
 			fill(i * 100, 255, 255 / (i+1));
 			stroke(0);
-			translate(map(nodeX[i],0,boxN,0,spaceBox)+box/2, 0-(nodesize/2), map(nodeZ[i],0,boxN,0,spaceBox)+box/2);
+			translate(
+					map(nodeX[i],0,boxN,0,spaceBox)+box/2,
+					(map(nodeY[i],0,boxN,0,spaceBox)+box/2)*-1,
+					//0-(nodesize/2),
+					map(nodeZ[i],0,boxN,0,spaceBox)+box/2
+					);
 			box(nodesize);
 			
 			popMatrix();
 
 			// Collegamenti
 			noFill();
-			if (i < nodeN - 1) {
+			//if (i < nodeN - 1) {
+			if (i < edge.length) {
 				stroke(255);
 				
+				line(
+						map(nodeX[i],0,boxN,0,spaceBox)+box/2,
+						(map(nodeY[i],0,boxN,0,spaceBox)+box/2)*-1,
+						map(nodeZ[i],0,boxN,0,spaceBox)+box/2,
+						
+						map(nodeX[edge[i]],0,boxN,0,spaceBox)+box/2,
+						(map(nodeY[edge[i]],0,boxN,0,spaceBox)+box/2)*-1,
+						map(nodeZ[edge[i]],0,boxN,0,spaceBox)+box/2
+				);
 				
 				
-				line(nodeX[i], nodeY[i], nodeZ[i], nodeX[i + 1], nodeY[i + 1], nodeZ[i + 1]);
 				/*bezier(nodeX[i], nodeY[i], nodeZ[i], edgeX[i][i + 1],
 						edgeY[i][i + 1], edgeZ[i][i + 1], edgeX[i + 1][i],
 						edgeY[i + 1][i], edgeZ[i + 1][i], nodeX[i + 1],

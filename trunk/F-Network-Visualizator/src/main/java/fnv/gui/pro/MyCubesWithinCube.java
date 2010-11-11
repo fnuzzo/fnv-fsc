@@ -1,6 +1,6 @@
 package fnv.gui.pro;
 
-import processing.core.*; 
+import processing.core.*;
 
 public class MyCubesWithinCube extends PApplet {
 

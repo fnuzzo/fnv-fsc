@@ -375,7 +375,7 @@
              <string>selectedIcon</string> 
              <object class="com.jformdesigner.model.SwingIcon"> 
               <int>0</int> 
-              <string>img/play.png</string> 
+              <string>/img/play.png</string> 
              </object> 
             </void> 
             <void method="setProperty"> 
@@ -405,7 +405,7 @@
              <string>selectedIcon</string> 
              <object class="com.jformdesigner.model.SwingIcon"> 
               <int>0</int> 
-              <string>img/pause.png</string> 
+              <string>/img/pause.png</string> 
              </object> 
             </void> 
             <void property="name"> 
@@ -435,7 +435,7 @@
              <string>selectedIcon</string> 
              <object class="com.jformdesigner.model.SwingIcon"> 
               <int>0</int> 
-              <string>img/stop.png</string> 
+              <string>/img/stop.png</string> 
              </object> 
             </void> 
             <void property="name"> 

@@ -20,7 +20,6 @@ import peasy.*;
 public class Space extends PApplet {
 
 	//Gestione nodi iniziale
-	int nodes = 4;
 	int i=0;
     Timer timer;
 	
@@ -54,6 +53,7 @@ public class Space extends PApplet {
 
     public void setNetwork(Network network) {
 	    this.network = network;
+	    timer.start();
 
         ArrayList<ANode> alnode = new ArrayList<ANode>();
         for (Node n : network.nodesList.toArray()) {
@@ -79,7 +79,7 @@ public class Space extends PApplet {
         cam.setMaximumDistance(700);
       
         StartTimer();
-        timer.start();
+        
     }
 
     @Override
@@ -122,10 +122,11 @@ public class Space extends PApplet {
    public void StartTimer(){
     	
     	timer = new Timer(600, new ActionListener() {
+    		int i=0;
 		
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(i<nodes){
+				if(i< node.length){
 				node[i].visible = true;
 				    i++;
 				}

@@ -5,7 +5,6 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
-import fnv.gui.*;
 /*
  * Created by JFormDesigner on Sat Nov 20 16:59:30 CET 2010
  */
@@ -45,7 +44,7 @@ public class Interface extends JFrame {
         }
 
         private void fimportActionPerformed(ActionEvent e) {
-            // TODO add your code here
+           // TODO add your code here
         }
 
         private void circleSpinnerStateChanged(ChangeEvent e) {

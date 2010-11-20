@@ -1,9 +1,7 @@
 package fnv.gui.pro;
 
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 
-import fnv.network.NodesList;
 import processing.core.*;
 import peasy.*;
 
@@ -38,6 +36,7 @@ public class Space extends PApplet {
     ANode[] node = new ANode[nodeN];
 
 
+    @Override
     public void setup() {
         size(1024, 768, P3D);
 
@@ -66,6 +65,7 @@ public class Space extends PApplet {
 
     }
 
+    @Override
     public void keyPressed() {
         if (key == CODED) {
 
@@ -126,6 +126,7 @@ public class Space extends PApplet {
     }
 
 
+    @Override
     public void draw() {
         // Per non mostrare la scena esattamente avanti al punto 0
         // rotateX(PI / 4);

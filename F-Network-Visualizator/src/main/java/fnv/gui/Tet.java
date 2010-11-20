@@ -1,5 +1,7 @@
 package fnv.gui;
 
+import java.awt.Dimension;
+
 import javax.swing.JPanel;
 
 import fnv.gui.pro.Space;
@@ -9,7 +11,7 @@ public class Tet extends JPanel {
     private Space space;
 
     public Tet() {
-	setSize(800, 600);
+	setPreferredSize(new Dimension(820, 620));
 
 	//Fnv fnv = new Fnv();
 	//fnv.init();

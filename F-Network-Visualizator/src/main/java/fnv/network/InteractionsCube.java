@@ -22,27 +22,27 @@ public class InteractionsCube {
 	interactionsCube = new HashMap<Integer, Instant>();
     }
 
-    public void addInteraction(int instantIndex, int source, int destination, double frequency) {
-	if (source != destination) {
+    public void addInteraction(int instantIndex, int source, int target, double frequency) {
+	if (source != target) {
 	    Instant instant = interactionsCube.get(instantIndex);
 
 	    if (instant == null) {
 		instant = new Instant();
 	    }
 
-	    instant.addInteraction(source, destination, frequency);
+	    instant.addInteraction(source, target, frequency);
 
 	    interactionsCube.put(instantIndex, instant);
 	}
     }
 
-    public double getInteraction(int instantIndex, int source, int destination) {
+    public double getInteraction(int instantIndex, int source, int target) {
 	double frequency = 0;
 
 	Instant instant = interactionsCube.get(instantIndex);
 
 	if (instant != null) {
-	    frequency = instant.getInteraction(source, destination);
+	    frequency = instant.getInteraction(source, target);
 	}
 
 	return frequency;
@@ -118,10 +118,10 @@ public class InteractionsCube {
 	    for (Integer source : instant.keySet()) {
 		HashMap<Integer, Double> rowValue = instant.get(source);
 
-		for (Integer destination : rowValue.keySet()) {
-		    double frequency = rowValue.get(destination);
+		for (Integer target : rowValue.keySet()) {
+		    double frequency = rowValue.get(target);
 
-		    InteractionElement ie = new InteractionElement(source, destination, frequency);
+		    InteractionElement ie = new InteractionElement(source, target, frequency);
 		    allInteractions.add(ie);
 		}
 	    }

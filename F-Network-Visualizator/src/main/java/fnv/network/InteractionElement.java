@@ -11,17 +11,17 @@ package fnv.network;
  */
 public class InteractionElement {
     public int source;
-    public int destination;
+    public int target;
     public double frequency;
 
-    public InteractionElement(int source, int destination, double frequency) {
+    public InteractionElement(int source, int target, double frequency) {
         this.source = source;
-        this.destination = destination;
+        this.target = target;
         this.frequency = frequency;
     }
 
-    public int getDestination() {
-        return destination;
+    public int getTarget() {
+        return target;
     }
 
     public double getFrequency() {

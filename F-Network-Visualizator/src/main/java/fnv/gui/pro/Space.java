@@ -1,7 +1,6 @@
 package fnv.gui.pro;
 
 import fnv.network.InteractionElement;
-import fnv.network.Network;
 import fnv.network.Node;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -215,13 +214,12 @@ public class Space extends PApplet {
         InteractionElement[] edge = network.getInteractionCube().getAllInteractions(instant);
 
         for (InteractionElement anEdge : edge) {
-            if (node[anEdge.source].visible && node[anEdge.destination].visible) {
+            if (node[anEdge.source].visible && node[anEdge.target].visible) {
 
                 //Scostamento punti controllo
-                int pcX = ((node[anEdge.source].ax > node[anEdge.destination].ax) ? 30 : -30);
-                int pcY = ((node[anEdge.source].ay < node[anEdge.destination].ay) ? 30 : -30);
-                int pcZ = ((node[anEdge.source].az > node[anEdge.destination].az) ? 30 : -30);
-
+                int pcX = ((node[anEdge.source].ax > node[anEdge.target].ax) ? 20 : -20);
+                int pcY = ((node[anEdge.source].ay < node[anEdge.target].ay) ? 20 : -20);
+                int pcZ = ((node[anEdge.source].az > node[anEdge.target].az) ? 20 : -20);
 
                 stroke(255);
                 /*line(
@@ -244,13 +242,13 @@ public class Space extends PApplet {
                         node[anEdge.source].cy - (float) anEdge.frequency*mbox,
                         node[anEdge.source].cz,
                         //Punto Controllo B
-                        node[anEdge.destination].cx,
-                        node[anEdge.destination].cy - (float) anEdge.frequency*mbox,
-                        node[anEdge.destination].cz,
+                        node[anEdge.target].cx - pcX,
+                        node[anEdge.target].cy - pcY,
+                        node[anEdge.target].cz - pcZ,
                         //Nodo B
-                        node[anEdge.destination].cx,
-                        node[anEdge.destination].cy,
-                        node[anEdge.destination].cz
+                        node[anEdge.target].cx,
+                        node[anEdge.target].cy,
+                        node[anEdge.target].cz
                 );
                 strokeWeight(1);
 
@@ -270,12 +268,12 @@ public class Space extends PApplet {
                 //Linea di controllo
                 stroke(0, 0, 255);
                 line(
-                        node[anEdge.destination].cx,
-                        node[anEdge.destination].cy,
-                        node[anEdge.destination].cz,
-                        node[anEdge.destination].cx,
-                        node[anEdge.destination].cy - (float) anEdge.frequency*mbox,
-                        node[anEdge.destination].cz
+                        node[anEdge.target].cx,
+                        node[anEdge.target].cy,
+                        node[anEdge.target].cz,
+                        node[anEdge.target].cx - pcX,
+                        node[anEdge.target].cy - pcY,
+                        node[anEdge.target].cz - pcZ
                 );
 
             }

@@ -26,6 +26,7 @@ import javax.swing.filechooser.FileFilter;
 public class Interface extends JFrame {
     public Interface() {
         initComponents();
+	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     private void initComponents() {

@@ -43,8 +43,11 @@ public class Space extends PApplet {
     //Nodi
     ANode[] node = null;
 
-    public Network network = null;
+    Network network = new Network();
 
+    public void setNetwork(Network network) {
+	this.network = network;
+    }
 
     @Override
     public void setup() {

@@ -1,5 +1,7 @@
 package fnv.network;
 
+import java.util.ArrayList;
+
 /*
  * Struttura dati che rappresenta una rete
  */
@@ -12,8 +14,10 @@ public class Network {
     /* le interazioni presenti nella rete */
     private InteractionsCube interactionCube;
 
-    public InteractionsCube getInteractionCube() {
-        return interactionCube;
+    public Network() {
+	name = "";
+	nodesList = new NodesList(new ArrayList<Node>());
+	interactionCube = new InteractionsCube();
     }
 
     public Network(String name, NodesList nodesList, InteractionsCube interactionCube) {
@@ -30,8 +34,12 @@ public class Network {
 	return nodesList.getNode(nodeID);
     }
 
-    public double getFrequency(Integer instant, Integer source, Integer target) {
-	return interactionCube.getInteraction(instant, source, target);
+//    public double getFrequency(Integer instant, Integer source, Integer target) {
+//	return interactionCube.getInteraction(instant, source, target);
+//    }
+
+    public InteractionsCube getInteractionCube() {
+	return interactionCube;
     }
 
     @Override

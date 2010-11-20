@@ -42,6 +42,10 @@ public class Network {
 	return interactionCube;
     }
 
+    public int getNumberOfInstants() {
+	return interactionCube.getNumberOfInstants();
+    }
+
     @Override
     public String toString() {
 	String string = "";

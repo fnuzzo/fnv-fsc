@@ -59,6 +59,10 @@ public class InteractionsCube {
 	return allInteractions.toArray(new InteractionElement[0]);
     }
 
+    public int getNumberOfInstants() {
+	return interactionsCube.keySet().size();
+    }
+    
     @Override
     public String toString() {
 	String string = "";

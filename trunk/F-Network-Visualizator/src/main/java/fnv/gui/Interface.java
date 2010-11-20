@@ -1,5 +1,6 @@
 package fnv.gui;
 
+import fnv.network.InteractionElement;
 import fnv.network.Network;
 import fnv.parser.InputParser;
 import java.awt.*;
@@ -97,9 +98,6 @@ public class Interface extends JFrame {
 		if (network != null) {
 		    centralPanel.setNetwork(network);
 		}
-
-		//TODO debug
-		System.out.println(network);
 	    }
 	}
 

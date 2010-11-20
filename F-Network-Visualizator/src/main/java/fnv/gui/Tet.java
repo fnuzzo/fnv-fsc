@@ -3,6 +3,7 @@ package fnv.gui;
 import javax.swing.JPanel;
 
 import fnv.gui.pro.MyCubesWithinCube;
+import fnv.gui.pro.Space;
 
 public class Tet extends JPanel{
 
@@ -14,8 +15,13 @@ public class Tet extends JPanel{
 
 		//add(fnv);
 
-		MyCubesWithinCube mcwc = new MyCubesWithinCube();
+		/*MyCubesWithinCube mcwc = new MyCubesWithinCube();
 		mcwc.init();
-		add(mcwc);
+		add(mcwc);*/
+
+        Space space = new Space();
+        space.init();
+        add(space);
+
 	}
 }

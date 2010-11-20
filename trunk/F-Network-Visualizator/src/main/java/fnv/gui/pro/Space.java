@@ -53,18 +53,19 @@ public class Space extends PApplet {
 
     public void setNetwork(Network network) {
 	    this.network = network;
-	    timer.start();
+	    rotate = true;
+        timer.start();
 
         ArrayList<ANode> alnode = new ArrayList<ANode>();
         for (Node n : network.nodesList.toArray()) {
             alnode.add(new ANode(n));
         }
-        node = alnode.toArray(new ANode[0]);
+        node = alnode.toArray(new ANode[alnode.size()]);
     }
 
     @Override
     public void setup() {
-        size(1024, 768, P3D);
+        size(800, 600, P3D);
 
         g3d = (PGraphics3D) g;
 
@@ -132,6 +133,7 @@ public class Space extends PApplet {
 				}
 				else {
 					timer.stop();
+                    rotate = false;
 				}
 			}
 
@@ -154,11 +156,11 @@ public class Space extends PApplet {
 
         for (int i = 0; i <= spaceBox; i += spaceBox / boxN) {
             stroke(255, 0, 255);
-            line(0 + i, 0, 0, 0 + i, 0, spaceBox);//Linee verticali
-            line(0, 0, 0 + i, spaceBox, 0, 0 + i);//Linee orizzontali
+            line(i, 0, 0, i, 0, spaceBox);//Linee verticali
+            line(0, 0, i, spaceBox, 0, i);//Linee orizzontali
             stroke(80);
-            line(0 + i, 0, spaceBox, spaceBox, 0, 0 + i);//Linee trasversali
-            line(0 + i, 0, 0, 0, 0, 0 + i);
+            line(i, 0, spaceBox, spaceBox, 0, i);//Linee trasversali
+            line(i, 0, 0, 0, 0, i);
 
             stroke(0, 0, 255);
             line(0, i * -1, 0, spaceBox, i * -1, 0);//Parete dietro
@@ -175,9 +177,7 @@ public class Space extends PApplet {
 
     	if(rotate)
     		cam.rotateY(0.02);
-    	
-    	
-    	
+
         background(0);
 
         lights();
@@ -186,7 +186,7 @@ public class Space extends PApplet {
 
 
         for (int i = 0; i < node.length; i++) {
-
+            if (node[i].visible) {
             //Nodi
             pushMatrix();
 
@@ -202,6 +202,8 @@ public class Space extends PApplet {
             box(nodesize);
 
             popMatrix();
+
+            }
 
 
             // Collegamenti
@@ -266,20 +268,74 @@ public class Space extends PApplet {
         }
 
         //Disegno i nodi per l'istante giusto
-        InteractionElement[] interactions = network.getInteractionCube().getAllInteractions(instant);
+        InteractionElement[] edge = network.getInteractionCube().getAllInteractions(instant);
+
+
+        for (InteractionElement anEdge : edge) {
+            if (node[anEdge.source].visible && node[anEdge.destination].visible) {
+
+                //Scostamento punti controllo
+                int pcX = ((node[anEdge.source].ax > node[anEdge.destination].ax) ? 20 : -20);
+                int pcY = ((node[anEdge.source].ay < node[anEdge.destination].ay) ? 20 : -20);
+                int pcZ = ((node[anEdge.source].az > node[anEdge.destination].az) ? 20 : -20);
+
+
+                stroke(255);
+                /*line(
+                        node[anEdge.source].cx,
+                        node[anEdge.source].cy,
+                        node[anEdge.source].cz,
+                        node[anEdge.destination].cx,
+                        node[anEdge.destination].cy,
+                        node[anEdge.destination].cz
+                );*/
+
+                strokeWeight(3);
+                bezier(
+                        //Nodo A
+                        node[anEdge.source].cx,
+                        node[anEdge.source].cy,
+                        node[anEdge.source].cz,
+                        //Punto Controllo A
+                        node[anEdge.source].cx + pcX,
+                        node[anEdge.source].cy + pcY,
+                        node[anEdge.source].cz + pcZ,
+                        //Punto Controllo B
+                        node[anEdge.destination].cx - pcX,
+                        node[anEdge.destination].cy - pcY,
+                        node[anEdge.destination].cz - pcZ,
+                        //Nodo B
+                        node[anEdge.destination].cx,
+                        node[anEdge.destination].cy,
+                        node[anEdge.destination].cz
+                );
+                strokeWeight(1);
 
 
 
-        for (int i = 0; i < interactions.length; i++) {
-            stroke(255);
-            line(
-                node[interactions[i].source].cx,
-                node[interactions[i].source].cy,
-                node[interactions[i].source].cz,
-                node[interactions[i].destination].cx,
-                node[interactions[i].destination].cy,
-                node[interactions[i].destination].cz
-            );
+                //Linea di controllo
+                stroke(255, 0, 0);
+                line(
+                        node[anEdge.source].cx,
+                        node[anEdge.source].cy,
+                        node[anEdge.source].cz,
+                        node[anEdge.source].cx + pcX,
+                        node[anEdge.source].cy + pcY,
+                        node[anEdge.source].cz + pcZ
+
+                );
+                //Linea di controllo
+                stroke(0, 0, 255);
+                line(
+                        node[anEdge.destination].cx,
+                        node[anEdge.destination].cy,
+                        node[anEdge.destination].cz,
+                        node[anEdge.destination].cx - pcX,
+                        node[anEdge.destination].cy - pcY,
+                        node[anEdge.destination].cz - pcZ
+                );
+
+            }
 
         }
 

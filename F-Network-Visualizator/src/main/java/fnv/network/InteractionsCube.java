@@ -1,5 +1,6 @@
 package fnv.network;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /* struttura dati che rappresenta tutte le interazioni tra i nodi della rete.
@@ -14,99 +15,127 @@ import java.util.HashMap;
  * NB la tabella non e' triangolare, le interazioni hanno una direzione. 
  */
 public class InteractionsCube {
-	private HashMap<Integer, Instant> interactionsCube;
 
-	public InteractionsCube() {
-		interactionsCube = new HashMap<Integer, Instant>();
+    private HashMap<Integer, Instant> interactionsCube;
+
+    public InteractionsCube() {
+	interactionsCube = new HashMap<Integer, Instant>();
+    }
+
+    public void addInteraction(int instantIndex, int source, int destination, double frequency) {
+	if (source != destination) {
+	    Instant instant = interactionsCube.get(instantIndex);
+
+	    if (instant == null) {
+		instant = new Instant();
+	    }
+
+	    instant.addInteraction(source, destination, frequency);
+
+	    interactionsCube.put(instantIndex, instant);
 	}
-	
-	public void addInteraction(int instantIndex, int source, int destination, int frequency) {
-		if (source != destination) {
-			Instant instant = interactionsCube.get(instantIndex);
-			
-			if (instant == null) {
-				instant = new Instant();
-			}
-			
-			instant.addInteraction(source, destination, frequency);
-			
-			interactionsCube.put(instantIndex, instant);
+    }
+
+    public double getInteraction(int instantIndex, int source, int destination) {
+	double frequency = 0;
+
+	Instant instant = interactionsCube.get(instantIndex);
+
+	if (instant != null) {
+	    frequency = instant.getInteraction(source, destination);
+	}
+
+	return frequency;
+    }
+
+    public InteractionElement[] getAllInteractions(int instantIndex) {
+	Instant instant = interactionsCube.get(instantIndex);
+	ArrayList<InteractionElement> allInteractions = instant.getAllInteractions();
+
+	return allInteractions.toArray(new InteractionElement[0]);
+    }
+
+    @Override
+    public String toString() {
+	String string = "";
+
+	for (Integer instantKey : interactionsCube.keySet()) {
+	    Instant instant = interactionsCube.get(instantKey);
+
+	    string += "instant: " + instantKey + "\n" + instant;
+	}
+
+	return string;
+    }
+
+    private class Instant {
+
+	private HashMap<Integer, HashMap<Integer, Double>> instant;
+
+	public Instant() {
+	    instant = new HashMap<Integer, HashMap<Integer, Double>>();
+	}
+
+	public void addInteraction(int source, int target, double frequency) {
+	    HashMap<Integer, Double> rowValue = instant.get(source);
+
+	    if (rowValue == null) {
+		rowValue = new HashMap<Integer, Double>();
+	    }
+
+	    rowValue.put(target, frequency);
+
+	    instant.put(source, rowValue);
+	}
+
+	public double getInteraction(int source, int target) {
+	    Double frequency = 0.0;
+
+	    HashMap<Integer, Double> rowValue = instant.get(source);
+
+	    if (rowValue != null) {
+		frequency = rowValue.get(target);
+
+		if (frequency == null) {
+		    frequency = 0.0;
 		}
+	    }
+
+	    return frequency.doubleValue();
 	}
-	
-	public Integer getInteraction(int instantIndex, int source, int destination) {
-		Integer frequency = 0;
-		
-		Instant instant = interactionsCube.get(instantIndex);
-		
-		if (instant != null) {
-			frequency = instant.getInteraction(source, destination);
+
+	public ArrayList<InteractionElement> getAllInteractions() {
+	    ArrayList<InteractionElement> allInteractions = new ArrayList<InteractionElement>();
+
+	    for (Integer source : instant.keySet()) {
+		HashMap<Integer, Double> rowValue = instant.get(source);
+
+		for (Integer destination : rowValue.keySet()) {
+		    double frequency = rowValue.get(destination);
+
+		    InteractionElement ie = new InteractionElement(source, destination, frequency);
+		    allInteractions.add(ie);
 		}
-		
-		return frequency;
+	    }
+
+	    return allInteractions;
 	}
-	
+
+	@Override
 	public String toString() {
-		String string = "";
-		
-		for (Integer instantKey : interactionsCube.keySet()) {
-			Instant instant = interactionsCube.get(instantKey);
-			
-			string += "instant: " + instantKey + "\n" + instant;
-		}
-		
-		return string;
-	}
-	
-	private class Instant {
-		private HashMap<Integer, HashMap<Integer, Integer>> instant;
-		
-		public Instant() {
-			instant = new HashMap<Integer, HashMap<Integer,Integer>>();
-		}
-		
-		public void addInteraction(int source, int target, int frequency) {
-			HashMap<Integer,Integer> rowValue = instant.get(source);
-			
-			if (rowValue == null) {
-				rowValue = new HashMap<Integer, Integer>();
-			}
-			
-			rowValue.put(target, frequency);
-			
-			instant.put(source, rowValue);
-		}
-		
-		public Integer getInteraction(int source, int target) {
-			Integer frequency = 0;
-			
-			HashMap<Integer,Integer> rowValue = instant.get(source);
-			
-			if (rowValue != null) {
-				frequency = rowValue.get(target);
-				
-				if (frequency == null) {
-					frequency = 0;
-				}
-			}
-			
-			return frequency;
-		}
+	    String string = "";
 
-		public String toString() {
-			String string = "";
+	    for (Integer rowKey : instant.keySet()) {
+		HashMap<Integer, Double> row = instant.get(rowKey);
 
-			for (Integer rowKey : instant.keySet()) {
-				HashMap<Integer, Integer> row = instant.get(rowKey);
-				
-				for (Integer columnKey : row.keySet()) {
-					Integer frequency = row.get(columnKey);
-					
-					string += rowKey + " -> " + columnKey + ": " + frequency + "\n";
-				}
-			}
-			
-			return string;
+		for (Integer columnKey : row.keySet()) {
+		    Double frequency = row.get(columnKey);
+
+		    string += rowKey + " -> " + columnKey + ": " + frequency + "\n";
 		}
+	    }
+
+	    return string;
 	}
+    }
 }

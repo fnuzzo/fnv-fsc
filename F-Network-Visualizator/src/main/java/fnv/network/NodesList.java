@@ -8,6 +8,13 @@ import java.util.Set;
 public class NodesList {
 	private HashMap<Integer, Node> nodes;
 
+    public NodesList(Node[] nodes) {
+        this.nodes = new HashMap<Integer, Node>();
+        for (Node node : nodes) {
+			this.nodes.put(node.getId(), node);
+		}
+    }
+
 	public NodesList(List<Node> nodes) {
 		this.nodes = new HashMap<Integer, Node>(); 
 		for (Node node : nodes) {
@@ -23,6 +30,10 @@ public class NodesList {
 		return nodes.get(nodeID);
 	}
 
+    public Node[] toArray() {
+        return nodes.values().toArray(new Node[0]);
+    }
+
 	public String toString() {
 		String string = "";
 		
@@ -34,4 +45,6 @@ public class NodesList {
 		
 		return string;
 	}
+
+
 }

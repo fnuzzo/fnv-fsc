@@ -10,9 +10,9 @@ package fnv.network;
  * @author enrico
  */
 public class InteractionElement {
-    private int source;
-    private int destination;
-    private double frequency;
+    public int source;
+    public int destination;
+    public double frequency;
 
     public InteractionElement(int source, int destination, double frequency) {
         this.source = source;

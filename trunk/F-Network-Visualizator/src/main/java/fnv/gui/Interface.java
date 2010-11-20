@@ -93,6 +93,9 @@ public class Interface extends JFrame {
 
 	    if (inputStream != null) {
 		network = InputParser.parse(inputStream);
+		if (network != null) {
+		    centralPanel.setNetwork(network);
+		}
 
 		//TODO debug
 		System.out.println(network);

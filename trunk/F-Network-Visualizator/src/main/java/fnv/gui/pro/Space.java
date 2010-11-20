@@ -5,7 +5,9 @@ import fnv.network.Network;
 import fnv.network.Node;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.Timer;
 import fnv.network.Network;
 
 import processing.core.*;
@@ -17,6 +19,12 @@ import peasy.*;
  */
 public class Space extends PApplet {
 
+	//Gestione nodi iniziale
+	int nodes = 4;
+	int i=0;
+    Timer timer;
+	
+	
     //Frame al secondo
     int framerate = 30;
 
@@ -35,6 +43,7 @@ public class Space extends PApplet {
 
     PGraphics3D g3d;
 
+    boolean rotate = true;    
     // http://mrfeinberg.com/peasycam/reference/index.html
     private PeasyCam cam;
 
@@ -68,7 +77,9 @@ public class Space extends PApplet {
         //cam = new PeasyCam(this, spaceBox);
         cam.setMinimumDistance(10);
         cam.setMaximumDistance(700);
-
+      
+        StartTimer();
+        timer.start();
     }
 
     @Override
@@ -107,6 +118,27 @@ public class Space extends PApplet {
         }
 
     }
+    
+   public void StartTimer(){
+    	
+    	timer = new Timer(600, new ActionListener() {
+		
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(i<nodes){
+				node[i].visible = true;
+				    i++;
+				}
+				else {
+					timer.stop();
+				}
+			}
+
+		
+		});
+    	
+    	
+    }
 
     //Disegna il Cubo dello spazio
 
@@ -140,6 +172,11 @@ public class Space extends PApplet {
         // rotateX(PI / 4);
         // rotateY(PI / 4);
 
+    	if(rotate)
+    		cam.rotateY(0.02);
+    	
+    	
+    	
         background(0);
 
         lights();
@@ -248,6 +285,9 @@ public class Space extends PApplet {
     }
 
     class ANode {
+    	
+    	boolean visible = false; 
+    	
         //Posizioni relative
         public int x;
         public int y;

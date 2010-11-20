@@ -1,7 +1,12 @@
 package fnv.gui.pro;
 
+import fnv.network.InteractionElement;
 import fnv.network.Network;
+import fnv.network.Node;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+
+import fnv.network.Network;
 
 import processing.core.*;
 import peasy.*;
@@ -11,6 +16,11 @@ import peasy.*;
  * change this template use File | Settings | File Templates.
  */
 public class Space extends PApplet {
+
+    //Frame al secondo
+    int framerate = 30;
+
+    int instant = 0;
 
     //Lato dello spazio in box
     int boxN = 10;
@@ -25,22 +35,17 @@ public class Space extends PApplet {
     //Lato dei nodi in px
     int nodesize = 10;
 
-    int[] edge = new int[nodeN];
-
     PGraphics3D g3d;
 
     // http://mrfeinberg.com/peasycam/reference/index.html
     private PeasyCam cam;
 
-
     //Nodi
-    ANode[] node = new ANode[nodeN];
+    ANode[] node = null;
 
-    Network network = null;
+    public Network network = null;
 
-    public void setNetwork(Network network) {
-	this.network = network;
-    }
+
     @Override
     public void setup() {
         size(1024, 768, P3D);
@@ -49,7 +54,7 @@ public class Space extends PApplet {
 
         //smooth();
 
-        frameRate(20);
+        frameRate(framerate);
 
         //Inizializzazione camera
         cam = new PeasyCam(this, spaceBox / 2, -spaceBox / 2, spaceBox / 2, spaceBox);
@@ -57,16 +62,12 @@ public class Space extends PApplet {
         cam.setMinimumDistance(10);
         cam.setMaximumDistance(700);
 
-        node[0] = new ANode(6, 6, 1);
-        node[1] = new ANode(1, 1, 1);
-        node[2] = new ANode(2, 2, 2);
-        node[3] = new ANode(3, 3, 4);
-
-        //Collegamenti
-        edge[0] = 1;
-        edge[1] = 2;
-        edge[2] = 3;
-        edge[3] = -1;//Non verrà visualizzato
+        //Dati dei nodi, ATTENZIONE non cambiano mai!
+        ArrayList<ANode> alnode = new ArrayList<ANode>();
+        for (Node n : network.nodesList.toArray()) {
+            alnode.add(new ANode(n));
+        }
+        node = alnode.toArray(new ANode[0]);
 
     }
 
@@ -88,10 +89,10 @@ public class Space extends PApplet {
 
                     break;
                 case KeyEvent.VK_PAGE_UP:
-
+                    instant = instant++;
                     break;
                 case KeyEvent.VK_PAGE_DOWN:
-
+                    instant = instant--;
                     break;
 
             }
@@ -165,19 +166,11 @@ public class Space extends PApplet {
 
             // Collegamenti
             noFill();
-            //if (i < nodeN - 1) {
+
+            /*
             if (i < nodeN && edge[i] > 0) {
 
                 stroke(255);
-
-                /*line(
-                      node[i].ax,
-                      node[i].ay,
-                      node[i].az,
-                      node[edge[i]].ax,
-                      node[edge[i]].ay,
-                      node[edge[i]].az
-                );*/
 
                 //Scostamento punti controllo
                 int pcX = ((node[i].ax > node[edge[i]].ax) ? 20 : -20);
@@ -228,7 +221,25 @@ public class Space extends PApplet {
                         node[edge[i]].cz
                 );
 
-            }
+            }*/
+
+        }
+
+        //Disegno i nodi per l'istante giusto
+        InteractionElement[] interactions = network.getInteractionCube().getAllInteractions(instant);
+
+
+
+        for (int i = 0; i < interactions.length; i++) {
+            stroke(255);
+            line(
+                node[interactions[i].source].cx,
+                node[interactions[i].source].cy,
+                node[interactions[i].source].cz,
+                node[interactions[i].destination].cx,
+                node[interactions[i].destination].cy,
+                node[interactions[i].destination].cz
+            );
 
         }
 
@@ -258,6 +269,10 @@ public class Space extends PApplet {
             this.cx = ax + mbox;
             this.cy = (map(y, 0, boxN, 0, spaceBox) + mbox)*-1;
             this.cz = az + mbox;
+        }
+
+        ANode(fnv.network.Node n) {
+            this(n.getX(),n.getY(),n.getZ());
         }
 
 

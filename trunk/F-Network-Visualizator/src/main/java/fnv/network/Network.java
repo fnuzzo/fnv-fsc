@@ -8,9 +8,13 @@ public class Network {
     /* il nome della rete */
     private String name;
     /* l'elenco di nodi presenti nella rete */
-    private NodesList nodesList;
+    public NodesList nodesList;
     /* le interazioni presenti nella rete */
     private InteractionsCube interactionCube;
+
+    public InteractionsCube getInteractionCube() {
+        return interactionCube;
+    }
 
     public Network(String name, NodesList nodesList, InteractionsCube interactionCube) {
 	this.name = name;

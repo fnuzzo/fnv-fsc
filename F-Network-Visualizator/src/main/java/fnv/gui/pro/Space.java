@@ -1,5 +1,6 @@
 package fnv.gui.pro;
 
+import fnv.network.Network;
 import java.awt.event.KeyEvent;
 
 import processing.core.*;
@@ -35,7 +36,11 @@ public class Space extends PApplet {
     //Nodi
     ANode[] node = new ANode[nodeN];
 
+    Network network = null;
 
+    public void setNetwork(Network network) {
+	this.network = network;
+    }
     @Override
     public void setup() {
         size(1024, 768, P3D);

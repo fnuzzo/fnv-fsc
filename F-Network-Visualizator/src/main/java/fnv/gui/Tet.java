@@ -2,7 +2,6 @@ package fnv.gui;
 
 import javax.swing.JPanel;
 
-import fnv.gui.pro.MyCubesWithinCube;
 import fnv.gui.pro.Space;
 
 public class Tet extends JPanel{

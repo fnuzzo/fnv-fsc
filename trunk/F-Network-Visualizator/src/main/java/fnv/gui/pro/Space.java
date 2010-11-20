@@ -205,79 +205,22 @@ public class Space extends PApplet {
 
             }
 
-
-            // Collegamenti
-            noFill();
-
-            /*
-            if (i < nodeN && edge[i] > 0) {
-
-                stroke(255);
-
-                //Scostamento punti controllo
-                int pcX = ((node[i].ax > node[edge[i]].ax) ? 20 : -20);
-                int pcY = ((node[i].ay < node[edge[i]].ay) ? 20 : -20);
-                int pcZ = ((node[i].az > node[edge[i]].az) ? 20 : -20);
-
-
-                strokeWeight(3);
-                bezier(
-                        //Nodo A
-                        node[i].cx,
-                        node[i].cy,
-                        node[i].cz,
-                        //Punto Controllo A
-                        node[i].cx,
-                        node[i].cy + pcY,
-                        node[i].cz,
-                        //Punto Controllo B
-                        node[edge[i]].cx,
-                        node[edge[i]].cy - pcY,
-                        node[edge[i]].cz,
-                        //Nodo B
-                        node[edge[i]].cx,
-                        node[edge[i]].cy,
-                        node[edge[i]].cz
-                );
-                strokeWeight(1);
-
-                //Linea di controllo
-                stroke(255, 0, 0);
-                line(
-                        node[i].cx,
-                        node[i].cy,
-                        node[i].cz,
-                        node[i].cx,
-                        node[i].cy + pcY,
-                        node[i].cz
-
-                );
-                //Linea di controllo
-                stroke(0, 0, 255);
-                line(
-                        node[edge[i]].cx,
-                        node[edge[i]].cy,
-                        node[edge[i]].cz,
-                        node[edge[i]].cx,
-                        node[edge[i]].cy - pcY,
-                        node[edge[i]].cz
-                );
-
-            }*/
-
         }
+
+
+        // Collegamenti
+        noFill();
 
         //Disegno i nodi per l'istante giusto
         InteractionElement[] edge = network.getInteractionCube().getAllInteractions(instant);
-
 
         for (InteractionElement anEdge : edge) {
             if (node[anEdge.source].visible && node[anEdge.destination].visible) {
 
                 //Scostamento punti controllo
-                int pcX = ((node[anEdge.source].ax > node[anEdge.destination].ax) ? 20 : -20);
-                int pcY = ((node[anEdge.source].ay < node[anEdge.destination].ay) ? 20 : -20);
-                int pcZ = ((node[anEdge.source].az > node[anEdge.destination].az) ? 20 : -20);
+                int pcX = ((node[anEdge.source].ax > node[anEdge.destination].ax) ? 30 : -30);
+                int pcY = ((node[anEdge.source].ay < node[anEdge.destination].ay) ? 30 : -30);
+                int pcZ = ((node[anEdge.source].az > node[anEdge.destination].az) ? 30 : -30);
 
 
                 stroke(255);
@@ -297,13 +240,13 @@ public class Space extends PApplet {
                         node[anEdge.source].cy,
                         node[anEdge.source].cz,
                         //Punto Controllo A
-                        node[anEdge.source].cx + pcX,
-                        node[anEdge.source].cy + pcY,
-                        node[anEdge.source].cz + pcZ,
+                        node[anEdge.source].cx,
+                        node[anEdge.source].cy - (float) anEdge.frequency*mbox,
+                        node[anEdge.source].cz,
                         //Punto Controllo B
-                        node[anEdge.destination].cx - pcX,
-                        node[anEdge.destination].cy - pcY,
-                        node[anEdge.destination].cz - pcZ,
+                        node[anEdge.destination].cx,
+                        node[anEdge.destination].cy - (float) anEdge.frequency*mbox,
+                        node[anEdge.destination].cz,
                         //Nodo B
                         node[anEdge.destination].cx,
                         node[anEdge.destination].cy,
@@ -319,9 +262,9 @@ public class Space extends PApplet {
                         node[anEdge.source].cx,
                         node[anEdge.source].cy,
                         node[anEdge.source].cz,
-                        node[anEdge.source].cx + pcX,
-                        node[anEdge.source].cy + pcY,
-                        node[anEdge.source].cz + pcZ
+                        node[anEdge.source].cx,
+                        node[anEdge.source].cy - (float) anEdge.frequency*mbox,
+                        node[anEdge.source].cz
 
                 );
                 //Linea di controllo
@@ -330,9 +273,9 @@ public class Space extends PApplet {
                         node[anEdge.destination].cx,
                         node[anEdge.destination].cy,
                         node[anEdge.destination].cz,
-                        node[anEdge.destination].cx - pcX,
-                        node[anEdge.destination].cy - pcY,
-                        node[anEdge.destination].cz - pcZ
+                        node[anEdge.destination].cx,
+                        node[anEdge.destination].cy - (float) anEdge.frequency*mbox,
+                        node[anEdge.destination].cz
                 );
 
             }

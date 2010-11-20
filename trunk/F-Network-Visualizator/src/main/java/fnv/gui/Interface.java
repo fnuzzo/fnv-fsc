@@ -1,6 +1,5 @@
 package fnv.gui;
 
-import fnv.network.InteractionElement;
 import fnv.network.Network;
 import fnv.parser.InputParser;
 import java.awt.*;
@@ -55,7 +54,7 @@ public class Interface extends JFrame {
         }
 
         private void fimportActionPerformed(ActionEvent e) {
-	    JFileChooser fc = new JFileChooser();
+	    JFileChooser fc = new JFileChooser("./");
 	    File inputFile = null;
 	    Network network = null;
 

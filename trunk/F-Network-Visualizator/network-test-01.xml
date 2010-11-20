@@ -1,0 +1,32 @@
+
+<network>
+	<static-data>
+		<network-name>Rete di prova</network-name>
+		<nodes-list>
+			<node id="0" label="A" x="0" y="0" z="0" />
+			<node id="1" label="B" x="1" y="1" z="0" />
+			<node id="2" label="C" x="2" y="2" z="0" />
+			<node id="3" label="D" x="3" y="3" z="0" />
+		</nodes-list>
+	</static-data>
+	<dynamic-data>
+		<instant value="1">
+			<interaction source="0" target="1" frequency="1" />
+			<interaction source="1" target="0" frequency="2" />
+		</instant>
+		<instant value="2">
+			<interaction source="2" target="3" frequency="3" />
+			<interaction source="3" target="0" frequency="4" />
+			<interaction source="0" target="1" frequency="5" />
+			<interaction source="1" target="2" frequency="6" />
+		</instant>
+		<instant value="3">
+			<interaction source="2" target="3" frequency="7" />
+			<interaction source="3" target="2" frequency="8" />
+			<interaction source="1" target="2" frequency="9" />
+			<interaction source="2" target="1" frequency="10" />
+			<interaction source="1" target="3" frequency="11" />
+			<interaction source="3" target="1" frequency="12" />
+		</instant>
+	</dynamic-data>
+</network>

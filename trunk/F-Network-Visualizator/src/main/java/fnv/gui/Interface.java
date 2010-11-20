@@ -1,10 +1,19 @@
 package fnv.gui;
 
+import fnv.network.Network;
+import fnv.parser.InputParser;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
+import javax.swing.filechooser.FileFilter;
 /*
  * Created by JFormDesigner on Sat Nov 20 16:59:30 CET 2010
  */
@@ -44,8 +53,51 @@ public class Interface extends JFrame {
         }
 
         private void fimportActionPerformed(ActionEvent e) {
-           // TODO add your code here
-        }
+	    JFileChooser fc = new JFileChooser();
+	    File inputFile = null;
+	    Network network = null;
+
+	    fc.addChoosableFileFilter(new FileFilter() {
+
+		@Override
+		public boolean accept(File file) {
+		    if (file.isDirectory()) {
+			return true;
+		    }
+
+		    String filename = file.getName();
+		    if (filename.endsWith("xml") || (filename.endsWith("XML"))) {
+			return true;
+		    }
+		    return false;
+		}
+
+		@Override
+		public String getDescription() {
+		    return "xml files";
+		}
+	    });
+	    int returnVal = fc.showOpenDialog(this);
+
+	    if (returnVal == JFileChooser.APPROVE_OPTION) {
+		inputFile = fc.getSelectedFile();
+	    } else {
+	    }
+
+	    InputStream inputStream = null;
+	    try {
+		inputStream = new FileInputStream(inputFile);
+	    } catch (FileNotFoundException ex) {
+		Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+	    }
+
+	    if (inputStream != null) {
+		network = InputParser.parse(inputStream);
+
+		//TODO debug
+		System.out.println(network);
+	    }
+	}
 
         private void circleSpinnerStateChanged(ChangeEvent e) {
             // TODO add your code here

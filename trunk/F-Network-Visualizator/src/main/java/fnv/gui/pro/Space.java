@@ -30,8 +30,6 @@ public class Space extends PApplet {
     //Lato dello spazio in px
     int spaceBox = box * boxN;
 
-    //Numero nodi
-    int nodeN = 4;
     //Lato dei nodi in px
     int nodesize = 10;
 
@@ -41,12 +39,18 @@ public class Space extends PApplet {
     private PeasyCam cam;
 
     //Nodi
-    ANode[] node = null;
+    ANode[] node = new ANode[0];
 
     Network network = new Network();
 
     public void setNetwork(Network network) {
-	this.network = network;
+	    this.network = network;
+
+        ArrayList<ANode> alnode = new ArrayList<ANode>();
+        for (Node n : network.nodesList.toArray()) {
+            alnode.add(new ANode(n));
+        }
+        node = alnode.toArray(new ANode[0]);
     }
 
     @Override
@@ -64,13 +68,6 @@ public class Space extends PApplet {
         //cam = new PeasyCam(this, spaceBox);
         cam.setMinimumDistance(10);
         cam.setMaximumDistance(700);
-
-        //Dati dei nodi, ATTENZIONE non cambiano mai!
-        ArrayList<ANode> alnode = new ArrayList<ANode>();
-        for (Node n : network.nodesList.toArray()) {
-            alnode.add(new ANode(n));
-        }
-        node = alnode.toArray(new ANode[0]);
 
     }
 
@@ -92,10 +89,12 @@ public class Space extends PApplet {
 
                     break;
                 case KeyEvent.VK_PAGE_UP:
-                    instant = instant++;
+                    instant = instant+1;
+                    print(instant);
                     break;
                 case KeyEvent.VK_PAGE_DOWN:
-                    instant = instant--;
+                    instant = instant-1;
+                    print(instant);
                     break;
 
             }
@@ -148,7 +147,7 @@ public class Space extends PApplet {
         draw3DSpace();
 
 
-        for (int i = 0; i < nodeN; i++) {
+        for (int i = 0; i < node.length; i++) {
 
             //Nodi
             pushMatrix();

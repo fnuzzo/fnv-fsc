@@ -1,7 +1,9 @@
 package fnv.gui.pro;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
+import fnv.network.NodesList;
 import processing.core.*;
 import peasy.*;
 
@@ -23,57 +25,45 @@ public class Space extends PApplet {
     int nodeN = 4;
     //Lato dei nodi in px
     int nodesize = 10;
-    //Distanza fra nodi
-    int nodeDist = 15;
-
-    int[] nodeX = new int[nodeN];
-    int[] nodeY = new int[nodeN];
-    int[] nodeZ = new int[nodeN];
-
-    float[] mappedX = new float[nodeN];
-    float[] mappedY = new float[nodeN];
-    float[] mappedZ = new float[nodeN];
 
     int[] edge = new int[nodeN];
 
-    // Punti di controllo
-    float[][] edgeX = new float[nodeN][nodeN];
-    float[][] edgeY = new float[nodeN][nodeN];
-    float[][] edgeZ = new float[nodeN][nodeN];
+    PGraphics3D g3d;
 
     // http://mrfeinberg.com/peasycam/reference/index.html
     private PeasyCam cam;
 
+
+    //Nodi
+    ANode[] node = new ANode[nodeN];
+
+
     public void setup() {
         size(1024, 768, P3D);
 
-        smooth();
+        g3d = (PGraphics3D) g;
 
-        frameRate(30);
+        //smooth();
+
+        frameRate(20);
 
         //Inizializzazione camera
         cam = new PeasyCam(this, spaceBox / 2, -spaceBox / 2, spaceBox / 2, spaceBox);
+        //cam = new PeasyCam(this, spaceBox);
         cam.setMinimumDistance(10);
         cam.setMaximumDistance(700);
 
+        node[0] = new ANode(6, 6, 1);
+        node[1] = new ANode(1, 1, 1);
+        node[2] = new ANode(2, 2, 2);
+        node[3] = new ANode(3, 3, 4);
 
-        nodeY[0] = nodeX[0] = 6;
-        nodeZ[0] = 1;
-        nodeX[1] = nodeY[1] = 2;
-        nodeZ[1] = 1;
-        nodeX[2] = nodeY[2] = nodeZ[2] = 2;
-        nodeZ[3] = 4;
-        nodeX[3] = nodeY[3] = 3;
+        //Collegamenti
+        edge[0] = 1;
+        edge[1] = 2;
+        edge[2] = 3;
+        edge[3] = -1;//Non verrà visualizzato
 
-        edge[0] = 2;
-        edge[1] = 0;
-        edge[2] = -1;
-        edge[3] = 2;
-
-
-        mappedX = mapAll(nodeX);
-        mappedY = mapAll(nodeY);
-        mappedZ = mapAll(nodeZ);
     }
 
     public void keyPressed() {
@@ -81,32 +71,30 @@ public class Space extends PApplet {
 
             switch (keyCode) {
                 case UP:
-                    edgeY[1][0] -= 5;
-                    edgeY[0][1] -= 5;
+
                     break;
                 case DOWN:
-                    edgeY[1][0] += 5;
-                    edgeY[0][1] += 5;
+
                     break;
                 case RIGHT:
-                    edgeX[1][0] += 5;
-                    edgeX[0][1] -= 5;
+
                     break;
                 case LEFT:
-                    edgeX[1][0] -= 5;
-                    edgeX[0][1] += 5;
+
                     break;
                 case KeyEvent.VK_PAGE_UP:
-                    edgeZ[1][0] += 5;
-                    edgeZ[0][1] += 5;
+
                     break;
                 case KeyEvent.VK_PAGE_DOWN:
-                    edgeZ[1][0] -= 5;
-                    edgeZ[0][1] -= 5;
+
                     break;
+
             }
 
         } else {
+
+            int intk = Integer.parseInt(key+"");
+                    node[1] = new ANode(node[1].x, node[1].y, 9);
 
         }
 
@@ -132,96 +120,138 @@ public class Space extends PApplet {
             line(0 + i, 0, 0, 0, 0, 0 + i);
 
             stroke(0, 0, 255);
-            line(0, i * -1, 0, spaceBox, i * -1, 0);
+            line(0, i * -1, 0, spaceBox, i * -1, 0);//Parete dietro
         }
-
 
     }
 
 
     public void draw() {
-        // Per non mostrare la scena esattamente da sopra
+        // Per non mostrare la scena esattamente avanti al punto 0
         // rotateX(PI / 4);
         // rotateY(PI / 4);
 
         background(0);
 
+        lights();
+
         draw3DSpace();
 
 
         for (int i = 0; i < nodeN; i++) {
+
+            //Nodi
             pushMatrix();
+
             fill(i * 100, 255, 255 / (i + 1));
+
+            //Nodo Quadrato
             stroke(0);
             translate(
-                    mappedX[i] + mbox,
-                    (mappedY[i] + mbox) * -1,
-                    mappedZ[i] + mbox
+                    node[i].cx,
+                    node[i].cy,
+                    node[i].cz
             );
             box(nodesize);
 
             popMatrix();
 
+
             // Collegamenti
             noFill();
             //if (i < nodeN - 1) {
-            if (i < nodeN && edge[i] != -1) {
+            if (i < nodeN && edge[i] > 0) {
 
                 stroke(255);
 
                 /*line(
-                        mappedX[i] + mbox,
-                        (mappedY[i] + mbox) * -1,
-                        mappedZ[i] + mbox,
-                        mappedX[edge[i]] + mbox,
-                        (mappedY[edge[i]] + mbox) * -1,
-                        mappedZ[edge[i]] + mbox
+                      node[i].ax,
+                      node[i].ay,
+                      node[i].az,
+                      node[edge[i]].ax,
+                      node[edge[i]].ay,
+                      node[edge[i]].az
                 );*/
+
+                //Scostamento punti controllo
+                int pcX = ((node[i].ax > node[edge[i]].ax) ? 20 : -20);
+                int pcY = ((node[i].ay < node[edge[i]].ay) ? 20 : -20);
+                int pcZ = ((node[i].az > node[edge[i]].az) ? 20 : -20);
+
 
                 strokeWeight(3);
                 bezier(
                         //Nodo A
-                       mappedX[i] + mbox,
-                        (mappedY[i] + mbox) * -1,
-                        mappedZ[i] + mbox,
+                        node[i].cx,
+                        node[i].cy,
+                        node[i].cz,
                         //Punto Controllo A
-                        mappedX[i] + mbox + ((mappedX[i] > mappedX[edge[i]]) ? 30 : -30),
-                        (mappedY[i] + mbox) * -1 + ((mappedY[i] > mappedY[edge[i]]) ? 30 : -30),
-                        mappedZ[i] + mbox + ((mappedZ[i] > mappedZ[edge[i]]) ? 30 : -30),
+                        node[i].cx,
+                        node[i].cy + pcY,
+                        node[i].cz,
                         //Punto Controllo B
-                        mappedX[edge[i]] + mbox + ((mappedX[i] < mappedX[edge[i]]) ? 30 : -30),
-                        (mappedY[edge[i]] + mbox) * -1 + ((mappedY[i] < mappedY[edge[i]]) ? 30 : -30),
-                        mappedZ[edge[i]] + mbox + ((mappedZ[i] < mappedZ[edge[i]]) ? 30 : -30),
+                        node[edge[i]].cx,
+                        node[edge[i]].cy - pcY,
+                        node[edge[i]].cz,
                         //Nodo B
-                        mappedX[edge[i]] + mbox,
-                        (mappedY[edge[i]] + mbox) * -1,
-                        mappedZ[edge[i]] + mbox
+                        node[edge[i]].cx,
+                        node[edge[i]].cy,
+                        node[edge[i]].cz
                 );
                 strokeWeight(1);
 
+                //Linea di controllo
                 stroke(255, 0, 0);
                 line(
-                        mappedX[i] + mbox,
-                        (mappedY[i] + mbox) * -1,
-                        mappedZ[i] + mbox,
-                        mappedX[i] + mbox + ((mappedX[i] > mappedX[edge[i]]) ? 30 : -30),
-                        (mappedY[i] + mbox) * -1 + ((mappedY[i] > mappedY[edge[i]]) ? 30 : -30),
-                        mappedZ[i] + mbox + ((mappedZ[i] > mappedZ[edge[i]]) ? 30 : -30)
+                        node[i].cx,
+                        node[i].cy,
+                        node[i].cz,
+                        node[i].cx,
+                        node[i].cy + pcY,
+                        node[i].cz
 
                 );
+                //Linea di controllo
                 stroke(0, 0, 255);
                 line(
-                        mappedX[edge[i]] + mbox,
-                        (mappedY[edge[i]] + mbox) * -1,
-                        mappedZ[edge[i]] + mbox,
-                        mappedX[edge[i]] + mbox + ((mappedX[i] < mappedX[edge[i]]) ? 30 : -30),
-                        (mappedY[edge[i]] + mbox) * -1 + ((mappedY[i] < mappedY[edge[i]]) ? 30 : -30),
-                        mappedZ[edge[i]] + mbox + ((mappedZ[i] < mappedZ[edge[i]]) ? 30 : -30)
-
+                        node[edge[i]].cx,
+                        node[edge[i]].cy,
+                        node[edge[i]].cz,
+                        node[edge[i]].cx,
+                        node[edge[i]].cy - pcY,
+                        node[edge[i]].cz
                 );
 
             }
 
+        }
+
+    }
+
+    class ANode {
+        //Posizioni relative
+        public int x;
+        public int y;
+        public int z;
+        //Posizioni assolute
+        public float ax;
+        public float ay;
+        public float az;
+        //Posizioni assolute centrate rispetto al nodo
+        public float cx;
+        public float cy;
+        public float cz;
+
+        ANode(int x, int y, int z) {
+            this.x = x;
+            this.z = z;
+            this.y = y;
+            this.ax = map(x, 0, boxN, 0, spaceBox);
+            this.ay = map(y, 0, boxN, 0, spaceBox) * -1;
+            this.az = map(z, 0, boxN, 0, spaceBox);
+            this.cx = ax + mbox;
+            this.cy = (map(y, 0, boxN, 0, spaceBox) + mbox)*-1;
+            this.cz = az + mbox;
         }
 
 
@@ -238,5 +268,6 @@ public class Space extends PApplet {
 
         return mapped;
     }
+
 
 }

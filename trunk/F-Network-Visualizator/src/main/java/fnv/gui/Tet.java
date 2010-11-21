@@ -30,7 +30,7 @@ public class Tet extends JPanel {
     	//if (s==0) //full screen
     	//space. ridimensiona state		
     //else if(s==6) // normal 
-    	//dimensione normale metà schermo
+    	//dimensione normale met√† schermo
     	//else
     	//da gestire
     	

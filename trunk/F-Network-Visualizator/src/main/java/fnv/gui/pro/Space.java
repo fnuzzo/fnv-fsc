@@ -131,7 +131,7 @@ public class Space extends PApplet {
         initializeTimer();
 
         try {
-            this.setNetwork(InputParser.parse(new FileInputStream("/home/giacomo/network-test-01.xml")));
+            this.setNetwork(InputParser.parse(new FileInputStream("./network-test-01.xml")));
         } catch (FileNotFoundException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }

@@ -25,6 +25,11 @@ import java.util.Random;
 public class NetworkGenerator {
     public static void main(String[] args) {
 	if (args.length != 4) {
+	    System.out.println("Parametri:"
+		    + "\n\tnome della rete (e del file di output)"
+		    + "\n\tnumero di nodi, "
+		    + "\n\tmassimo valore delle coordinate"
+		    + "\n\tnumero di istanti");
 	    System.exit(1);
 	}
 
@@ -38,8 +43,8 @@ public class NetworkGenerator {
 
 	for (int i = 0; i < numberOfNodes; i++) {
 	    int x = random.nextInt(maxCoordinate);
-	    int y = random.nextInt(maxCoordinate);
-	    Node node = new Node(i, String.valueOf(i), x, y, 0);
+	    int z = random.nextInt(maxCoordinate);
+	    Node node = new Node(i, String.valueOf(i), x, 0, z);
 	    nodes.add(node);
 	}
 

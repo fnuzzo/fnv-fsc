@@ -40,6 +40,11 @@ public class Space extends PApplet {
     int mbox;
     /* Lato dello spazio in px */
     int spaceBox;
+
+    boolean spaceVisible = true;
+    //Evidenzia gli archi entranti al posto degli uscenti
+    boolean edgeIn = false;
+
     //Lato dei nodi in px
     int nodesize = 10;
 
@@ -104,8 +109,8 @@ public class Space extends PApplet {
         frameRate(framerate);
 
         //Inizializzazione camera
-        //cam = new PeasyCam(this, spaceBox / 2, -spaceBox / 2, spaceBox / 2, spaceBox);
-        cam = new PeasyCam(this, 300);
+        cam = new PeasyCam(this, 10,10,10,100);
+        //cam = new PeasyCam(this, 300);
         cam.setMinimumDistance(10);
         //cam.setMaximumDistance(700);
 
@@ -165,7 +170,10 @@ public class Space extends PApplet {
                         println(frameRate);
                         break;
                     case 's':
-                        println(selectedNode());
+                        spaceVisible = !spaceVisible;
+                        break;
+                    case 'e':
+                        edgeIn = !edgeIn;
                         break;
                 }
 
@@ -206,7 +214,8 @@ public class Space extends PApplet {
         popMatrix();
 
         for (int i = 0; i <= spaceBox; i += spaceBox / boxN) {
-            stroke(255, 0, 255, 127);
+            //stroke(255, 0, 255, 127);
+            stroke(80);
             line(i, 0, 0, i, 0, spaceBox);//Linee verticali
             line(0, 0, i, spaceBox, 0, i);//Linee orizzontali
             stroke(80);
@@ -272,15 +281,25 @@ public class Space extends PApplet {
 		node[anEdge.destination].cy,
 		node[anEdge.destination].cz
 		);*/
-                //I collegamenti del nodo selezionato sono più grossi
-                if(selected == anEdge.source) {
-                    strokeWeight(3);
-                    stroke(
+
+            //I collegamenti del nodo selezionato sono più grossi
+        if (edgeIn) {
+         if(selected == anEdge.target) {
+                strokeWeight(3);
+                stroke(
+                        anEdge.source * 100,
+                        255,
+                        255 / (anEdge.source + 1)
+                );
+            }
+        } else if(selected == anEdge.source) {
+                strokeWeight(3);
+                stroke(
                         anEdge.target * 100,
                         255,
                         255 / (anEdge.target + 1)
-                    );
-                }
+                );
+            }
 
 		bezier(
 			//Nodo A
@@ -344,7 +363,9 @@ public class Space extends PApplet {
 
 	/* disegna il cubo che contiene la rete e i nodi solo se e' stata inizializzata una rete */
 	if (networkInitialized) {
-	    draw3DSpace();
+        if (spaceVisible) {
+	        draw3DSpace();
+        }
 
 	    drawNodes();
 

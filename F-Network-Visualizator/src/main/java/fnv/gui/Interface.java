@@ -67,11 +67,8 @@ public class Interface extends JFrame {
 		    }
 
 		    String filename = file.getName();
-		    if (filename.endsWith("xml") || (filename.endsWith("XML"))) {
-			return true;
+            return (filename.endsWith("xml") || filename.endsWith("XML"));
 		    }
-		    return false;
-		}
 
 		@Override
 		public String getDescription() {

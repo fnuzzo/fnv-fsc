@@ -32,7 +32,7 @@ public class NodesList {
     }
 
     public Node[] toArray() {
-	return nodes.values().toArray(new Node[0]);
+	return nodes.values().toArray(new Node[nodes.values().size()]);
     }
 
     @Override

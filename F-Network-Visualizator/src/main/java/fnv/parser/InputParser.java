@@ -35,7 +35,7 @@ public class InputParser {
 	    Element rootElement = document.getRootElement();
 
 	    for (Iterator<Element> childrenIterator = rootElement.getChildren().iterator(); childrenIterator.hasNext();) {
-		Element child = (Element) childrenIterator.next();
+		Element child = childrenIterator.next();
 
 		if (child.getName().equals(Constants.XML_STATIC)) {
 		    /* parsing della parte statica del file di input */
@@ -66,13 +66,13 @@ public class InputParser {
     private static void parseStaticPart(Element element) throws DataConversionException {
 	String networkName;
 	for (Iterator<Element> childrenIterator = element.getChildren().iterator(); childrenIterator.hasNext();) {
-	    Element child = (Element) childrenIterator.next();
+	    Element child = childrenIterator.next();
 	    if (child.getName().equals(Constants.XML_NETWORK_NAME)) {
 		name = child.getValue().trim();
 	    } else if (child.getName().equals(Constants.XML_NODES_LIST)) {
 		/* parsing dei nodi */
 		for (Iterator<Element> nodesIterator = child.getChildren().iterator(); nodesIterator.hasNext();) {
-		    Element node = (Element) nodesIterator.next();
+		    Element node = nodesIterator.next();
 
 		    if (node.getName().equals(Constants.XML_NODE)) {
 			Integer id = node.getAttribute(Constants.XML_NODE_ID_ATTR).getIntValue();
@@ -100,13 +100,13 @@ public class InputParser {
      */
     private static void parseDynamicPart(Element element) throws DataConversionException {
 	for (Iterator<Element> instantIterator = element.getChildren().iterator(); instantIterator.hasNext();) {
-	    Element instant = (Element) instantIterator.next();
+	    Element instant = instantIterator.next();
 
 	    if (instant.getName().equals(Constants.XML_INSTANT)) {
 		Integer instantValue = instant.getAttribute(Constants.XML_INSTANT_VALUE_ATTR).getIntValue();
 
 		for (Iterator<Element> interactionIterator = instant.getChildren().iterator(); interactionIterator.hasNext();) {
-		    Element interaction = (Element) interactionIterator.next();
+		    Element interaction = interactionIterator.next();
 
 		    if (interaction.getName().equals(Constants.XML_INTERACTION)) {
 			/* parsing delle interazioni tra i nodi */

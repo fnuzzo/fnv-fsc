@@ -25,9 +25,13 @@ import peasy.*;
  */
 public class Space extends PApplet {
     Timer timer;
+
+
     //Frame al secondo
     int framerate = 20;
+
     int instant = 0;
+
     //Lato dello spazio in box
     int boxN;
     /* Lato di un box in px */
@@ -38,12 +42,18 @@ public class Space extends PApplet {
     int spaceBox;
     //Lato dei nodi in px
     int nodesize = 10;
+
     //Visualizza i punti e le linee di controllo
     boolean showControlPoint = false;
+
+    //Per disegnare in primo piano, ad esempio il mirino
+    PMatrix3D currCameraMatrix;
     PGraphics3D g3d;
+
     boolean rotate = true;
     // http://mrfeinberg.com/peasycam/reference/index.html
     private PeasyCam cam;
+
     //Nodi
     ANode[] nodes = new ANode[0];
     Network network = new Network();
@@ -204,6 +214,7 @@ public class Space extends PApplet {
             stroke(0, 0, 255);
             line(0, i * -1, 0, spaceBox, i * -1, 0);//Parete dietro
         }
+
     }
 
     /* disegna i nodi nello spazio 3d */
@@ -235,6 +246,10 @@ public class Space extends PApplet {
     }
 
     public void drawEdges() {
+
+        //Nodo a cui è più vicino il mouse
+        int selected = selectedNode();
+
 	//Disegno i nodi per l'istante giusto
 	InteractionElement[] edge = network.getInteractionCube().getAllInteractions(instant);
 
@@ -255,6 +270,15 @@ public class Space extends PApplet {
 		node[anEdge.destination].cy,
 		node[anEdge.destination].cz
 		);*/
+                //I collegamenti del nodo selezionato sono più grossi
+                if(selected == anEdge.source) {
+                    strokeWeight(3);
+                    stroke(
+                        anEdge.target * 100,
+                        255,
+                        255 / (anEdge.target + 1)
+                    );
+                }
 
 		strokeWeight(3);
 		bezier(
@@ -325,6 +349,22 @@ public class Space extends PApplet {
 
 	    drawEdges();
 	}
+        
+        viewfinder();
+    }
+    
+     private void viewfinder() {
+        //Mirino
+        // reset camera and disable depth test and blending
+        currCameraMatrix = new PMatrix3D(g3d.camera);
+        camera();
+
+        stroke(255);
+        line(width / 2 - 9, height / 2 , width / 2 + 9, height / 2 );
+        line(width / 2 , height / 2 - 9, width / 2 , height / 2 + 9);
+
+        // restore camera
+        g3d.camera = currCameraMatrix;
     }
 
     private int selectedNode() {
@@ -382,6 +422,8 @@ public class Space extends PApplet {
         ANode(Node n) {
             this(n.x, n.y, n.z);
         }
+
+
     }
 
     //Mappa tutti i valori relativi nello spazio dei pixel
@@ -395,4 +437,6 @@ public class Space extends PApplet {
 
         return mapped;
     }
+
+
 }

@@ -12,7 +12,7 @@ public class Fnv extends PApplet {
 	int id =0;
 
 
-	Node[] n = new Node[nodes]; 
+	PNode[] n = new PNode[nodes];
 
 
 	//Controls cubie's movement
@@ -53,7 +53,7 @@ public class Fnv extends PApplet {
 		for (int i =0 ; i<nodes; i++ ){
 
 
-			n[i] = new Node(size,color, name, id) ; 
+			n[i] = new PNode(size,color, name, id) ;
 
 			// Initialize cubie's position
 			x[i] = random(10, 50);

@@ -41,10 +41,10 @@ public class XmlGenerator {
 	    Node node = network.getNode(nodeID);
 	    Element networkNode = new Element(Constants.XML_NODE);
 	    networkNode.setAttribute(Constants.XML_NODE_ID_ATTR, String.valueOf(nodeID));
-	    networkNode.setAttribute(Constants.XML_NODE_LABEL_ATTR, node.getLabel());
-	    networkNode.setAttribute(Constants.XML_NODE_X_ATTR, String.valueOf(node.getX()));
-	    networkNode.setAttribute(Constants.XML_NODE_Y_ATTR, String.valueOf(node.getY()));
-	    networkNode.setAttribute(Constants.XML_NODE_Z_ATTR, String.valueOf(node.getZ()));
+	    networkNode.setAttribute(Constants.XML_NODE_LABEL_ATTR, node.label);
+	    networkNode.setAttribute(Constants.XML_NODE_X_ATTR, String.valueOf(node.x));
+	    networkNode.setAttribute(Constants.XML_NODE_Y_ATTR, String.valueOf(node.y));
+	    networkNode.setAttribute(Constants.XML_NODE_Z_ATTR, String.valueOf(node.z));
 
 	    networkNodesList.addContent(networkNode);
 	}

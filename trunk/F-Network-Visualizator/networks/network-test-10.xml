@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<network>
+	<static-data>
+		<network-name>network-test-10</network-name>
+		<nodes-list>
+			<node id="0" label="0" x="0" y="0" z="31" />
+			<node id="1" label="1" x="15" y="2" z="42" />
+			<node id="2" label="2" x="38" y="2" z="48" />
+			<node id="3" label="3" x="46" y="0" z="48" />
+			<node id="4" label="4" x="4" y="1" z="26" />
+			<node id="5" label="5" x="25" y="0" z="20" />
+			<node id="6" label="6" x="23" y="0" z="37" />
+			<node id="7" label="7" x="36" y="1" z="16" />
+			<node id="8" label="8" x="13" y="1" z="22" />
+			<node id="9" label="9" x="13" y="3" z="24" />
+		</nodes-list>
+	</static-data>
+	<dynamic-data>
+		<instant value="1">
+			<interaction source="1" target="2" frequency="0.34783213132910806" />
+			<interaction source="1" target="3" frequency="0.6592824660504457" />
+			<interaction source="1" target="5" frequency="0.009546461920770022" />
+			<interaction source="1" target="6" frequency="0.17501213975342078" />
+			<interaction source="1" target="8" frequency="0.6927588264061855" />
+			<interaction source="2" target="8" frequency="0.42374367778315847" />
+			<interaction source="3" target="1" frequency="0.04688085033402167" />
+			<interaction source="3" target="5" frequency="0.4836886718054474" />
+			<interaction source="3" target="6" frequency="0.036645250093597426" />
+			<interaction source="3" target="7" frequency="0.900805309465004" />
+			<interaction source="3" target="8" frequency="0.5812508731588373" />
+			<interaction source="3" target="9" frequency="0.8438016603793552" />
+			<interaction source="5" target="1" frequency="0.6863658699822692" />
+			<interaction source="5" target="3" frequency="3.680191669216404E-4" />
+			<interaction source="7" target="1" frequency="0.9422333607873107" />
+			<interaction source="7" target="3" frequency="0.5430857864880005" />
+			<interaction source="7" target="6" frequency="0.35299370406497466" />
+			<interaction source="7" target="8" frequency="0.6467686448310405" />
+			<interaction source="7" target="9" frequency="0.5443731065126974" />
+			<interaction source="9" target="0" frequency="0.12510253836693142" />
+			<interaction source="9" target="2" frequency="0.2636278485589315" />
+			<interaction source="9" target="3" frequency="0.2737604915778524" />
+			<interaction source="9" target="5" frequency="0.4266536664901289" />
+			<interaction source="9" target="6" frequency="0.20896710389291273" />
+			<interaction source="9" target="7" frequency="0.24708756650531682" />
+		</instant>
+		<instant value="2">
+			<interaction source="0" target="1" frequency="0.2935987986574937" />
+			<interaction source="0" target="2" frequency="0.12177045562108102" />
+			<interaction source="0" target="4" frequency="0.37710680992037027" />
+			<interaction source="0" target="6" frequency="0.5178589754336168" />
+			<interaction source="0" target="7" frequency="0.232461099161413" />
+			<interaction source="0" target="9" frequency="0.07208140389512196" />
+			<interaction source="2" target="0" frequency="0.9750308082566816" />
+			<interaction source="2" target="1" frequency="0.0454290461031821" />
+			<interaction source="2" target="4" frequency="0.725772743810479" />
+			<interaction source="2" target="6" frequency="0.2745222059118231" />
+			<interaction source="2" target="7" frequency="0.9867823503743839" />
+			<interaction source="5" target="8" frequency="0.8922799592513017" />
+			<interaction source="6" target="0" frequency="0.5246279844546121" />
+			<interaction source="6" target="1" frequency="0.5943425294338651" />
+			<interaction source="6" target="2" frequency="0.7318370128584576" />
+			<interaction source="6" target="3" frequency="0.1961213838427016" />
+			<interaction source="6" target="5" frequency="0.46890811477952565" />
+			<interaction source="6" target="7" frequency="0.1965838556856534" />
+			<interaction source="6" target="8" frequency="0.709106745251031" />
+			<interaction source="6" target="9" frequency="0.8062154444399285" />
+		</instant>
+		<instant value="3">
+			<interaction source="1" target="0" frequency="0.1167141774239302" />
+			<interaction source="1" target="2" frequency="0.07184138870381529" />
+			<interaction source="1" target="3" frequency="0.6533474604162348" />
+			<interaction source="1" target="4" frequency="0.9417063092364892" />
+			<interaction source="1" target="5" frequency="0.10309206566611917" />
+			<interaction source="1" target="6" frequency="0.010364129136446798" />
+			<interaction source="1" target="7" frequency="0.5802705963487024" />
+			<interaction source="1" target="8" frequency="0.2674341347996968" />
+			<interaction source="2" target="3" frequency="0.026694065688760982" />
+			<interaction source="2" target="4" frequency="0.5305589534733707" />
+			<interaction source="2" target="6" frequency="0.10001180566732204" />
+			<interaction source="2" target="7" frequency="0.08732828975892049" />
+			<interaction source="3" target="4" frequency="0.1722337403932287" />
+			<interaction source="3" target="6" frequency="0.7868236721960654" />
+			<interaction source="6" target="1" frequency="0.6268791011388779" />
+			<interaction source="6" target="2" frequency="0.7758711877118774" />
+			<interaction source="6" target="3" frequency="0.7566630068826518" />
+			<interaction source="6" target="4" frequency="0.8968419934912512" />
+			<interaction source="6" target="5" frequency="0.2812918648756447" />
+			<interaction source="6" target="8" frequency="0.3090859083786994" />
+			<interaction source="7" target="1" frequency="0.5367515669648312" />
+			<interaction source="7" target="4" frequency="0.882466231165125" />
+			<interaction source="7" target="6" frequency="0.026369811905366913" />
+			<interaction source="7" target="9" frequency="0.6300769395442135" />
+			<interaction source="9" target="5" frequency="0.7706578253603" />
+			<interaction source="9" target="7" frequency="0.9401648027963376" />
+		</instant>
+		<instant value="4">
+			<interaction source="0" target="3" frequency="0.5307078974250822" />
+			<interaction source="0" target="8" frequency="0.7580558641337729" />
+			<interaction source="0" target="9" frequency="0.5418675247348197" />
+			<interaction source="4" target="0" frequency="0.2040743776439231" />
+			<interaction source="4" target="1" frequency="0.8870158608018428" />
+			<interaction source="4" target="2" frequency="0.18821285637228757" />
+			<interaction source="4" target="3" frequency="0.7253826413349203" />
+			<interaction source="4" target="5" frequency="0.9442669473868268" />
+			<interaction source="4" target="6" frequency="0.620652143584677" />
+			<interaction source="4" target="7" frequency="0.7914111605562171" />
+			<interaction source="4" target="8" frequency="0.6387209631647609" />
+			<interaction source="4" target="9" frequency="0.10643172204026485" />
+			<interaction source="6" target="1" frequency="0.2681306786947426" />
+			<interaction source="6" target="2" frequency="0.8353729444075443" />
+			<interaction source="6" target="8" frequency="0.4764945250850485" />
+			<interaction source="6" target="9" frequency="0.015479629727246702" />
+			<interaction source="7" target="1" frequency="0.9691938025158677" />
+			<interaction source="7" target="4" frequency="0.3267433586527859" />
+			<interaction source="7" target="5" frequency="0.9766486041137702" />
+			<interaction source="7" target="6" frequency="0.49682518742627346" />
+			<interaction source="9" target="0" frequency="0.39151171283883623" />
+			<interaction source="9" target="2" frequency="0.0379250884622202" />
+			<interaction source="9" target="4" frequency="0.6102835310327412" />
+			<interaction source="9" target="7" frequency="0.19547473871206011" />
+		</instant>
+		<instant value="5">
+			<interaction source="1" target="0" frequency="0.09113279011597997" />
+			<interaction source="1" target="2" frequency="0.608421889590215" />
+			<interaction source="1" target="3" frequency="0.9837242221183885" />
+			<interaction source="1" target="5" frequency="0.47887211554030595" />
+			<interaction source="1" target="6" frequency="0.022927223890300108" />
+			<interaction source="1" target="7" frequency="0.9174465771625622" />
+			<interaction source="1" target="8" frequency="0.35167558827961887" />
+			<interaction source="1" target="9" frequency="0.343980326858938" />
+			<interaction source="3" target="7" frequency="0.6010002280361734" />
+			<interaction source="3" target="8" frequency="0.13343176286006642" />
+			<interaction source="3" target="9" frequency="0.5214880153335939" />
+			<interaction source="7" target="0" frequency="0.7801364621995394" />
+			<interaction source="7" target="1" frequency="0.08584080355499757" />
+			<interaction source="7" target="6" frequency="0.3738624055096268" />
+			<interaction source="8" target="4" frequency="0.2896645020951417" />
+			<interaction source="8" target="5" frequency="0.8143311953307187" />
+			<interaction source="8" target="9" frequency="0.8778798166271937" />
+			<interaction source="9" target="6" frequency="0.9117440129687959" />
+			<interaction source="9" target="7" frequency="0.03862717608601429" />
+		</instant>
+		<instant value="6">
+			<interaction source="0" target="3" frequency="0.9578724647817817" />
+			<interaction source="0" target="6" frequency="0.8717104279551439" />
+			<interaction source="0" target="7" frequency="0.9486147600275312" />
+		</instant>
+		<instant value="7">
+			<interaction source="0" target="1" frequency="0.17963044936216688" />
+			<interaction source="0" target="3" frequency="0.03270009050220035" />
+			<interaction source="0" target="5" frequency="0.23713259624824623" />
+			<interaction source="1" target="2" frequency="0.44396693707996093" />
+			<interaction source="1" target="7" frequency="0.748442072557222" />
+			<interaction source="4" target="0" frequency="0.46018176470144556" />
+			<interaction source="4" target="2" frequency="0.9169010495552978" />
+			<interaction source="4" target="6" frequency="0.1047999532843289" />
+			<interaction source="4" target="7" frequency="0.6851942075376954" />
+			<interaction source="4" target="8" frequency="0.003948720876184586" />
+			<interaction source="4" target="9" frequency="0.11577090654131095" />
+		</instant>
+		<instant value="8">
+			<interaction source="1" target="0" frequency="0.8454999757990483" />
+			<interaction source="1" target="3" frequency="0.8285243206259421" />
+			<interaction source="1" target="5" frequency="0.7698378517208123" />
+			<interaction source="1" target="9" frequency="0.40990263651357306" />
+			<interaction source="9" target="1" frequency="0.06455569500205982" />
+			<interaction source="9" target="4" frequency="0.22270270309244045" />
+			<interaction source="9" target="8" frequency="0.4989724613867851" />
+		</instant>
+		<instant value="9">
+			<interaction source="2" target="3" frequency="0.47843196138302013" />
+			<interaction source="2" target="4" frequency="0.07216108194649695" />
+			<interaction source="2" target="5" frequency="0.8861749226333223" />
+			<interaction source="2" target="8" frequency="0.12641623399008417" />
+			<interaction source="2" target="9" frequency="0.22391302540098035" />
+			<interaction source="6" target="2" frequency="0.10224065810550054" />
+			<interaction source="6" target="3" frequency="0.9913418626917335" />
+			<interaction source="6" target="4" frequency="0.756780378389368" />
+			<interaction source="6" target="5" frequency="0.2863496421467656" />
+			<interaction source="6" target="7" frequency="0.6849251150595809" />
+			<interaction source="9" target="5" frequency="0.543985645289695" />
+		</instant>
+		<instant value="10">
+			<interaction source="6" target="0" frequency="0.30012495508374026" />
+			<interaction source="6" target="1" frequency="0.2934422827294699" />
+			<interaction source="6" target="2" frequency="0.584831372300309" />
+			<interaction source="6" target="4" frequency="0.8720386828084383" />
+			<interaction source="6" target="7" frequency="0.6083902619405375" />
+			<interaction source="6" target="9" frequency="0.05878514172141158" />
+		</instant>
+	</dynamic-data>
+</network>
+

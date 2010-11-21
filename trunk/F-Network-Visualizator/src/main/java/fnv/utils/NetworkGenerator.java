@@ -44,6 +44,7 @@ public class NetworkGenerator {
 	for (int i = 0; i < numberOfNodes; i++) {
 	    int x = random.nextInt(maxCoordinate);
 	    int y = random.nextInt(4);
+	    //int y = random.nextInt(maxCoordinate);
 	    int z = random.nextInt(maxCoordinate);
 	    Node node = new Node(i, String.valueOf(i), x, y, z);
 	    nodes.add(node);

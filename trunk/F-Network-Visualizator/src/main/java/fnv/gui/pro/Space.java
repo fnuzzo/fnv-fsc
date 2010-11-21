@@ -103,7 +103,6 @@ public class Space extends PApplet {
         spaceBox = box * boxN;
 
         cam.lookAt(spaceBox / 2, -spaceBox / 2, spaceBox / 2, spaceBox * 2, 2000);
-
     }
 
     @Override
@@ -129,8 +128,6 @@ public class Space extends PApplet {
         } catch (FileNotFoundException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-
-
     }
 
     @Override
@@ -187,7 +184,6 @@ public class Space extends PApplet {
                         edgeVisible = !edgeVisible;
                         break;
                 }
-
             }
         }
 
@@ -210,11 +206,8 @@ public class Space extends PApplet {
 		    nodesFraction = 1;
 		}
 
-		System.out.println("nodesFraction: " + nodesFraction);
-		System.out.println("nodesDrawn: " + nodesDrawn);
 		if (nodesDrawn != nodes.length) {
 		    for (int i = 0; i < nodesFraction; i++) {
-			System.out.println("index: " + (nodesDrawn + i));
 			nodes[nodesDrawn + i].visible = true;
 		    }
 		    nodesDrawn += nodesFraction;
@@ -223,8 +216,6 @@ public class Space extends PApplet {
 		}
 	    }
 	});
-
-	//timer.start();
     }
 
     //Disegna il Cubo dello spazio

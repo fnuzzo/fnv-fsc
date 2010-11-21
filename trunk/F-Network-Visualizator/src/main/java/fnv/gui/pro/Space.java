@@ -95,7 +95,7 @@ public class Space extends PApplet {
         cam = new PeasyCam(this, spaceBox / 2, -spaceBox / 2, spaceBox / 2, spaceBox);
         //cam = new PeasyCam(this, spaceBox);
         cam.setMinimumDistance(10);
-        cam.setMaximumDistance(700);
+        //cam.setMaximumDistance(700);
 
         StartTimer();
 

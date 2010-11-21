@@ -5,15 +5,12 @@ import fnv.network.Network;
 import fnv.network.Node;
 
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
-
-import fnv.network.Network;
 
 import fnv.parser.InputParser;
 import processing.core.*;
@@ -26,9 +23,13 @@ import peasy.*;
 public class Space extends PApplet {
     Timer timer;
 
-
     //Frame al secondo
     int framerate = 20;
+
+    //Font etichette
+    PFont f;
+    int fontSize = 32;
+    String text = "";
 
     int instant = 0;
 
@@ -44,6 +45,9 @@ public class Space extends PApplet {
     boolean spaceVisible = true;
     //Evidenzia gli archi entranti al posto degli uscenti
     boolean edgeIn = false;
+
+    //Il nodo correntemente selezionato
+    int selected = -1;
 
     //Nasconde gli archi non selezionati
     boolean edgeVisible = true;
@@ -111,6 +115,9 @@ public class Space extends PApplet {
 
         g3d = (PGraphics3D) g;
 
+        f = loadFont("ArialMT-48.vlw");
+        textFont(f,fontSize);
+
         smooth();
 
         frameRate(framerate);
@@ -124,7 +131,7 @@ public class Space extends PApplet {
         initializeTimer();
 
         try {
-            this.setNetwork(InputParser.parse(new FileInputStream("./network-test-01.xml")));
+            this.setNetwork(InputParser.parse(new FileInputStream("/home/giacomo/network-test-01.xml")));
         } catch (FileNotFoundException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -197,7 +204,7 @@ public class Space extends PApplet {
 	    @Override
 	    public void actionPerformed(ActionEvent arg0) {
 		if (nodes.length >= 10) {
-		    nodesFraction = (int) Math.ceil((double)nodes.length / (double)10);
+		    nodesFraction = (int) Math.ceil((double) nodes.length / (double) 10);
 
 		    if ((nodesDrawn + nodesFraction) > nodes.length) {
 			nodesFraction = nodes.length - nodesDrawn;
@@ -275,9 +282,6 @@ public class Space extends PApplet {
 
     public void drawEdges() {
 
-        //Nodo a cui è più vicino il mouse
-        int selected = selectedNode();
-
 	//Disegno i nodi per l'istante giusto
 	InteractionElement[] edges = network.getInteractionCube().getAllInteractions(instant);
 
@@ -290,18 +294,22 @@ public class Space extends PApplet {
 		int pcY = ((nodes[edge.s].ay < nodes[edge.t].ay) ? 20 : -20);
 		int pcZ = ((nodes[edge.s].az > nodes[edge.t].az) ? 20 : -20);
 
-            stroke(0,0,100);
+            if (selected == -1) {
+                stroke(edge.c,100,100);
+            } else {
+                stroke(0,0,100);
+            }
             //I collegamenti del nodo selezionato sono più grossi
             boolean ev = false;
             if (edgeIn) {
                 if(selected == edge.t) {
                     strokeWeight(3);
-                    stroke(edge.s, 100, 100);
+                    stroke(edge.c, 100, 100);
                     ev = true;
                 }
             } else if(selected == edge.s) {
                 strokeWeight(3);
-                stroke(edge.t, 100, 100);
+                stroke(edge.c, 100, 100);
                 ev = true;
             }
 
@@ -365,34 +373,68 @@ public class Space extends PApplet {
 
 	lights();
 
+    selected = selectNode();
+
 	/* disegna il cubo che contiene la rete e i nodi solo se e' stata inizializzata una rete */
 	if (networkInitialized) {
 	    if (spaceVisible) {
-		draw3DSpace();
+		    draw3DSpace();
 	    }
 	    drawNodes();
 
 	    drawEdges();
 	}
 
-	viewfinder();
+	foreground();
     }
     
-     private void viewfinder() {
+     private void foreground() {
+         float scrX = 0;
+         float scrY = 0;
+
+         if (selected != -1) {
+
+             text = network.nodesList.getNode(selected).label;
+
+             stroke(0,0,100);
+             scrX = screenX(nodes[selected].cx,nodes[selected].cy,nodes[selected].cz);
+             scrY = screenY(nodes[selected].cx,nodes[selected].cy,nodes[selected].cz);
+
+         }
+
         //Mirino
         // reset camera and disable depth test and blending
         currCameraMatrix = new PMatrix3D(g3d.camera);
         camera();
+         double distance = cam.getDistance();
+         pushMatrix();
 
+         //translate(0,0,(float) distance);
+
+        noSmooth();
         stroke(0,0,100);
-        line(width / 2 - 9, height / 2 , width / 2 + 9, height / 2 );
+        line(width / 2 - 9, height / 2 , width / 2 + 9, height / 2);
         line(width / 2 , height / 2 - 9, width / 2 , height / 2 + 9);
 
+        if (selected != -1) {
+             //Label
+             fill(0,0,100);
+             text(text, scrX+mbox, scrY-mbox);
+
+         /*line(width-(textWidth(text)/2),
+                     fontSize + 2,
+                     scrX,
+                     scrY
+             );*/
+        }
+
+        smooth();
         // restore camera
+        popMatrix();
         g3d.camera = currCameraMatrix;
     }
 
-    private int selectedNode() {
+    private int selectNode() {
         int selected = -1;
         float mouseDisShortest = -1;
         for (int i = 0; i < nodes.length; i++) {
@@ -404,12 +446,12 @@ public class Space extends PApplet {
             float mouseDis = sqrt( sq(mouseX - scrX) + sq(mouseY - scrY) );
 
             if((
-                            mouseDisShortest == -1 ||//Non ancora inizializzato
+                    mouseDisShortest == -1 ||//Non ancora inizializzato
                             mouseDis <= mouseDisShortest
-                    ) && mouseDis < box//Quasi sopra il nodo
+            ) && mouseDis < box//Quasi sopra il nodo
                     ){
-            selected = i; mouseDisShortest = mouseDis;
-          }
+                selected = i; mouseDisShortest = mouseDis;
+            }
         }
 
         return selected;
@@ -421,13 +463,14 @@ public class Space extends PApplet {
         public int t;
         public float f;
         public float af;
+        public float c;//color
 
         AEdge(InteractionElement ie) {
             this.s = ie.source;
             this.t = ie.target;
             this.f = (float) ie.frequency;
             this.af = map((float) ie.frequency, (float) network.getInteractionCube().getMinFrequency(), (float) network.getInteractionCube().getMaxFrequency(),0,spaceBox);
-
+            this.c = map((float) ie.frequency,(float) network.getInteractionCube().getMinFrequency(), (float) network.getInteractionCube().getMaxFrequency(),0,nodes.length);
         }
     }
 
@@ -479,5 +522,8 @@ public class Space extends PApplet {
         return mapped;
     }
 
-
+    @Override
+    public void size(int i, int i1) {
+        super.size(i, i1);
+    }
 }

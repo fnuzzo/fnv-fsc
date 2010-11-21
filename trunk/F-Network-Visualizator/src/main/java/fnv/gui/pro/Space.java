@@ -1,14 +1,21 @@
 package fnv.gui.pro;
 
 import fnv.network.InteractionElement;
+import fnv.network.Network;
 import fnv.network.Node;
+
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
+
 import fnv.network.Network;
 
+import fnv.parser.InputParser;
 import processing.core.*;
 import peasy.*;
 
@@ -18,13 +25,13 @@ import peasy.*;
  */
 public class Space extends PApplet {
 
-	//Gestione nodi iniziale
-	int i=0;
+    //Gestione nodi iniziale
+    int i = 0;
     Timer timer;
-	
-	
+
+
     //Frame al secondo
-    int framerate = 30;
+    int framerate = 20;
 
     int instant = 0;
 
@@ -39,9 +46,13 @@ public class Space extends PApplet {
     //Lato dei nodi in px
     int nodesize = 10;
 
+    //Visualizza i punti e le linee di controllo
+    boolean showControlPoint = false;
+
+
     PGraphics3D g3d;
 
-    boolean rotate = true;    
+    boolean rotate = true;
     // http://mrfeinberg.com/peasycam/reference/index.html
     private PeasyCam cam;
 
@@ -51,8 +62,8 @@ public class Space extends PApplet {
     Network network = new Network();
 
     public void setNetwork(Network network) {
-	    this.network = network;
-	    rotate = true;
+        this.network = network;
+        rotate = true;
         timer.start();
 
         ArrayList<ANode> alnode = new ArrayList<ANode>();
@@ -77,9 +88,16 @@ public class Space extends PApplet {
         //cam = new PeasyCam(this, spaceBox);
         cam.setMinimumDistance(10);
         cam.setMaximumDistance(700);
-      
+
         StartTimer();
-        
+
+        try {
+            this.setNetwork(InputParser.parse(new FileInputStream("/home/giacomo/network-test-01.xml")));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+
     }
 
     @Override
@@ -100,46 +118,56 @@ public class Space extends PApplet {
 
                     break;
                 case KeyEvent.VK_PAGE_UP:
-                    instant = instant+1;
+                    instant = instant + 1;
                     print(instant);
                     break;
                 case KeyEvent.VK_PAGE_DOWN:
-                    instant = instant-1;
+                    instant = instant - 1;
                     print(instant);
                     break;
 
             }
 
         } else {
+            int intk = -1;
+            try {
+                intk = Integer.parseInt(key + "");
+            } catch (NumberFormatException e) {
 
-            int intk = Integer.parseInt(key+"");
-                    node[1] = new ANode(node[1].x, node[1].y, 9);
+            }
 
+            if (intk == -1) {
+                switch (key) {
+                    case 'p':
+                        showControlPoint = !showControlPoint;
+                        break;
+                }
+
+            }
         }
 
     }
-    
-   public void StartTimer(){
-    	
-    	timer = new Timer(600, new ActionListener() {
-    		int i=0;
-		
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				if(i< node.length){
-				node[i].visible = true;
-				    i++;
-				}
-				else {
-					timer.stop();
-                    rotate = false;
-				}
-			}
 
-		
-		});
-    	
-    	
+    public void StartTimer() {
+
+        timer = new Timer(600, new ActionListener() {
+            int i = 0;
+
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                if (i < node.length) {
+                    node[i].visible = true;
+                    i++;
+                } else {
+                    timer.stop();
+                    rotate = false;
+                }
+            }
+
+
+        });
+
+
     }
 
     //Disegna il Cubo dello spazio
@@ -174,8 +202,8 @@ public class Space extends PApplet {
         // rotateX(PI / 4);
         // rotateY(PI / 4);
 
-    	if(rotate)
-    		cam.rotateY(0.02);
+        if (rotate)
+            cam.rotateY(0.02);
 
         background(0);
 
@@ -186,21 +214,26 @@ public class Space extends PApplet {
 
         for (int i = 0; i < node.length; i++) {
             if (node[i].visible) {
-            //Nodi
-            pushMatrix();
+                //Nodi
+                pushMatrix();
 
-            fill(i * 100, 255, 255 / (i + 1));
+                fill(
+                        i * 100,
+                        255,
+                        255 / (i + 1),
+                        127//Trasparenza
+                );
 
-            //Nodo Quadrato
-            stroke(0);
-            translate(
-                    node[i].cx,
-                    node[i].cy,
-                    node[i].cz
-            );
-            box(nodesize);
+                //Nodo Quadrato
+                stroke(0);
+                translate(
+                        node[i].cx,
+                        node[i].cy,
+                        node[i].cz
+                );
+                box(nodesize);
 
-            popMatrix();
+                popMatrix();
 
             }
 
@@ -221,6 +254,7 @@ public class Space extends PApplet {
                 int pcY = ((node[anEdge.source].ay < node[anEdge.target].ay) ? 20 : -20);
                 int pcZ = ((node[anEdge.source].az > node[anEdge.target].az) ? 20 : -20);
 
+
                 stroke(255);
                 /*line(
                         node[anEdge.source].cx,
@@ -239,11 +273,11 @@ public class Space extends PApplet {
                         node[anEdge.source].cz,
                         //Punto Controllo A
                         node[anEdge.source].cx,
-                        node[anEdge.source].cy - (float) anEdge.frequency*mbox,
+                        node[anEdge.source].cy - (float) anEdge.frequency * mbox,
                         node[anEdge.source].cz,
                         //Punto Controllo B
                         node[anEdge.target].cx - pcX,
-                        node[anEdge.target].cy - pcY,
+                        node[anEdge.target].cy - (float) anEdge.frequency * mbox,
                         node[anEdge.target].cz - pcZ,
                         //Nodo B
                         node[anEdge.target].cx,
@@ -252,30 +286,32 @@ public class Space extends PApplet {
                 );
                 strokeWeight(1);
 
+                if (showControlPoint) {
 
 
-                //Linea di controllo
-                stroke(255, 0, 0);
-                line(
-                        node[anEdge.source].cx,
-                        node[anEdge.source].cy,
-                        node[anEdge.source].cz,
-                        node[anEdge.source].cx,
-                        node[anEdge.source].cy - (float) anEdge.frequency*mbox,
-                        node[anEdge.source].cz
+                    //Linea di controllo
+                    stroke(255, 0, 0);
+                    line(
+                            node[anEdge.source].cx,
+                            node[anEdge.source].cy,
+                            node[anEdge.source].cz,
+                            node[anEdge.source].cx,
+                            node[anEdge.source].cy - (float) anEdge.frequency * mbox,
+                            node[anEdge.source].cz
 
-                );
-                //Linea di controllo
-                stroke(0, 0, 255);
-                line(
-                        node[anEdge.target].cx,
-                        node[anEdge.target].cy,
-                        node[anEdge.target].cz,
-                        node[anEdge.target].cx - pcX,
-                        node[anEdge.target].cy - pcY,
-                        node[anEdge.target].cz - pcZ
-                );
+                    );
+                    //Linea di controllo
+                    stroke(0, 0, 255);
+                    line(
+                            node[anEdge.target].cx,
+                            node[anEdge.target].cy,
+                            node[anEdge.target].cz,
+                            node[anEdge.target].cx - pcX,
+                            node[anEdge.target].cy - (float) anEdge.frequency * mbox,
+                            node[anEdge.target].cz - pcZ
+                    );
 
+                }
             }
 
         }
@@ -283,9 +319,9 @@ public class Space extends PApplet {
     }
 
     class ANode {
-    	
-    	boolean visible = false; 
-    	
+
+        boolean visible = false;
+
         //Posizioni relative
         public int x;
         public int y;
@@ -307,12 +343,12 @@ public class Space extends PApplet {
             this.ay = map(y, 0, boxN, 0, spaceBox) * -1;
             this.az = map(z, 0, boxN, 0, spaceBox);
             this.cx = ax + mbox;
-            this.cy = (map(y, 0, boxN, 0, spaceBox) + mbox)*-1;
+            this.cy = (map(y, 0, boxN, 0, spaceBox) + mbox) * -1;
             this.cz = az + mbox;
         }
 
         ANode(fnv.network.Node n) {
-            this(n.getX(),n.getY(),n.getZ());
+            this(n.getX(), n.getY(), n.getZ());
         }
 
 

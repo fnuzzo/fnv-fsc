@@ -54,7 +54,9 @@ public class Space extends PApplet {
     //Per disegnare in primo piano, ad esempio il mirino
     PMatrix3D currCameraMatrix;
     PGraphics3D g3d;
-
+    /* indica il numero di nodi gia' disegnati quando si importa una rete */
+    int nodesDrawn;// = 0;
+    /* indica se lo spazio 3d deve ruotare su se stesso (quando si importa una rete) */
     boolean rotate = true;
     // http://mrfeinberg.com/peasycam/reference/index.html
     private PeasyCam cam;
@@ -87,6 +89,7 @@ public class Space extends PApplet {
 	    allnodes.add(new ANode(n));
 	}
 	nodes = allnodes.toArray(new ANode[allnodes.size()]);
+	nodesDrawn = 0;
     }
 
     public void initializeBox() {
@@ -183,15 +186,27 @@ public class Space extends PApplet {
     }
 
     public void StartTimer() {
-	timer = new Timer(600, new ActionListener() {
 
-	    int i = 0;
+	timer = new Timer(1000, new ActionListener() {
+	    int nodesFraction;
 
 	    @Override
 	    public void actionPerformed(ActionEvent arg0) {
-		if (i < nodes.length) {
-		    nodes[i].visible = true;
-		    i++;
+		if (nodes.length >= 10) {
+		    nodesFraction = (int) Math.floor(nodes.length / 10);
+
+		    if ((nodes.length - nodesDrawn) < nodesFraction) {
+			nodesFraction = nodes.length - nodesDrawn;
+		    }
+		} else {
+		    nodesFraction = 1;
+		}
+
+		if (nodesDrawn != nodes.length) {
+		    for (int i = 0; i < nodesFraction; i++) {
+			nodes[nodesDrawn + i].visible = true;
+			nodesDrawn++;
+		    }
 		} else {
 		    timer.stop();
 		    rotate = false;

@@ -57,7 +57,7 @@ public class Space extends PApplet {
     /* indica il numero di nodi gia' disegnati quando si importa una rete */
     int nodesDrawn;// = 0;
     /* indica se lo spazio 3d deve ruotare su se stesso (quando si importa una rete) */
-    boolean rotate = true;
+    boolean rotate = false;
     // http://mrfeinberg.com/peasycam/reference/index.html
     private PeasyCam cam;
 
@@ -76,7 +76,7 @@ public class Space extends PApplet {
 
 	initializeNodes();
 
-	StartTimer();
+	initializeTimer();
 	timer.start();
 
 	networkInitialized = true;
@@ -119,7 +119,7 @@ public class Space extends PApplet {
         cam.setMinimumDistance(10);
         //cam.setMaximumDistance(700);
 
-        StartTimer();
+        initializeTimer();
 
         try {
             this.setNetwork(InputParser.parse(new FileInputStream("./network-test-01.xml")));
@@ -187,7 +187,7 @@ public class Space extends PApplet {
 
     }
 
-    public void StartTimer() {
+    public void initializeTimer() {
 
 	timer = new Timer(1000, new ActionListener() {
 	    int nodesFraction;
@@ -195,28 +195,30 @@ public class Space extends PApplet {
 	    @Override
 	    public void actionPerformed(ActionEvent arg0) {
 		if (nodes.length >= 10) {
-		    nodesFraction = (int) Math.floor(nodes.length / 10);
+		    nodesFraction = (int) Math.ceil((double)nodes.length / (double)10);
 
-		    if ((nodes.length - nodesDrawn) < nodesFraction) {
+		    if ((nodesDrawn + nodesFraction) > nodes.length) {
 			nodesFraction = nodes.length - nodesDrawn;
 		    }
 		} else {
 		    nodesFraction = 1;
 		}
 
+		System.out.println("nodesFraction: " + nodesFraction);
+		System.out.println("nodesDrawn: " + nodesDrawn);
 		if (nodesDrawn != nodes.length) {
 		    for (int i = 0; i < nodesFraction; i++) {
+			System.out.println("index: " + (nodesDrawn + i));
 			nodes[nodesDrawn + i].visible = true;
-			nodesDrawn++;
 		    }
+		    nodesDrawn += nodesFraction;
 		} else {
-		    timer.stop();
 		    rotate = false;
 		}
 	    }
 	});
 
-	timer.start();
+	//timer.start();
     }
 
     //Disegna il Cubo dello spazio
@@ -369,12 +371,10 @@ public class Space extends PApplet {
 
     @Override
     public void draw() {
-	// Per non mostrare la scena esattamente avanti al punto 0
-	// rotateX(PI / 4);
-	// rotateY(PI / 4);
-
 	if (rotate) {
 	    cam.rotateY(0.02);
+	} else {
+	    timer.stop();
 	}
 
 	background(0);
@@ -383,16 +383,15 @@ public class Space extends PApplet {
 
 	/* disegna il cubo che contiene la rete e i nodi solo se e' stata inizializzata una rete */
 	if (networkInitialized) {
-        if (spaceVisible) {
-	        draw3DSpace();
-        }
-
+	    if (spaceVisible) {
+		draw3DSpace();
+	    }
 	    drawNodes();
 
 	    drawEdges();
 	}
-        
-        viewfinder();
+
+	viewfinder();
     }
     
      private void viewfinder() {

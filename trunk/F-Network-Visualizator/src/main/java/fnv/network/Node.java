@@ -15,14 +15,14 @@ public class Node {
     public final int z;
 
     public Node(Integer id, String label, int x, int y, int z) {
-	this.id = id;
-	this.label = label;
-	this.x = x;
-	this.y = y;
-	this.z = z;
+        this.id = id;
+        this.label = label;
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
-//	public Integer getId() {
+    //	public Integer getId() {
 //		return id;
 //	}
 //
@@ -41,16 +41,17 @@ public class Node {
 //	public int getZ() {
 //		return z;
 //	}
+
     @Override
     public String toString() {
-	String string = "";
+    String string="";
 
-	string += "id: " + id + ", ";
-	string += "label " + label + ", ";
-	string += "x: " + x + ", ";
-	string += "y: " + y + ", ";
-	string += "z: " + z;
+    string+="id: "+id+", ";
+    string+="label "+label+", ";
+    string+="x: "+x+", ";
+    string+="y: "+y+", ";
+    string+="z: "+z;
 
-	return string;
+    return string;
     }
 }

@@ -54,7 +54,7 @@ public class NetworkGenerator {
 		for (int k = 0; k < target; k++) {
 		    int destination = nodes.get(random.nextInt(nodes.size())).id;
 
-		    interactionCube.addInteraction(i, source, destination, random.nextDouble());
+		    interactionCube.addInteraction(i + 1, source, destination, random.nextDouble());
 		}
 	    }
 	}

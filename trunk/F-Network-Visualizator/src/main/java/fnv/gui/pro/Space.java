@@ -24,53 +24,61 @@ import peasy.*;
  * change this template use File | Settings | File Templates.
  */
 public class Space extends PApplet {
-
-    //Gestione nodi iniziale
-    int i = 0;
     Timer timer;
-
-
     //Frame al secondo
     int framerate = 20;
-
     int instant = 0;
-
     //Lato dello spazio in box
-    int boxN = 10;
-    //Lato di un box in px
+    int boxN;
+    /* Lato di un box in px */
     int box = 30;
-    int mbox = box / 2;//utile in più parti
-    //Lato dello spazio in px
-    int spaceBox = box * boxN;
-
+    /* Meta' del valore di "box". Variabile di comodita' */
+    int mbox;
+    /* Lato dello spazio in px */
+    int spaceBox;
     //Lato dei nodi in px
     int nodesize = 10;
-
     //Visualizza i punti e le linee di controllo
     boolean showControlPoint = false;
-
-
     PGraphics3D g3d;
-
     boolean rotate = true;
     // http://mrfeinberg.com/peasycam/reference/index.html
     private PeasyCam cam;
-
     //Nodi
-    ANode[] node = new ANode[0];
-
+    ANode[] nodes = new ANode[0];
     Network network = new Network();
+    /* indica se e' stata inizializzata una rete */
+    boolean networkInitialized = false;
 
     public void setNetwork(Network network) {
-        this.network = network;
-        rotate = true;
-        timer.start();
+	this.network = network;
 
-        ArrayList<ANode> alnode = new ArrayList<ANode>();
-        for (Node n : network.nodesList.toArray()) {
-            alnode.add(new ANode(n));
-        }
-        node = alnode.toArray(new ANode[alnode.size()]);
+	rotate = true;
+
+	initializeBox();
+
+	initializeNodes();
+
+	StartTimer();
+	timer.start();
+
+	networkInitialized = true;
+    }
+
+    public void initializeNodes() {
+	/* crea gli oggetti che rappresentano i nodi nello spazio 3d */
+	ArrayList<ANode> allnodes = new ArrayList<ANode>();
+	for (Node n : network.nodesList.toArray()) {
+	    allnodes.add(new ANode(n));
+	}
+	nodes = allnodes.toArray(new ANode[allnodes.size()]);
+    }
+
+    public void initializeBox() {
+	/* setta il lato del cubo che contiene tutto lo spazio 3d */
+	boxN = network.maxCoordinate + 1;
+	mbox = box / 2;
+	spaceBox = box * boxN;
     }
 
     @Override
@@ -92,7 +100,7 @@ public class Space extends PApplet {
         StartTimer();
 
         try {
-            this.setNetwork(InputParser.parse(new FileInputStream("/home/giacomo/network-test-01.xml")));
+            this.setNetwork(InputParser.parse(new FileInputStream("./network-test-01.xml")));
         } catch (FileNotFoundException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -155,25 +163,23 @@ public class Space extends PApplet {
     }
 
     public void StartTimer() {
+	timer = new Timer(600, new ActionListener() {
 
-        timer = new Timer(600, new ActionListener() {
-            int i = 0;
+	    int i = 0;
 
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                if (i < node.length) {
-                    node[i].visible = true;
-                    i++;
-                } else {
-                    timer.stop();
-                    rotate = false;
-                }
-            }
+	    @Override
+	    public void actionPerformed(ActionEvent arg0) {
+		if (i < nodes.length) {
+		    nodes[i].visible = true;
+		    i++;
+		} else {
+		    timer.stop();
+		    rotate = false;
+		}
+	    }
+	});
 
-
-        });
-
-
+	timer.start();
     }
 
     //Disegna il Cubo dello spazio
@@ -198,157 +204,137 @@ public class Space extends PApplet {
             stroke(0, 0, 255);
             line(0, i * -1, 0, spaceBox, i * -1, 0);//Parete dietro
         }
+    }
 
+    /* disegna i nodi nello spazio 3d */
+    public void drawNodes() {
+	for (int i = 0; i < nodes.length; i++) {
+	    if (nodes[i].visible) {
+		//Nodi
+		pushMatrix();
+
+		fill(
+			i * 100,
+			255,
+			255 / (i + 1),
+			127//Trasparenza
+			);
+
+		//Nodo Quadrato
+		stroke(0);
+		translate(
+			nodes[i].cx,
+			nodes[i].cy,
+			nodes[i].cz);
+		box(nodesize);
+
+		popMatrix();
+	    }
+	}
+	noFill();
+    }
+
+    public void drawEdges() {
+	//Disegno i nodi per l'istante giusto
+	InteractionElement[] edge = network.getInteractionCube().getAllInteractions(instant);
+
+	for (InteractionElement anEdge : edge) {
+	    if (nodes[anEdge.source].visible && nodes[anEdge.target].visible) {
+
+		//Scostamento punti controllo
+		int pcX = ((nodes[anEdge.source].ax > nodes[anEdge.target].ax) ? 20 : -20);
+		int pcY = ((nodes[anEdge.source].ay < nodes[anEdge.target].ay) ? 20 : -20);
+		int pcZ = ((nodes[anEdge.source].az > nodes[anEdge.target].az) ? 20 : -20);
+
+		stroke(255);
+		/*line(
+		node[anEdge.source].cx,
+		node[anEdge.source].cy,
+		node[anEdge.source].cz,
+		node[anEdge.destination].cx,
+		node[anEdge.destination].cy,
+		node[anEdge.destination].cz
+		);*/
+
+		strokeWeight(3);
+		bezier(
+			//Nodo A
+			nodes[anEdge.source].cx,
+			nodes[anEdge.source].cy,
+			nodes[anEdge.source].cz,
+			//Punto Controllo A
+			nodes[anEdge.source].cx,
+			nodes[anEdge.source].cy - (float) anEdge.frequency * mbox,
+			nodes[anEdge.source].cz,
+			//Punto Controllo B
+			nodes[anEdge.target].cx - pcX,
+			nodes[anEdge.target].cy - (float) anEdge.frequency * mbox,
+			nodes[anEdge.target].cz - pcZ,
+			//Nodo B
+			nodes[anEdge.target].cx,
+			nodes[anEdge.target].cy,
+			nodes[anEdge.target].cz);
+		strokeWeight(1);
+
+		if (showControlPoint) {
+
+		    //Linea di controllo
+		    stroke(255, 0, 0);
+		    line(
+			    nodes[anEdge.source].cx,
+			    nodes[anEdge.source].cy,
+			    nodes[anEdge.source].cz,
+			    nodes[anEdge.source].cx,
+			    nodes[anEdge.source].cy - (float) anEdge.frequency * mbox,
+			    nodes[anEdge.source].cz);
+		    //Linea di controllo
+		    stroke(0, 0, 255);
+		    line(
+			    nodes[anEdge.target].cx,
+			    nodes[anEdge.target].cy,
+			    nodes[anEdge.target].cz,
+			    nodes[anEdge.target].cx - pcX,
+			    nodes[anEdge.target].cy - (float) anEdge.frequency * mbox,
+			    nodes[anEdge.target].cz - pcZ);
+		}
+	    }
+	}
+	noFill();
     }
 
 
     @Override
     public void draw() {
-        // Per non mostrare la scena esattamente avanti al punto 0
-        // rotateX(PI / 4);
-        // rotateY(PI / 4);
+	// Per non mostrare la scena esattamente avanti al punto 0
+	// rotateX(PI / 4);
+	// rotateY(PI / 4);
 
-        if (rotate)
-            cam.rotateY(0.02);
+	if (rotate) {
+	    cam.rotateY(0.02);
+	}
 
-        background(0);
+	background(0);
 
-        lights();
+	lights();
 
-        draw3DSpace();
+	/* disegna il cubo che contiene la rete e i nodi solo se e' stata inizializzata una rete */
+	if (networkInitialized) {
+	    draw3DSpace();
 
-        //Nodo a cui è più vicino il mouse
-        int selected = selectedNode();
+	    drawNodes();
 
-        for (int i = 0; i < node.length; i++) {
-            if (node[i].visible) {
-                //Nodi
-                pushMatrix();
-
-                fill(
-                        i * 100,
-                        255,
-                        255 / (i + 1),
-                        127//Trasparenza
-                );
-
-                //Nodo Quadrato
-                stroke(0);
-                translate(
-                        node[i].cx,
-                        node[i].cy,
-                        node[i].cz
-                );
-                box(nodesize);
-
-                popMatrix();
-
-            }
-
-        }
-
-
-        // Collegamenti
-        noFill();
-
-        //Disegno i nodi per l'istante giusto
-        InteractionElement[] edge = network.getInteractionCube().getAllInteractions(instant);
-
-        for (InteractionElement anEdge : edge) {
-            if (node[anEdge.source].visible && node[anEdge.target].visible) {
-
-                //Scostamento punti controllo
-                int pcX = ((node[anEdge.source].ax > node[anEdge.target].ax) ? 20 : -20);
-                int pcY = ((node[anEdge.source].ay < node[anEdge.target].ay) ? 20 : -20);
-                int pcZ = ((node[anEdge.source].az > node[anEdge.target].az) ? 20 : -20);
-
-
-                stroke(255);
-                /*line(
-                        node[anEdge.source].cx,
-                        node[anEdge.source].cy,
-                        node[anEdge.source].cz,
-                        node[anEdge.destination].cx,
-                        node[anEdge.destination].cy,
-                        node[anEdge.destination].cz
-                );*/
-                //I collegamenti del nodo selezionato sono più grossi
-                if(selected == anEdge.source) {
-                    strokeWeight(3);
-                    stroke(
-                        anEdge.target * 100,
-                        255,
-                        255 / (anEdge.target + 1)
-                    );
-                }
-
-                bezier(
-                        //Nodo A
-                        node[anEdge.source].cx,
-                        node[anEdge.source].cy,
-                        node[anEdge.source].cz,
-                        //Punto Controllo A
-                        node[anEdge.source].cx,
-                        node[anEdge.source].cy - (float) anEdge.frequency * mbox,
-                        node[anEdge.source].cz,
-                        //Punto Controllo B
-                        node[anEdge.target].cx - pcX,
-                        node[anEdge.target].cy - (float) anEdge.frequency * mbox,
-                        node[anEdge.target].cz - pcZ,
-                        //Nodo B
-                        node[anEdge.target].cx,
-                        node[anEdge.target].cy,
-                        node[anEdge.target].cz
-                );
-                strokeWeight(1);
-
-                if (showControlPoint) {
-                    //Linea di controllo
-                    stroke(255, 0, 0);
-                    line(
-                            node[anEdge.source].cx,
-                            node[anEdge.source].cy,
-                            node[anEdge.source].cz,
-                            node[anEdge.source].cx,
-                            node[anEdge.source].cy - (float) anEdge.frequency * mbox,
-                            node[anEdge.source].cz
-                    );
-                    //Linea di controllo
-                    stroke(0, 0, 255);
-                    line(
-                            node[anEdge.target].cx,
-                            node[anEdge.target].cy,
-                            node[anEdge.target].cz,
-                            node[anEdge.target].cx - pcX,
-                            node[anEdge.target].cy - (float) anEdge.frequency * mbox,
-                            node[anEdge.target].cz - pcZ
-                    );
-
-                }
-            }
-
-        }
-
-        /*Mirino
-        CameraState camState = cam.getState();
-        camera();
-
-        stroke(255);
-        line(width / 2 - 9, height / 2 - 0, width / 2 + 8, height / 2 + 0);
-        line(width / 2 - 0, height / 2 - 9, width / 2 + 0, height / 2 + 8);
-
-        cam.setState(camState);
-        */
+	    drawEdges();
+	}
     }
 
     private int selectedNode() {
         int selected = -1;
         float mouseDisShortest = -1;
-        for (int i = 0; i < node.length; i++) {
+        for (int i = 0; i < nodes.length; i++) {
 
             float scrX, scrY;
-            scrX = screenX( node[i].cx, node[i].cy, node[i].cz );
-            scrY = screenY( node[i].cx, node[i].cy, node[i].cz );
+            scrX = screenX( nodes[i].cx, nodes[i].cy, nodes[i].cz );
+            scrY = screenY( nodes[i].cx, nodes[i].cy, nodes[i].cz );
 
             float mouseDis = sqrt( sq(mouseX - scrX) + sq(mouseY - scrY) );
 
@@ -393,11 +379,9 @@ public class Space extends PApplet {
             this.cz = az + mbox;
         }
 
-        ANode(fnv.network.Node n) {
+        ANode(Node n) {
             this(n.x, n.y, n.z);
         }
-
-
     }
 
     //Mappa tutti i valori relativi nello spazio dei pixel
@@ -411,6 +395,4 @@ public class Space extends PApplet {
 
         return mapped;
     }
-
-
 }

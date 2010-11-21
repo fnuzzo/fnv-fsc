@@ -93,6 +93,8 @@ public class Interface extends JFrame {
 		network = InputParser.parse(inputStream);
 		if (network != null) {
 		    centralPanel.setNetwork(network);
+		} else {
+		    System.out.println("File di input mal formattato.");
 		}
 	    }
 	}

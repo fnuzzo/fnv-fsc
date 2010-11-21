@@ -112,7 +112,7 @@ public class InputParser {
 			/* parsing delle interazioni tra i nodi */
 			Integer source = interaction.getAttribute(Constants.XML_INTERACTION_SOURCE_ATTR).getIntValue();
 			Integer target = interaction.getAttribute(Constants.XML_INTERACTION_TARGET_ATTR).getIntValue();
-			Integer frequency = interaction.getAttribute(Constants.XML_INTERACTION_FREQUENCY_ATTR).getIntValue();
+			Double frequency = interaction.getAttribute(Constants.XML_INTERACTION_FREQUENCY_ATTR).getDoubleValue();
 
 			interactionCube.addInteraction(instantValue, source, target, frequency);
 		    } else {

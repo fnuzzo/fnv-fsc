@@ -203,8 +203,9 @@ public class Space extends PApplet {
 
 	    @Override
 	    public void actionPerformed(ActionEvent arg0) {
-		if (nodes.length >= 10) {
-		    nodesFraction = (int) Math.ceil((double) nodes.length / (double) 10);
+		int seconds = 8;
+		if (nodes.length >= seconds) {
+		    nodesFraction = (int) Math.ceil((double) nodes.length / (double) seconds);
 
 		    if ((nodesDrawn + nodesFraction) > nodes.length) {
 			nodesFraction = nodes.length - nodesDrawn;
@@ -364,7 +365,7 @@ public class Space extends PApplet {
     @Override
     public void draw() {
 	if (rotate) {
-	    cam.rotateY(0.02);
+	    cam.rotateY(0.045);
 	} else {
 	    timer.stop();
 	}

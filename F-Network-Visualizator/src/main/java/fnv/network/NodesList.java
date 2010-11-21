@@ -19,7 +19,7 @@ public class NodesList {
     public NodesList(List<Node> nodes) {
 	this.nodes = new HashMap<Integer, Node>();
 	for (Node node : nodes) {
-	    this.nodes.put(node.getId(), node);
+	    this.nodes.put(node.id, node);
 	}
     }
 

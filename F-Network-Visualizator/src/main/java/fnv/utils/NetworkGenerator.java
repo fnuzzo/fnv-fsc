@@ -49,10 +49,10 @@ public class NetworkGenerator {
 	    for (int j = 0; j < sources; j++) {
 		int target = random.nextInt(nodes.size());
 
-		int source = nodes.get(random.nextInt(nodes.size())).getId();
+		int source = nodes.get(random.nextInt(nodes.size())).id;
 
 		for (int k = 0; k < target; k++) {
-		    int destination = nodes.get(random.nextInt(nodes.size())).getId();
+		    int destination = nodes.get(random.nextInt(nodes.size())).id;
 
 		    interactionCube.addInteraction(i, source, destination, random.nextDouble());
 		}

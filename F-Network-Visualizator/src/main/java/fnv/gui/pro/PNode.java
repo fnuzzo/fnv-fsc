@@ -1,16 +1,16 @@
 package fnv.gui.pro;
 
-public class Node extends Fnv {
+public class PNode extends Fnv {
 
     private float r;
     private int color;
     private String name;
     int id;
 
-    Node() {
+    PNode() {
     }
 
-    Node(float r, int c, String name, int id) {
+    PNode(float r, int c, String name, int id) {
 	this.r = r;
 	this.color = c;
 	this.name = name;

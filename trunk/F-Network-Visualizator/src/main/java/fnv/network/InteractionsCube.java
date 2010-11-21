@@ -17,9 +17,19 @@ import java.util.HashMap;
 public class InteractionsCube {
 
     private HashMap<Integer, Instant> interactionsCube;
+    private double maxFrequency = Double.MIN_VALUE;
+    private double minFrequency = Double.MAX_VALUE;
 
     public InteractionsCube() {
 	interactionsCube = new HashMap<Integer, Instant>();
+    }
+
+    public double getMaxFrequency() {
+	return maxFrequency;
+    }
+
+    public double getMinFrequency() {
+	return minFrequency;
     }
 
     public void addInteraction(int instantIndex, int source, int target, double frequency) {
@@ -33,6 +43,13 @@ public class InteractionsCube {
 	    instant.addInteraction(source, target, frequency);
 
 	    interactionsCube.put(instantIndex, instant);
+
+	    if (frequency > maxFrequency) {
+		maxFrequency = frequency;
+	    }
+	    if (frequency < minFrequency) {
+		minFrequency = frequency;
+	    }
 	}
     }
 

@@ -89,6 +89,8 @@ public class Space extends PApplet {
 	boxN = network.maxCoordinate + 1;
 	mbox = box / 2;
 	spaceBox = box * boxN;
+
+        cam.lookAt(spaceBox / 2, -spaceBox / 2, spaceBox / 2, spaceBox*2, 2000);
     }
 
     @Override
@@ -102,8 +104,8 @@ public class Space extends PApplet {
         frameRate(framerate);
 
         //Inizializzazione camera
-        cam = new PeasyCam(this, spaceBox / 2, -spaceBox / 2, spaceBox / 2, spaceBox);
-        //cam = new PeasyCam(this, spaceBox);
+        //cam = new PeasyCam(this, spaceBox / 2, -spaceBox / 2, spaceBox / 2, spaceBox);
+        cam = new PeasyCam(this, 300);
         cam.setMinimumDistance(10);
         //cam.setMaximumDistance(700);
 
@@ -204,14 +206,14 @@ public class Space extends PApplet {
         popMatrix();
 
         for (int i = 0; i <= spaceBox; i += spaceBox / boxN) {
-            stroke(255, 0, 255);
+            stroke(255, 0, 255, 127);
             line(i, 0, 0, i, 0, spaceBox);//Linee verticali
             line(0, 0, i, spaceBox, 0, i);//Linee orizzontali
             stroke(80);
             line(i, 0, spaceBox, spaceBox, 0, i);//Linee trasversali
             line(i, 0, 0, 0, 0, i);
 
-            stroke(0, 0, 255);
+            stroke(0, 0, 255, 127);
             line(0, i * -1, 0, spaceBox, i * -1, 0);//Parete dietro
         }
 
@@ -280,7 +282,6 @@ public class Space extends PApplet {
                     );
                 }
 
-		strokeWeight(3);
 		bezier(
 			//Nodo A
 			nodes[anEdge.source].cx,

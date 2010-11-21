@@ -45,6 +45,9 @@ public class Space extends PApplet {
     //Evidenzia gli archi entranti al posto degli uscenti
     boolean edgeIn = false;
 
+    //Nasconde gli archi non selezionati
+    boolean edgeVisible = true;
+
     //Lato dei nodi in px
     int nodesize = 10;
 
@@ -180,6 +183,9 @@ public class Space extends PApplet {
                     case 'e':
                         edgeIn = !edgeIn;
                         break;
+                    case 'r':
+                        edgeVisible = !edgeVisible;
+                        break;
                 }
 
             }
@@ -282,86 +288,73 @@ public class Space extends PApplet {
         int selected = selectedNode();
 
 	//Disegno i nodi per l'istante giusto
-	InteractionElement[] edge = network.getInteractionCube().getAllInteractions(instant);
+	InteractionElement[] edges = network.getInteractionCube().getAllInteractions(instant);
 
-	for (InteractionElement anEdge : edge) {
-	    if (nodes[anEdge.source].visible && nodes[anEdge.target].visible) {
+	for (InteractionElement anEdge : edges) {
+        AEdge edge = new AEdge(anEdge);
+	    if (nodes[edge.s].visible && nodes[edge.t].visible) {
 
 		//Scostamento punti controllo
-		int pcX = ((nodes[anEdge.source].ax > nodes[anEdge.target].ax) ? 20 : -20);
-		int pcY = ((nodes[anEdge.source].ay < nodes[anEdge.target].ay) ? 20 : -20);
-		int pcZ = ((nodes[anEdge.source].az > nodes[anEdge.target].az) ? 20 : -20);
+		int pcX = ((nodes[edge.s].ax > nodes[edge.t].ax) ? 20 : -20);
+		int pcY = ((nodes[edge.s].ay < nodes[edge.t].ay) ? 20 : -20);
+		int pcZ = ((nodes[edge.s].az > nodes[edge.t].az) ? 20 : -20);
 
-		stroke(0,0,100);
-		/*line(
-		node[anEdge.source].cx,
-		node[anEdge.source].cy,
-		node[anEdge.source].cz,
-		node[anEdge.destination].cx,
-		node[anEdge.destination].cy,
-		node[anEdge.destination].cz
-		);*/
-
+            stroke(0,0,100);
             //I collegamenti del nodo selezionato sono più grossi
-        if (edgeIn) {
-         if(selected == anEdge.target) {
+            boolean ev = false;
+            if (edgeIn) {
+                if(selected == edge.t) {
+                    strokeWeight(3);
+                    stroke(edge.s, 100, 100);
+                    ev = true;
+                }
+            } else if(selected == edge.s) {
                 strokeWeight(3);
-                stroke(anEdge.source,100,100);
-                /*stroke(
-                        anEdge.source * 100,
-                        255,
-                        255 / (anEdge.source + 1)
-                );*/
-            }
-        } else if(selected == anEdge.source) {
-                strokeWeight(3);
-                stroke(anEdge.target,100,100);
-                /*stroke(
-                        anEdge.target * 100,
-                        255,
-                        255 / (anEdge.target + 1)
-                );*/
+                stroke(edge.t, 100, 100);
+                ev = true;
             }
 
-		bezier(
-			//Nodo A
-			nodes[anEdge.source].cx,
-			nodes[anEdge.source].cy,
-			nodes[anEdge.source].cz,
-			//Punto Controllo A
-			nodes[anEdge.source].cx,
-			nodes[anEdge.source].cy - (float) anEdge.frequency * mbox,
-			nodes[anEdge.source].cz,
-			//Punto Controllo B
-			nodes[anEdge.target].cx - pcX,
-			nodes[anEdge.target].cy - (float) anEdge.frequency * mbox,
-			nodes[anEdge.target].cz - pcZ,
-			//Nodo B
-			nodes[anEdge.target].cx,
-			nodes[anEdge.target].cy,
-			nodes[anEdge.target].cz);
-		strokeWeight(1);
+            if (edgeVisible || ev) {
+                bezier(
+                        //Nodo A
+                        nodes[edge.s].cx,
+                        nodes[edge.s].cy,
+                        nodes[edge.s].cz,
+                        //Punto Controllo A
+                        nodes[edge.s].cx,
+                        nodes[edge.s].cy - edge.af,
+                        nodes[edge.s].cz,
+                        //Punto Controllo B
+                        nodes[edge.t].cx - pcX,
+                        nodes[edge.t].cy - edge.af,
+                        nodes[edge.t].cz - pcZ,
+                        //Nodo B
+                        nodes[edge.t].cx,
+                        nodes[edge.t].cy,
+                        nodes[edge.t].cz);
+                strokeWeight(1);
+            }
 
 		if (showControlPoint) {
 
 		    //Linea di controllo
-		    stroke(0, 100, 100);
+		    stroke(edge.t, 100, 100);
 		    line(
-			    nodes[anEdge.source].cx,
-			    nodes[anEdge.source].cy,
-			    nodes[anEdge.source].cz,
-			    nodes[anEdge.source].cx,
-			    nodes[anEdge.source].cy - (float) anEdge.frequency * mbox,
-			    nodes[anEdge.source].cz);
+			    nodes[edge.s].cx,
+			    nodes[edge.s].cy,
+			    nodes[edge.s].cz,
+			    nodes[edge.s].cx,
+			    nodes[edge.s].cy - edge.af,
+			    nodes[edge.s].cz);
 		    //Linea di controllo
-		    stroke(nodes.length, 100, 100);
+		    stroke(edge.s, 100, 100);
 		    line(
-			    nodes[anEdge.target].cx,
-			    nodes[anEdge.target].cy,
-			    nodes[anEdge.target].cz,
-			    nodes[anEdge.target].cx - pcX,
-			    nodes[anEdge.target].cy - (float) anEdge.frequency * mbox,
-			    nodes[anEdge.target].cz - pcZ);
+			    nodes[edge.t].cx,
+			    nodes[edge.t].cy,
+			    nodes[edge.t].cz,
+			    nodes[edge.t].cx - pcX,
+			    nodes[edge.t].cy - edge.af,
+			    nodes[edge.t].cz - pcZ);
 		}
 	    }
 	}
@@ -429,6 +422,22 @@ public class Space extends PApplet {
         }
 
         return selected;
+    }
+
+    class AEdge {
+
+        public int s;
+        public int t;
+        public float f;
+        public float af;
+
+        AEdge(InteractionElement ie) {
+            this.s = ie.source;
+            this.t = ie.target;
+            this.f = (float) ie.frequency;
+            this.af = map((float) ie.frequency, (float) network.getInteractionCube().getMinFrequency(), (float) network.getInteractionCube().getMaxFrequency(),0,spaceBox);
+
+        }
     }
 
     class ANode {

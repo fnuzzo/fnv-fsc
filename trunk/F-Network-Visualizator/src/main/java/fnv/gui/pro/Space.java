@@ -2,6 +2,7 @@ package fnv.gui.pro;
 
 import fnv.network.InteractionElement;
 import fnv.network.Node;
+import fnv.network.Network;
 
 import java.awt.event.KeyEvent;
 import java.io.FileInputStream;
@@ -10,8 +11,6 @@ import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
-
-import fnv.network.Network;
 
 import fnv.parser.InputParser;
 import processing.core.*;
@@ -325,7 +324,7 @@ public class Space extends PApplet {
 	    this.cz = az + mbox;
 	}
 
-	ANode(fnv.network.Node n) {
+	ANode(Node n) {
 	    this(n.x, n.y, n.z);
 	}
     }

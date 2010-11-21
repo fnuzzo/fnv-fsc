@@ -39,12 +39,14 @@ public class Fnv extends PApplet {
 
 
 
+    @Override
 	public void setup(){ 
 		size(800,600,P3D); 
 		colorMode(RGB, 1);
 
 		//Per usare rotellina
 		addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+	    @Override
 			public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
 				mouseWheel(evt.getWheelRotation());
 			}});
@@ -69,6 +71,7 @@ public class Fnv extends PApplet {
 
 	} 
 	
+    @Override
 	public void mouseDragged() {
 		float rate = 0.01f;
 		rotx += (pmouseY-mouseY) * rate;
@@ -82,6 +85,7 @@ public class Fnv extends PApplet {
 		//println(zoom);
 	}
 
+    @Override
 	public void draw(){ 
 		background(1);
 		lights(); 

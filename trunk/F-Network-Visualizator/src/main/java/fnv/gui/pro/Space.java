@@ -83,22 +83,24 @@ public class Space extends PApplet {
     }
 
     public void initializeNodes() {
-	/* crea gli oggetti che rappresentano i nodi nello spazio 3d */
-	ArrayList<ANode> allnodes = new ArrayList<ANode>();
-	for (Node n : network.nodesList.toArray()) {
-	    allnodes.add(new ANode(n));
-	}
-	nodes = allnodes.toArray(new ANode[allnodes.size()]);
-	nodesDrawn = 0;
+        /* crea gli oggetti che rappresentano i nodi nello spazio 3d */
+        ArrayList<ANode> allnodes = new ArrayList<ANode>();
+        for (Node n : network.nodesList.toArray()) {
+            allnodes.add(new ANode(n));
+        }
+        nodes = allnodes.toArray(new ANode[allnodes.size()]);
+        nodesDrawn = 0;
+        colorMode(HSB, nodes.length, 100, 100);
     }
 
     public void initializeBox() {
-	/* setta il lato del cubo che contiene tutto lo spazio 3d */
-	boxN = network.maxCoordinate + 1;
-	mbox = box / 2;
-	spaceBox = box * boxN;
+        /* setta il lato del cubo che contiene tutto lo spazio 3d */
+        boxN = network.maxCoordinate + 1;
+        mbox = box / 2;
+        spaceBox = box * boxN;
 
-        cam.lookAt(spaceBox / 2, -spaceBox / 2, spaceBox / 2, spaceBox*2, 2000);
+        cam.lookAt(spaceBox / 2, -spaceBox / 2, spaceBox / 2, spaceBox * 2, 2000);
+
     }
 
     @Override
@@ -222,7 +224,7 @@ public class Space extends PApplet {
     public void draw3DSpace() {
         pushMatrix();
         //Spazio 3D
-        stroke(255);
+        stroke(0,0,100);
         noFill();
         translate(spaceBox / 2, -spaceBox / 2, spaceBox / 2);
         box(spaceBox);
@@ -230,14 +232,14 @@ public class Space extends PApplet {
 
         for (int i = 0; i <= spaceBox; i += spaceBox / boxN) {
             //stroke(255, 0, 255, 127);
-            stroke(80);
+            stroke(0,0,50);
             line(i, 0, 0, i, 0, spaceBox);//Linee verticali
             line(0, 0, i, spaceBox, 0, i);//Linee orizzontali
-            stroke(80);
+            stroke(0,0,50);
             line(i, 0, spaceBox, spaceBox, 0, i);//Linee trasversali
             line(i, 0, 0, 0, 0, i);
 
-            stroke(0, 0, 255, 127);
+            stroke(nodes.length/2,100,100);
             line(0, i * -1, 0, spaceBox, i * -1, 0);//Parete dietro
         }
 
@@ -245,18 +247,19 @@ public class Space extends PApplet {
 
     /* disegna i nodi nello spazio 3d */
     public void drawNodes() {
-	for (int i = 0; i < nodes.length; i++) {
+        for (int i = 0; i < nodes.length; i++) {
 	    if (nodes[i].visible) {
 		//Nodi
 		pushMatrix();
 
-		fill(
+        fill(i,100,100);
+		/*fill(
 			i * 100,
 			255,
 			255 / (i + 1),
 			127//Trasparenza
 			);
-
+        */
 		//Nodo Quadrato
 		stroke(0);
 		translate(
@@ -287,7 +290,7 @@ public class Space extends PApplet {
 		int pcY = ((nodes[anEdge.source].ay < nodes[anEdge.target].ay) ? 20 : -20);
 		int pcZ = ((nodes[anEdge.source].az > nodes[anEdge.target].az) ? 20 : -20);
 
-		stroke(255);
+		stroke(0,0,100);
 		/*line(
 		node[anEdge.source].cx,
 		node[anEdge.source].cy,
@@ -301,19 +304,21 @@ public class Space extends PApplet {
         if (edgeIn) {
          if(selected == anEdge.target) {
                 strokeWeight(3);
-                stroke(
+                stroke(anEdge.source,100,100);
+                /*stroke(
                         anEdge.source * 100,
                         255,
                         255 / (anEdge.source + 1)
-                );
+                );*/
             }
         } else if(selected == anEdge.source) {
                 strokeWeight(3);
-                stroke(
+                stroke(anEdge.target,100,100);
+                /*stroke(
                         anEdge.target * 100,
                         255,
                         255 / (anEdge.target + 1)
-                );
+                );*/
             }
 
 		bezier(
@@ -338,7 +343,7 @@ public class Space extends PApplet {
 		if (showControlPoint) {
 
 		    //Linea di controllo
-		    stroke(255, 0, 0);
+		    stroke(0, 100, 100);
 		    line(
 			    nodes[anEdge.source].cx,
 			    nodes[anEdge.source].cy,
@@ -347,7 +352,7 @@ public class Space extends PApplet {
 			    nodes[anEdge.source].cy - (float) anEdge.frequency * mbox,
 			    nodes[anEdge.source].cz);
 		    //Linea di controllo
-		    stroke(0, 0, 255);
+		    stroke(nodes.length, 100, 100);
 		    line(
 			    nodes[anEdge.target].cx,
 			    nodes[anEdge.target].cy,
@@ -396,7 +401,7 @@ public class Space extends PApplet {
         currCameraMatrix = new PMatrix3D(g3d.camera);
         camera();
 
-        stroke(255);
+        stroke(0,0,100);
         line(width / 2 - 9, height / 2 , width / 2 + 9, height / 2 );
         line(width / 2 , height / 2 - 9, width / 2 , height / 2 + 9);
 

@@ -107,6 +107,7 @@ public class Space extends PApplet {
         spaceBox = box * boxN;
 
         cam.lookAt(spaceBox / 2, -spaceBox / 2, spaceBox / 2, spaceBox * 2, 2000);
+
     }
 
     @Override
@@ -127,6 +128,7 @@ public class Space extends PApplet {
         //cam = new PeasyCam(this, 300);
         cam.setMinimumDistance(10);
         //cam.setMaximumDistance(700);
+        cam.setResetOnDoubleClick(false);
 
         initializeTimer();
 
@@ -149,10 +151,12 @@ public class Space extends PApplet {
 
                     break;
                 case RIGHT:
-
+                    instant = instant + 1;
+                    println(instant);
                     break;
                 case LEFT:
-
+                    instant = instant - 1;
+                    println(instant);
                     break;
                 case KeyEvent.VK_PAGE_UP:
                     instant = instant + 1;

@@ -14,30 +14,50 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
 import javax.swing.filechooser.FileFilter;
-/*
- * Created by JFormDesigner on Sat Nov 20 16:59:30 CET 2010
- */
-import javax.swing.plaf.metal.MetalIconFactory.FolderIcon16;
 
-
-
-/**
- * @author Giacomo Benvenuti
- */
 public class Interface2 extends JFrame implements  WindowStateListener {
     
-		public Interface2() {
+	   private Net PrincipalPanel;
+	   private JPanel nordPanel;
+       private JButton importButton;
+       private JLabel titleLabel;
+       private JPanel panelComand;
+       private JLabel configurationLabel;
+       private JLabel circleLabel;
+       private JSpinner circleSpinner;
+       private JLabel archLabel;
+       private JSpinner archSpinner;
+       private JLabel durataIstanteLabel;
+       private JSpinner durataIstanteSpinner;
+       private JPanel footer;
+       private JButton play;
+       private JButton pause;
+       private JButton stop;
+       private JProgressBar progressBar;
+       public Tet centralPanel;
+       private JPanel panel1footer;
+       private  JScrollPane scrollingArea;
+       private TextArea textarea;
+	
+	
+       
+      public Interface2() {
 			initComponents();
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			
+			addWindowStateListener(this);
 		}	
-
+	
+	  @Override
+		public void windowStateChanged(WindowEvent e) {
+			
+			PrincipalPanel.changeStateWindows(e.getNewState());
+			
+		}
 		
     private void initComponents() {
     	
-       PrincipalPanel = new Net();
+    	PrincipalPanel = new Net();
        
-        //======== this ========
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
         contentPane.add(PrincipalPanel, BorderLayout.CENTER);
@@ -46,25 +66,21 @@ public class Interface2 extends JFrame implements  WindowStateListener {
  
     }
 
-
-    private Net PrincipalPanel;
-    
-    
-    
-    @Override
-	public void windowStateChanged(WindowEvent e) {
-		
-			
-		
-	}
-    
-    
+ 
     private class Net extends JPanel {
-        private Net() {
-            initComponents();
-            
+        
+    	private Net() {
+        
+    		initComponents();
+          
         }
 
+        private void changeStateWindows(int s) {
+        	
+        	centralPanel.changeStateWindows(s);
+        }
+        
+        
         private void fimportActionPerformed(ActionEvent e) {
 	    JFileChooser fc = new JFileChooser("./");
 	    File inputFile = null;
@@ -111,9 +127,7 @@ public class Interface2 extends JFrame implements  WindowStateListener {
 	    }
 	}
 
-        private void circleSpinnerStateChanged(ChangeEvent e) {
-            // TODO add your code here
-        }
+      
 
         private void archSpinnerStateChanged(ChangeEvent e) {
             // TODO add your code here
@@ -161,16 +175,13 @@ public class Interface2 extends JFrame implements  WindowStateListener {
             panel1footer = new JPanel();
             textarea     = new TextArea(6,20);
             scrollingArea = new JScrollPane(textarea);
+
+            
             //======== this ========
             setBorder(null);
-
-          
-            
-
             setLayout(new BorderLayout());
 
          
-            
             //======== nordPanel ========
             {
                 nordPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -230,20 +241,21 @@ public class Interface2 extends JFrame implements  WindowStateListener {
             }
             add(panelComand, BorderLayout.EAST);
 
+           
+            
+            
             //======== footer ========
             {
                 footer.setBorder(new EtchedBorder());
                 footer.setLayout(new BorderLayout());
+   
+   
                 
                 panel1footer.setLayout(new FlowLayout(FlowLayout.LEFT));
-                
-                
-                
-                
+   
                 //---- play ----
                 ImageIcon p1= new ImageIcon(getClass().getResource("/img/play.png"));
                 play.setIcon(p1);
-              
                 play.setBorderPainted(false);
                 play.setContentAreaFilled(false);
                 play.setOpaque(true);
@@ -257,12 +269,13 @@ public class Interface2 extends JFrame implements  WindowStateListener {
                 });
                 panel1footer.add(play);
 
+                
                 //---- pause ----
                 ImageIcon p2= new ImageIcon(getClass().getResource("/img/pause.png"));
-              pause.setIcon(p2);
-              pause.setBorderPainted(false);
-              pause.setContentAreaFilled(false);
-              pause.setOpaque(true);
+                pause.setIcon(p2);
+                pause.setBorderPainted(false);
+                pause.setContentAreaFilled(false);
+                pause.setOpaque(true);
                 pause.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -285,6 +298,7 @@ public class Interface2 extends JFrame implements  WindowStateListener {
                 });
                 panel1footer.add(stop);
 
+                
                 //---- progressBar ----
                 progressBar.addChangeListener(new ChangeListener() {
                     @Override
@@ -295,50 +309,21 @@ public class Interface2 extends JFrame implements  WindowStateListener {
               //  progressBar.
                 
                 panel1footer.add(progressBar);
-                
                 footer.add(panel1footer);
-                
-                
-              
-           
-                
-               footer.add(scrollingArea, BorderLayout.SOUTH);
+                footer.add(scrollingArea, BorderLayout.SOUTH);
                 
             }
             
-          
-            
             add(footer, BorderLayout.SOUTH);
 
+            
             //---- centralPanel ----
-            centralPanel.setBorder(new SoftBevelBorder(SoftBevelBorder.LOWERED));
+          // centralPanel.setBorder(new SoftBevelBorder(SoftBevelBorder.LOWERED));
             add(centralPanel, BorderLayout.CENTER);
-            // JFormDesigner - End of component initialization  //GEN-END:initComponents
+          
         }
-        private JPanel nordPanel;
-        private JButton importButton;
-        private JLabel titleLabel;
-        private JPanel panelComand;
-        private JLabel configurationLabel;
-        private JLabel circleLabel;
-        private JSpinner circleSpinner;
-        private JLabel archLabel;
-        private JSpinner archSpinner;
-        private JLabel durataIstanteLabel;
-        private JSpinner durataIstanteSpinner;
-        private JPanel footer;
-        private JButton play;
-        private JButton pause;
-        private JButton stop;
-        private JProgressBar progressBar;
-        public Tet centralPanel;
-        private JPanel panel1footer;
-        private  JScrollPane scrollingArea;
-        private TextArea textarea;
+     
         
-        
-        
-    
         
         
     }

@@ -473,9 +473,9 @@ public class Space extends PApplet {
         AEdge(InteractionElement ie) {
             this.s = ie.source;
             this.t = ie.target;
-            this.f = (float) ie.frequency;
-            this.af = map((float) ie.frequency, (float) network.getInteractionCube().getMinFrequency(), (float) network.getInteractionCube().getMaxFrequency(),0,spaceBox);
-            this.c = map((float) ie.frequency,(float) network.getInteractionCube().getMinFrequency(), (float) network.getInteractionCube().getMaxFrequency(),0,nodes.length);
+            this.f = ie.frequency;
+            this.af = map(ie.frequency, network.getInteractionCube().getMinFrequency(), network.getInteractionCube().getMaxFrequency(),0,spaceBox);
+            this.c = map(ie.frequency, network.getInteractionCube().getMinFrequency(), network.getInteractionCube().getMaxFrequency(),0,nodes.length);
         }
     }
 

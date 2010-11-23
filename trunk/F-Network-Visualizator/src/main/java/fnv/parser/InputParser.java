@@ -64,7 +64,6 @@ public class InputParser {
      *  - elenco di tutti i nodi
      */
     private static void parseStaticPart(Element element) throws DataConversionException {
-	String networkName;
 	for (Iterator<Element> childrenIterator = element.getChildren().iterator(); childrenIterator.hasNext();) {
 	    Element child = childrenIterator.next();
 	    if (child.getName().equals(Constants.XML_NETWORK_NAME)) {
@@ -104,6 +103,7 @@ public class InputParser {
 
 	    if (instant.getName().equals(Constants.XML_INSTANT)) {
 		Integer instantValue = instant.getAttribute(Constants.XML_INSTANT_VALUE_ATTR).getIntValue();
+		String instantLabel = instant.getAttribute(Constants.XML_INSTANT_LABEL_ATTR).getValue();
 
 		for (Iterator<Element> interactionIterator = instant.getChildren().iterator(); interactionIterator.hasNext();) {
 		    Element interaction = interactionIterator.next();
@@ -112,9 +112,9 @@ public class InputParser {
 			/* parsing delle interazioni tra i nodi */
 			Integer source = interaction.getAttribute(Constants.XML_INTERACTION_SOURCE_ATTR).getIntValue();
 			Integer target = interaction.getAttribute(Constants.XML_INTERACTION_TARGET_ATTR).getIntValue();
-			Double frequency = interaction.getAttribute(Constants.XML_INTERACTION_FREQUENCY_ATTR).getDoubleValue();
+			Float frequency = interaction.getAttribute(Constants.XML_INTERACTION_FREQUENCY_ATTR).getFloatValue();
 
-			interactionCube.addInteraction(instantValue, source, target, frequency);
+			interactionCube.addInteraction(instantValue, source, target, frequency, instantLabel);
 		    } else {
 			System.err.println("Elemento non riconosciuto.");
 			System.err.println(interaction.getName() + ", should be: " + Constants.XML_INTERACTION);

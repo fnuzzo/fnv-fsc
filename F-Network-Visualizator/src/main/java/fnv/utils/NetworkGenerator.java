@@ -51,6 +51,7 @@ public class NetworkGenerator {
 	}
 
 	for (int i = 0; i < instants; i++) {
+	    String instantLabel = "" + i;
 	    int sources = random.nextInt(nodes.size());
 
 	    for (int j = 0; j < sources; j++) {
@@ -61,7 +62,7 @@ public class NetworkGenerator {
 		for (int k = 0; k < target; k++) {
 		    int destination = nodes.get(random.nextInt(nodes.size())).id;
 
-		    interactionCube.addInteraction(i + 1, source, destination, random.nextDouble());
+		    interactionCube.addInteraction(i + 1, source, destination, random.nextFloat(), instantLabel);
 		}
 	    }
 	}

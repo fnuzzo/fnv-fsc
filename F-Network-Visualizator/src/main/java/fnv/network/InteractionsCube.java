@@ -17,27 +17,27 @@ import java.util.HashMap;
 public class InteractionsCube {
 
     private HashMap<Integer, Instant> interactionsCube;
-    private double maxFrequency = Double.MIN_VALUE;
-    private double minFrequency = Double.MAX_VALUE;
+    private float maxFrequency = Float.MIN_VALUE;
+    private float minFrequency = Float.MAX_VALUE;
 
     public InteractionsCube() {
 	interactionsCube = new HashMap<Integer, Instant>();
     }
 
-    public double getMaxFrequency() {
+    public float getMaxFrequency() {
 	return maxFrequency;
     }
 
-    public double getMinFrequency() {
+    public float getMinFrequency() {
 	return minFrequency;
     }
 
-    public void addInteraction(int instantIndex, int source, int target, double frequency) {
+    public void addInteraction(int instantIndex, int source, int target, float frequency, String label) {
 	if (source != target) {
 	    Instant instant = interactionsCube.get(instantIndex);
 
 	    if (instant == null) {
-		instant = new Instant();
+		instant = new Instant(label);
 	    }
 
 	    instant.addInteraction(source, target, frequency);
@@ -53,8 +53,8 @@ public class InteractionsCube {
 	}
     }
 
-    public double getInteraction(int instantIndex, int source, int target) {
-	double frequency = 0;
+    public float getInteraction(int instantIndex, int source, int target) {
+	float frequency = 0;
 
 	Instant instant = interactionsCube.get(instantIndex);
 
@@ -67,9 +67,9 @@ public class InteractionsCube {
 
     public InteractionElement[] getAllInteractions(int instantIndex) {
 	Instant instant = interactionsCube.get(instantIndex);
-    if (instant == null) {
-        return new InteractionElement[0];
-    }
+	if (instant == null) {
+	    return new InteractionElement[0];
+	}
 
 	ArrayList<InteractionElement> allInteractions = instant.getAllInteractions();
 
@@ -79,10 +79,13 @@ public class InteractionsCube {
     public int getNumberOfInstants() {
 	return interactionsCube.keySet().size();
     }
-    
+
     @Override
     public String toString() {
 	String string = "";
+
+	string += "minFrequency: " + minFrequency + "\n";
+	string += "maxFrequency: " + maxFrequency + "\n";
 
 	for (Integer instantKey : interactionsCube.keySet()) {
 	    Instant instant = interactionsCube.get(instantKey);
@@ -95,17 +98,19 @@ public class InteractionsCube {
 
     private class Instant {
 
-	private HashMap<Integer, HashMap<Integer, Double>> instant;
+	private HashMap<Integer, HashMap<Integer, Float>> instant;
+	private String label;
 
-	public Instant() {
-	    instant = new HashMap<Integer, HashMap<Integer, Double>>();
+	public Instant(String label) {
+	    instant = new HashMap<Integer, HashMap<Integer, Float>>();
+	    this.label = label;
 	}
 
-	public void addInteraction(int source, int target, double frequency) {
-	    HashMap<Integer, Double> rowValue = instant.get(source);
+	public void addInteraction(int source, int target, float frequency) {
+	    HashMap<Integer, Float> rowValue = instant.get(source);
 
 	    if (rowValue == null) {
-		rowValue = new HashMap<Integer, Double>();
+		rowValue = new HashMap<Integer, Float>();
 	    }
 
 	    rowValue.put(target, frequency);
@@ -113,30 +118,34 @@ public class InteractionsCube {
 	    instant.put(source, rowValue);
 	}
 
-	public double getInteraction(int source, int target) {
-	    Double frequency = 0.0;
+	public String getLabel() {
+	    return label;
+	}
 
-	    HashMap<Integer, Double> rowValue = instant.get(source);
+	public float getInteraction(int source, int target) {
+	    Float frequency = (float)0.0;
+
+	    HashMap<Integer, Float> rowValue = instant.get(source);
 
 	    if (rowValue != null) {
 		frequency = rowValue.get(target);
 
 		if (frequency == null) {
-		    frequency = 0.0;
+		    frequency = (float)0.0;
 		}
 	    }
 
-	    return frequency.doubleValue();
+	    return frequency.floatValue();
 	}
 
 	public ArrayList<InteractionElement> getAllInteractions() {
 	    ArrayList<InteractionElement> allInteractions = new ArrayList<InteractionElement>();
 
 	    for (Integer source : instant.keySet()) {
-		HashMap<Integer, Double> rowValue = instant.get(source);
+		HashMap<Integer, Float> rowValue = instant.get(source);
 
 		for (Integer target : rowValue.keySet()) {
-		    double frequency = rowValue.get(target);
+		    float frequency = rowValue.get(target);
 
 		    InteractionElement ie = new InteractionElement(source, target, frequency);
 		    allInteractions.add(ie);
@@ -150,11 +159,13 @@ public class InteractionsCube {
 	public String toString() {
 	    String string = "";
 
+	    string += "label: " + label + "\n";
+
 	    for (Integer rowKey : instant.keySet()) {
-		HashMap<Integer, Double> row = instant.get(rowKey);
+		HashMap<Integer, Float> row = instant.get(rowKey);
 
 		for (Integer columnKey : row.keySet()) {
-		    Double frequency = row.get(columnKey);
+		    Float frequency = row.get(columnKey);
 
 		    string += rowKey + " -> " + columnKey + ": " + frequency + "\n";
 		}

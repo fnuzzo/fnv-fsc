@@ -12,9 +12,9 @@ package fnv.network;
 public class InteractionElement {
     public final int source;
     public final int target;
-    public final double frequency;
+    public final float frequency;
 
-    public InteractionElement(int source, int target, double frequency) {
+    public InteractionElement(int source, int target, float frequency) {
         this.source = source;
         this.target = target;
         this.frequency = frequency;

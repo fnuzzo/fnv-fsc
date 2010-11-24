@@ -19,6 +19,8 @@ public class Network {
 //    public final int maxZ;
     /* valore massimo della coordinata in ogni direzione */
     public final int maxCoordinate;
+    /* indica se lo spazio dei nodi e' piatto (true) o sferico (false) */
+    public final boolean flat;
     /* le interazioni presenti nella rete */
     private InteractionsCube interactionCube;
 
@@ -28,12 +30,14 @@ public class Network {
 	interactionCube = new InteractionsCube();
 //	maxX = maxY = maxZ = 0;
 	maxCoordinate = 0;
+	flat = true;
     }
 
-    public Network(String name, NodesList nodesList, InteractionsCube interactionCube) {
+    public Network(String name, NodesList nodesList, InteractionsCube interactionCube, boolean flat) {
 	this.name = name;
 	this.nodesList = nodesList;
 	this.interactionCube = interactionCube;
+	this.flat = flat;
 
 //	int localMaxX = 0;
 //	int localMaxY = 0;

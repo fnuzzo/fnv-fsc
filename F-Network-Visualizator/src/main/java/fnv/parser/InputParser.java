@@ -22,6 +22,7 @@ public class InputParser {
 
     private static String name = "";
     private static ArrayList<Node> nodesList = new ArrayList<Node>();
+    private static boolean flat;
     private static InteractionsCube interactionCube = new InteractionsCube();
 
     /*
@@ -55,7 +56,7 @@ public class InputParser {
 	    e.printStackTrace();
 	}
 
-	return new Network(name, new NodesList(nodesList), interactionCube);
+	return new Network(name, new NodesList(nodesList), interactionCube, flat);
     }
 
     /*
@@ -86,6 +87,8 @@ public class InputParser {
 			System.err.println(node.getName() + ", should be: " + Constants.XML_NODE);
 		    }
 		}
+	    } else if (child.getName().equals(Constants.XML_FLAT)) {
+		flat = Boolean.valueOf(child.getValue());
 	    } else {
 		System.err.println("Elemento non riconosciuto.");
 		System.err.println(child.getName() + ", should be: " + Constants.XML_NETWORK_NAME + " or " + Constants.XML_NODES_LIST);

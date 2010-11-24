@@ -51,6 +51,12 @@ public class XmlGenerator {
 	
 	networkStatic.addContent(networkNodesList);
 
+	/* spazio dei nodi */
+	Element networkFlat = new Element(Constants.XML_FLAT);
+	networkFlat.setText(String.valueOf(network.flat));
+	
+	networkStatic.addContent(networkFlat);
+
 	/* interazioni tra i nodi */
 	for (int i = 0; i < network.getNumberOfInstants(); i++) {
 	    Element networkInstant = new Element(Constants.XML_INSTANT);

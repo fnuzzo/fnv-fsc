@@ -47,7 +47,7 @@ public class InputParserTest {
 	interactionCube.addInteraction(3, 1, 3, 11, "3");
 	interactionCube.addInteraction(3, 3, 1, 12, "3");
 
-	network = new Network(name, new NodesList(nodesList), interactionCube);
+	network = new Network(name, new NodesList(nodesList), interactionCube, true);
     }
 
     @Test

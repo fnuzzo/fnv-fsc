@@ -13,6 +13,7 @@ public final class Constants {
 	public final static String XML_NODE_X_ATTR = "x";
 	public final static String XML_NODE_Y_ATTR = "y";
 	public final static String XML_NODE_Z_ATTR = "z";
+	public final static String XML_FLAT = "flat";
 	public final static String XML_INSTANT = "instant";
 	public final static String XML_INSTANT_VALUE_ATTR = "value";
 	public final static String XML_INSTANT_LABEL_ATTR = "label";

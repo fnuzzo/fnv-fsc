@@ -258,19 +258,19 @@ public class Space extends PApplet {
 
     /* disegna i nodi nello spazio 3d */
     public void drawNodes() {
-        for (int i = 0; i < nodes.length; i++) {
+	for (int i = 0; i < nodes.length; i++) {
 	    if (nodes[i].visible) {
 		//Nodi
 		pushMatrix();
 
-        fill(i,100,100);
+		fill(i, 100, 100);
 		/*fill(
-			i * 100,
-			255,
-			255 / (i + 1),
-			127//Trasparenza
-			);
-        */
+		i * 100,
+		255,
+		255 / (i + 1),
+		127//Trasparenza
+		);
+		 */
 		//Nodo Quadrato
 		stroke(0);
 		translate(

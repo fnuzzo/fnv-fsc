@@ -40,7 +40,7 @@ public class Space extends PApplet {
     /* Meta' del valore di "box". Variabile di comodita' */
     int mbox;
     /* Lato dello spazio in px */
-    int spaceBox;
+    int space;
 
     boolean spaceVisible = true;
     //Evidenzia gli archi entranti al posto degli uscenti
@@ -104,9 +104,9 @@ public class Space extends PApplet {
         /* setta il lato del cubo che contiene tutto lo spazio 3d */
         boxN = network.maxCoordinate + 1;
         mbox = box / 2;
-        spaceBox = box * boxN;
+        space = box * boxN;
 
-        cam.lookAt(spaceBox / 2, -spaceBox / 2, spaceBox / 2, spaceBox * 2, 2000);
+        cam.lookAt(space / 2, -space / 2, space / 2, space * 2, 2000);
 
     }
 
@@ -232,28 +232,35 @@ public class Space extends PApplet {
 
     //Disegna il Cubo dello spazio
 
-    public void draw3DSpace() {
+    public void draw3DSpaceFlat() {
         pushMatrix();
         //Spazio 3D
-        stroke(0,0,100);
-        noFill();
-        translate(spaceBox / 2, -spaceBox / 2, spaceBox / 2);
-        box(spaceBox);
+//        stroke(0,0,100);
+//        noFill();
+        translate(space / 2, -space / 2, space / 2);
+//        box(spaceBox);
         popMatrix();
 
-        for (int i = 0; i <= spaceBox; i += spaceBox / boxN) {
+        for (int i = 0; i <= space; i += space / boxN) {
             //stroke(255, 0, 255, 127);
             stroke(0,0,50);
-            line(i, 0, 0, i, 0, spaceBox);//Linee verticali
-            line(0, 0, i, spaceBox, 0, i);//Linee orizzontali
+            line(i, 0, 0, i, 0, space);//Linee verticali
+            line(0, 0, i, space, 0, i);//Linee orizzontali
             stroke(0,0,50);
-            line(i, 0, spaceBox, spaceBox, 0, i);//Linee trasversali
-            line(i, 0, 0, 0, 0, i);
-
-            stroke(nodes.length/2,100,100);
-            line(0, i * -1, 0, spaceBox, i * -1, 0);//Parete dietro
+//            line(i, 0, spaceBox, spaceBox, 0, i);//Linee trasversali
+//            line(i, 0, 0, 0, 0, i);
+//
+//            stroke(nodes.length/2,100,100);
+//            line(0, i * -1, 0, spaceBox, i * -1, 0);//Parete dietro
         }
 
+    }
+
+    public void draw3DSpaceSphere() {
+        pushMatrix();
+        translate(space / 2, -space / 2, space / 2);
+        sphere(space / 2);
+        popMatrix();
     }
 
     /* disegna i nodi nello spazio 3d */
@@ -383,7 +390,12 @@ public class Space extends PApplet {
 	/* disegna il cubo che contiene la rete e i nodi solo se e' stata inizializzata una rete */
 	if (networkInitialized) {
 	    if (spaceVisible) {
-		    draw3DSpace();
+		if (network.flat) {
+		    draw3DSpaceFlat();
+		} else {
+		    draw3DSpaceSphere();
+		}
+		    
 	    }
 	    drawNodes();
 
@@ -474,7 +486,7 @@ public class Space extends PApplet {
             this.s = ie.source;
             this.t = ie.target;
             this.f = ie.frequency;
-            this.af = map(ie.frequency, network.getInteractionCube().getMinFrequency(), network.getInteractionCube().getMaxFrequency(),0,spaceBox);
+            this.af = map(ie.frequency, network.getInteractionCube().getMinFrequency(), network.getInteractionCube().getMaxFrequency(),0,space);
             this.c = map(ie.frequency, network.getInteractionCube().getMinFrequency(), network.getInteractionCube().getMaxFrequency(),0,nodes.length);
         }
     }
@@ -500,11 +512,11 @@ public class Space extends PApplet {
             this.x = x;
             this.z = z;
             this.y = y;
-            this.ax = map(x, 0, boxN, 0, spaceBox);
-            this.ay = map(y, 0, boxN, 0, spaceBox) * -1;
-            this.az = map(z, 0, boxN, 0, spaceBox);
+            this.ax = map(x, 0, boxN, 0, space);
+            this.ay = map(y, 0, boxN, 0, space) * -1;
+            this.az = map(z, 0, boxN, 0, space);
             this.cx = ax + mbox;
-            this.cy = (map(y, 0, boxN, 0, spaceBox) + mbox) * -1;
+            this.cy = (map(y, 0, boxN, 0, space) + mbox) * -1;
             this.cz = az + mbox;
         }
 
@@ -521,7 +533,7 @@ public class Space extends PApplet {
         float[] mapped = new float[toMap.length];
 
         for (int i = 0; i < toMap.length; i++) {
-            mapped[i] = map(toMap[i], 0, boxN, 0, spaceBox);
+            mapped[i] = map(toMap[i], 0, boxN, 0, space);
         }
 
         return mapped;

@@ -43,15 +43,14 @@ public class NetworkGenerator {
 
 	for (int i = 0; i < numberOfNodes; i++) {
 	    int x = random.nextInt(maxCoordinate);
-	    int y = random.nextInt(4);
-	    //int y = random.nextInt(maxCoordinate);
+	    int y = 0;
 	    int z = random.nextInt(maxCoordinate);
 	    Node node = new Node(i, String.valueOf(i), x, y, z);
 	    nodes.add(node);
 	}
 
 	for (int i = 0; i < instants; i++) {
-	    String instantLabel = "" + i;
+	    int instant = i + 1;
 	    int sources = random.nextInt(nodes.size());
 
 	    for (int j = 0; j < sources; j++) {
@@ -62,7 +61,7 @@ public class NetworkGenerator {
 		for (int k = 0; k < target; k++) {
 		    int destination = nodes.get(random.nextInt(nodes.size())).id;
 
-		    interactionCube.addInteraction(i + 1, source, destination, random.nextFloat(), instantLabel);
+		    interactionCube.addInteraction(instant, source, destination, random.nextFloat(), String.valueOf(instant));
 		}
 	    }
 	}

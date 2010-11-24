@@ -55,6 +55,7 @@ public class XmlGenerator {
 	for (int i = 0; i < network.getNumberOfInstants(); i++) {
 	    Element networkInstant = new Element(Constants.XML_INSTANT);
 	    networkInstant.setAttribute(Constants.XML_INSTANT_VALUE_ATTR, String.valueOf(i + 1));
+	    networkInstant.setAttribute(Constants.XML_INSTANT_LABEL_ATTR, String.valueOf(i + 1));
 
 	    InteractionElement[] allInteractions = network.getInteractionCube().getAllInteractions(i + 1);
 	    for (InteractionElement interactionElement : allInteractions) {

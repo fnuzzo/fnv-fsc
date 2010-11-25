@@ -1,12 +1,15 @@
 package fnv.gui.pro;
 
+import fnv.gui.Interface3;
 import fnv.network.InteractionElement;
 import fnv.network.Network;
 import fnv.network.Node;
 
+import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,8 +24,10 @@ import peasy.*;
  * change this template use File | Settings | File Templates.
  */
 public class Space extends PApplet {
-    Timer timer;
-
+    
+	
+	Timer timer, time;
+   
     //Frame al secondo
     int framerate = 20;
 
@@ -76,13 +81,11 @@ public class Space extends PApplet {
 
     public void setNetwork(Network network) {
 	this.network = network;
-
+	
 	rotate = true;
 
 	initializeBox();
-
 	initializeNodes();
-
 	initializeTimer();
 	timer.start();
 
@@ -112,6 +115,7 @@ public class Space extends PApplet {
 
     @Override
     public void setup() {
+    	
         size(800, 600, P3D);
 
         g3d = (PGraphics3D) g;
@@ -132,11 +136,11 @@ public class Space extends PApplet {
 
         initializeTimer();
 
-        try {
+      /*  try {
             this.setNetwork(InputParser.parse(new FileInputStream("./network-test-01.xml")));
         } catch (FileNotFoundException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        }*/
     }
 
     @Override
@@ -151,11 +155,13 @@ public class Space extends PApplet {
 
                     break;
                 case RIGHT:
-                    instant = instant + 1;
+                   // instant = instant + 1;
+                	resize(new Dimension(800, 600));
                     println(instant);
                     break;
                 case LEFT:
-                    instant = instant - 1;
+                   // instant = instant - 1;
+                	resize(new Dimension(200, 200));
                     println(instant);
                     break;
                 case KeyEvent.VK_PAGE_UP:
@@ -180,33 +186,85 @@ public class Space extends PApplet {
             if (intk == -1) {
                 switch (key) {
                     case 'p':
-                        showControlPoint = !showControlPoint;
+                        //showControlPoint = !showControlPoint;  //Serve metterlo nel menu ?
+                    	
                         break;
                     case 'f':
                         println(frameRate);
                         break;
                     case 's':
-                        spaceVisible = !spaceVisible;
+                        spaceVisible = !spaceVisible;  //ok
                         break;
                     case 'e':
-                        edgeIn = !edgeIn;
+                        edgeIn = !edgeIn;  //ok
                         break;
                     case 'r':
-                        edgeVisible = !edgeVisible;
+                    	edgeVisible = !edgeVisible;  //ok
                         break;
                 }
             }
         }
 
     }
+    
+    public void resizeSpace(Dimension d){    	
+    	resize(new Dimension(200, 200));
 
+    }
+    
+
+    public void setOptions(String options){
+    	if(options.equals("edgeIn"))
+    		edgeIn = !edgeIn;
+    	else if(options.equals("edgeOut"))
+    		edgeVisible = !edgeVisible;
+    	else if(options.equals("spaceVisible"))
+    		spaceVisible = !spaceVisible;
+    }
+
+    private void setTime(){
+    	
+    	
+    	time = new Timer( 1000 , new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				if(network.getNumberOfInstants() > instant){
+					instant = instant + 1;		
+				//Interface3.getInstance().setValuejstime(instant);
+				
+				}
+				else
+					time.stop();
+			}
+		}); 	
+    }
+    
+    
+    public void optionsTime(String options){
+    	if(options.equals("play"))
+    		time.start();
+    	else if (options.equals("pause"))
+    		time.stop();
+    	
+    	else if (options.equals("stop")){
+    			instant = network.getNumberOfInstants();
+    			time.stop();
+    		}
+    	
+    	
+    }
+  
+    
+    
     public void initializeTimer() {
 
 	timer = new Timer(1000, new ActionListener() {
 	    int nodesFraction;
 
 	    @Override
-	    public void actionPerformed(ActionEvent arg0) {
+	    public void actionPerformed(ActionEvent e) {
 		int seconds = 8;
 		if (nodes.length >= seconds) {
 		    nodesFraction = (int) Math.ceil((double) nodes.length / (double) seconds);
@@ -225,6 +283,7 @@ public class Space extends PApplet {
 		    nodesDrawn += nodesFraction;
 		} else {
 		    rotate = false;
+		    setTime();
 		}
 	    }
 	});
@@ -375,6 +434,7 @@ public class Space extends PApplet {
 
     @Override
     public void draw() {
+    	
 	if (rotate) {
 	    cam.rotateY(0.045);
 	} else {

@@ -12,7 +12,7 @@ public class Start {
 
 	    @Override
 	    public void run() {
-	    		new Interface3();
+	    		new Interface();
 	    }
 	});
 

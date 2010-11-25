@@ -12,8 +12,7 @@ public class Start {
 
 	    @Override
 	    public void run() {
-		Interface2 anInterface = new Interface2();
-		anInterface.setVisible(true);
+	    		new Interface3();
 	    }
 	});
 

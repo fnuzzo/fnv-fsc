@@ -1,6 +1,6 @@
 package fnv.gui.pro;
 
-import fnv.gui.Interface3;
+import fnv.gui.Interface;
 import fnv.network.InteractionElement;
 import fnv.network.Network;
 import fnv.network.Node;

@@ -16,8 +16,10 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 import fnv.parser.InputParser;
+import java.util.Random;
 import processing.core.*;
 import peasy.*;
+import sun.security.provider.certpath.Vertex;
 
 /**
  * Created by IntelliJ IDEA. User: giacomo Date: Nov 1, 2010 Time: 3:12:21 PM To
@@ -34,7 +36,7 @@ public class Space extends PApplet {
 	
 	Interface inter;
 	
-	Timer timer, time;
+	Timer rotationTimer, animationTimer;
    
     //Frame al secondo
     int framerate = 20;
@@ -44,7 +46,7 @@ public class Space extends PApplet {
     int fontSize = 32;
     String text = "";
 
-    int instant = 0;
+    private int instant = 0;
 
     //Lato dello spazio in box
     int boxN;
@@ -87,6 +89,24 @@ public class Space extends PApplet {
     /* indica se e' stata inizializzata una rete */
     boolean networkInitialized = false;
 
+    public void incrementInstant() {
+	if (network != null) {
+	    instant = (instant + 1) % network.getNumberOfInstants();
+	}
+    }
+
+    public void decrementInstant() {
+	if (instant != 0) {
+	    instant--;
+	}
+    }
+
+    public void setInstant(int sliderValue) {
+	if (network != null) {
+	    instant = (network.getNumberOfInstants() * sliderValue) / 100;
+	}
+    }
+
     public void setNetwork(Network network) {
 	this.network = network;
 	
@@ -95,7 +115,7 @@ public class Space extends PApplet {
 	initializeBox();
 	initializeNodes();
 	initializeTimer();
-	timer.start();
+	rotationTimer.start();
 
 	networkInitialized = true;
     }
@@ -163,21 +183,19 @@ public class Space extends PApplet {
 
                     break;
                 case RIGHT:
-                   // instant = instant + 1;
                 	resize(new Dimension(800, 600));
                     println(instant);
                     break;
                 case LEFT:
-                   // instant = instant - 1;
                 	resize(new Dimension(200, 200));
                     println(instant);
                     break;
                 case KeyEvent.VK_PAGE_UP:
-                    instant = instant + 1;
+		    incrementInstant();
                     print(instant);
                     break;
                 case KeyEvent.VK_PAGE_DOWN:
-                    instant = instant - 1;
+		    decrementInstant();
                     print(instant);
                     break;
 
@@ -230,35 +248,34 @@ public class Space extends PApplet {
     		spaceVisible = !spaceVisible;
     }
 
-    private void setTime(){
-    	
-    	
-    	time = new Timer( 1000 , new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				if(network.getNumberOfInstants() > instant){
-					instant = instant + 1;		
-				inter.setValuejstime(instant);
-				
-				}
-				else
-					time.stop();
-			}
-		}); 	
+    private void setTime() {
+	if (network != null) {
+	 animationTimer = new Timer(1000, new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		if (network.getNumberOfInstants() > instant) {
+		    incrementInstant();
+		    int value = (instant * 100) / network.getNumberOfInstants();
+		    inter.setValuejstime(value);
+		} else {
+		    animationTimer.stop();
+		}
+	    }
+	});
+	}
     }
     
     
     public void optionsTime(String options){
     	if(options.equals("play"))
-    		time.start();
+    		animationTimer.start();
     	else if (options.equals("pause"))
-    		time.stop();
-    	
+    		animationTimer.stop();
     	else if (options.equals("stop")){
-    			instant = network.getNumberOfInstants();
-    			time.stop();
+    			//instant = network.getNumberOfInstants();
+	    instant = 0;
+    			animationTimer.stop();
     		}
     	
     	
@@ -268,7 +285,7 @@ public class Space extends PApplet {
     
     public void initializeTimer() {
 
-	timer = new Timer(1000, new ActionListener() {
+	rotationTimer = new Timer(1000, new ActionListener() {
 	    int nodesFraction;
 
 	    @Override
@@ -327,8 +344,100 @@ public class Space extends PApplet {
         pushMatrix();
         translate(space / 2, -space / 2, space / 2);
         sphere(space / 2);
+
+//	ellipse(network.maxCoordinate, network.maxCoordinate, space, space);
         popMatrix();
+
+	//drawSphere(space / 2, 10);
+//	draw3dCircle();
+
+//	for (int i = network.maxCoordinate * 2; i > 0; i -= box) {
+//	    ellipse(network.maxCoordinate, i, space, space);
+//
+//	}
     }
+
+ 
+
+
+
+    void drawSphere(int heightSteps, int points) {
+	//int radius = space / 2;
+	int sphereRow = 1; //(int)random(8);
+	int sphereRowInc = 2;
+	int sphereColumn = 1; //(int)random(8);
+	int sphereColumnInc = 2;
+//	boolean isSelected = true;
+
+
+	float cx[][] = new float[heightSteps][points], cy[][] = new float[heightSteps][points], cz[][] = new float[heightSteps][points];
+
+//	for (int i = 0; i < heightSteps; i++) {
+//	    float czTmp = radius * cos(i * TWO_PI / (heightSteps - 1) / 2);
+//	    float radiusTmp = sqrt(sq(radius) - sq(czTmp));
+//	    for (int j = 0; j < points; j++) {
+//		float cxTmp = radiusTmp * sin(j * TWO_PI / points + rotZ);
+//		float cyTmp = radiusTmp * cos(j * TWO_PI / points + rotZ);
+//		cx[i][j] = cxTmp + x;
+//		cy[i][j] = cyTmp + y;
+//		cz[i][j] = czTmp + 0;
+//		//stroke(255); strokeWeight(2);
+//		//point(cxTmp, cyTmp, czTmp);
+//	    } // end for j
+	    //cz += heightStepsDis;
+//	} // end for i
+
+	// draw sphere
+	if (frameCount % 4 == 0) {
+	    sphereRow += sphereRowInc;
+	    if (sphereRow >= cx.length - 1 || sphereRow <= 0) {
+		sphereRowInc *= -1;
+	    }
+
+	    sphereColumn += sphereColumnInc;
+	    if (sphereColumn >= points) {
+		sphereColumn = 1;
+	    }
+	}
+	for (int i = 0; i < cx.length - 1; i++) {
+	    for (int j = 0; j < cx[i].length; j++) {
+//		fill((int)(255 - (i + 1) * 255 / heightSteps * 1.0));
+//		if (i == sphereRow || j == sphereColumn) {
+//		    fill((float)(255 - (i + 1) * 255 / heightSteps * 1.0), (float)0, (float)0);
+//		}
+//		if (isSelected) {
+//		    fill((float)(255 - (i + 1) * 255 / heightSteps * 1.0), (float)(150 - (i + 1) * 150 / heightSteps * 1.0), (float)0);
+//		}
+//		if (isSelected && (i == sphereRow || j == sphereColumn)) {
+//		    fill((float)(255 - (i + 1) * 255 / heightSteps * 1.0));
+//		}
+		//else continue;
+//		if ((j) % 2 == 0 && i % 2 == 0) {
+//		    continue;
+//		}
+		float scaleSphere = 1;
+		int indexNext = j + 1;
+		if (j == cx[i].length - 1) {
+		    indexNext = 0;
+		}
+		float x1 = cx[i + 0][j + 0] * scaleSphere, y1 = cy[i + 0][j + 0] * scaleSphere, z1 = cz[i + 0][j + 0] * scaleSphere;
+		float x2 = cx[i + 0][indexNext] * scaleSphere, y2 = cy[i + 0][indexNext] * scaleSphere, z2 = cz[i + 0][indexNext] * scaleSphere;
+		float x3 = cx[i + 1][indexNext] * scaleSphere, y3 = cy[i + 1][indexNext] * scaleSphere, z3 = cz[i + 1][indexNext] * scaleSphere;
+		float x4 = cx[i + 1][j + 0] * scaleSphere, y4 = cy[i + 1][j + 0] * scaleSphere, z4 = cz[i + 1][j + 0] * scaleSphere;
+
+		noStroke();
+		beginShape(TRIANGLE_STRIP);
+		vertex(x1, y1, z1);
+		vertex(x2, y2, z2);
+		vertex(x4, y4, z4);
+		vertex(x3, y3, z3);
+		endShape();
+		//stroke(0);
+		//strokeWeight((float)0.2);
+		//line(x1, y1, z1, x2, y2, z2); line(x2, y2, z2, x3, y3, z3); line(x3, y3, z3, x4, y4, z4); line(x4, y4, z4, x1, y1, z1);
+	    } // end for j
+	} // end for i
+    } // end void drawSphere(int heightSteps, int points)
 
     /* disegna i nodi nello spazio 3d */
     public void drawNodes() {
@@ -439,6 +548,12 @@ public class Space extends PApplet {
 	noFill();
     }
 
+//    @Override
+//    public void mouseClicked() {
+//	int localSelected = selectNode(mouseX, mouseY);
+//	System.out.println("mouseX: " + mouseX + " mouseY: " + mouseY);
+//	System.out.println("localSelected: " + localSelected);
+//    }
 
     @Override
     public void draw() {
@@ -446,14 +561,14 @@ public class Space extends PApplet {
 	if (rotate) {
 	    cam.rotateY(0.045);
 	} else {
-	    timer.stop();
+	    rotationTimer.stop();
 	}
 
 	background(0);
 
 	lights();
 
-    selected = selectNode();
+    //selected = selectNode();
 
 	/* disegna il cubo che contiene la rete e i nodi solo se e' stata inizializzata una rete */
 	if (networkInitialized) {
@@ -519,6 +634,31 @@ public class Space extends PApplet {
         g3d.camera = currCameraMatrix;
     }
 
+     /* uguale a quello sotto per ora */
+      private int selectNode(int localMouseX, int localMouseY) {
+        int selected = -1;
+        float mouseDisShortest = -1;
+        for (int i = 0; i < nodes.length; i++) {
+
+            float scrX, scrY;
+            scrX = screenX( nodes[i].cx, nodes[i].cy, nodes[i].cz );
+            scrY = screenY( nodes[i].cx, nodes[i].cy, nodes[i].cz );
+
+            float mouseDis = sqrt( sq(localMouseX - scrX) + sq(localMouseY - scrY) );
+
+            if((
+                    mouseDisShortest == -1 ||//Non ancora inizializzato
+                            mouseDis <= mouseDisShortest
+            ) && mouseDis < box//Quasi sopra il nodo
+                    ){
+                selected = i;
+		mouseDisShortest = mouseDis;
+            }
+        }
+
+        return selected;
+    }
+
     private int selectNode() {
         int selected = -1;
         float mouseDisShortest = -1;
@@ -535,7 +675,8 @@ public class Space extends PApplet {
                             mouseDis <= mouseDisShortest
             ) && mouseDis < box//Quasi sopra il nodo
                     ){
-                selected = i; mouseDisShortest = mouseDis;
+                selected = i;
+		mouseDisShortest = mouseDis;
             }
         }
 

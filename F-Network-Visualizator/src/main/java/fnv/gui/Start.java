@@ -12,10 +12,8 @@ public class Start {
 
 	    @Override
 	    public void run() {
-	    		new Interface();
+		new Interface();
 	    }
 	});
-
-	//new fnv.gui.fnv.gui.fnv.gui.fnv.gui.fnv.gui.Interface.fnv.gui.fnv.gui.fnv.gui.fnv.gui.Interface();
     }
 }

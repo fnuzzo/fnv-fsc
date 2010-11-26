@@ -50,7 +50,7 @@ import fnv.parser.InputParser;
 
 public class Interface extends JFrame implements ActionListener, ChangeListener, WindowStateListener{
 
-	//private  static Interface3 istance;
+	
 	
 	
 	
@@ -163,7 +163,7 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 		private JPanel buildCentralPanel(){
 			centralPanel = new JPanel();
 			
-			space = new Space();
+			space = new Space(this);
 			space.init();
 			
 			centralPanel.setPreferredSize(new Dimension(800,600));
@@ -358,9 +358,9 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 		public void setValuejstime(int instant){
 			
 			
-			footer.remove(jsTime);
+			//footer.remove(jsTime);
 			jsTime.setValue(instant);
-			footer.add(jsTime);
+			//footer.add(jsTime);
 			System.out.println(instant);
 			//jsTime.repaint();
 			

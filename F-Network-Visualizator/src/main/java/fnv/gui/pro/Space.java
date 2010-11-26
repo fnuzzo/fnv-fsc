@@ -26,6 +26,14 @@ import peasy.*;
 public class Space extends PApplet {
     
 	
+	public Space(Interface inter){
+	
+		this.inter = inter;
+	}
+	
+	
+	Interface inter;
+	
 	Timer timer, time;
    
     //Frame al secondo
@@ -232,7 +240,7 @@ public class Space extends PApplet {
 				
 				if(network.getNumberOfInstants() > instant){
 					instant = instant + 1;		
-				//Interface3.getInstance().setValuejstime(instant);
+				inter.setValuejstime(instant);
 				
 				}
 				else

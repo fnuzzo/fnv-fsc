@@ -50,7 +50,7 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
     private int TIMEVALUE = 100;
     private Space space;
     private JSlider jsTime;
-
+    private JMenuItem creaN;
 	public Interface() {
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	setTitle("F-Network Visualizator");
@@ -60,11 +60,12 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 	Container contentPane = getContentPane();
 	contentPane.setLayout(new BorderLayout());
 
-	networkCreationPanel = new NetworkCreationPanel();
-	networkCreationPanel.setVisible(false);
+	
+	//networkCreationPanel.setVisible(false);
 
 	contentPane.add(buildMenu(), BorderLayout.NORTH);
 	contentPane.add(buildCentralPanel(), BorderLayout.CENTER);
+	//contentPane.add(networkCreationPanel, BorderLayout.CENTER);
 	contentPane.add(buildFooter(), BorderLayout.SOUTH);
 	pack();
 	addWindowStateListener(this);
@@ -81,6 +82,7 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 	JMenu file;
 	JMenu view;
 	JMenu help;
+	
 	JMenuItem importM;
 	JMenuItem helpbox;
 	JMenuItem about;
@@ -91,6 +93,8 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 
 	importM = new JMenuItem("Import");
 	importM.setActionCommand("import");
+	creaN = new JMenuItem("Crea Network");
+	creaN.setActionCommand("creaN");
 	helpbox = new JMenuItem("help");
 	helpbox.setActionCommand("help");
 	about = new JMenuItem("About");
@@ -107,16 +111,19 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 	details.setActionCommand("vis");
 
 	importM.addActionListener(this);
+	creaN.addActionListener(this);
 	structure.addActionListener(this);
 	details.addActionListener(this);
 	helpbox.addActionListener(this);
 	about.addActionListener(this);
 	edgeIn.addActionListener(this);
 	edgeOut.addActionListener(this);
+	
 
 	file = new JMenu("File");
 	file.add(importM);
-
+	file.add(creaN);
+	
 	view = new JMenu("View");
 	view.add(structure);
 	view.addSeparator();
@@ -300,7 +307,17 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 		footer.add(tabpane);
 	    }
 	    pack();
-	} else if (c.equals("edgeIn")) {
+	} else if(c.equals("creaN")){
+		centralPanel.remove(space);
+		networkCreationPanel = new NetworkCreationPanel();
+		centralPanel.add(networkCreationPanel);
+		networkCreationPanel.setVisible(true);
+		creaN.setEnabled(false);
+		pack();
+		
+	} 
+	
+	else if (c.equals("edgeIn")) {
 	    space.setOptions("edgeIn");
 	} else if (c.equals("edgeOut")) {
 	    space.setOptions("edgeOut");

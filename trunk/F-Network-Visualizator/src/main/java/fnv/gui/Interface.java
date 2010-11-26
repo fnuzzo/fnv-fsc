@@ -309,6 +309,7 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 	} else if (c.equals("pause")) {
 	    space.optionsTime("pause");
 	} else if (c.equals("stop")) {
+	    setValuejstime(0);
 	    space.optionsTime("stop");
 	}
     }

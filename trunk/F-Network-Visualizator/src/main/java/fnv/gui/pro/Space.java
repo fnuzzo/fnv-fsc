@@ -91,7 +91,9 @@ public class Space extends PApplet {
 
     public void incrementInstant() {
 	if (network != null) {
-	    instant = (instant + 1) % network.getNumberOfInstants();
+	    if (instant < network.getNumberOfInstants()) {
+		instant++;
+	    }
 	}
     }
 
@@ -254,13 +256,19 @@ public class Space extends PApplet {
 
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		if (network.getNumberOfInstants() > instant) {
+		//TODO debug
+		System.out.println("PRIMA: network.getNumberOfInstants() = " + network.getNumberOfInstants() + " instant = " + instant);
+
+		if (network.getNumberOfInstants() != instant) {
 		    incrementInstant();
 		    int value = (instant * 100) / network.getNumberOfInstants();
 		    inter.setValuejstime(value);
 		} else {
 		    animationTimer.stop();
 		}
+
+		//TODO debug
+		System.out.println("DOPO: network.getNumberOfInstants() = " + network.getNumberOfInstants() + " instant = " + instant);
 	    }
 	});
 	}

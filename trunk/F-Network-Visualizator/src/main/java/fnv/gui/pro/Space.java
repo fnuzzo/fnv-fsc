@@ -6,6 +6,8 @@ import fnv.network.Network;
 import fnv.network.Node;
 
 import java.awt.Dimension;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,24 +15,30 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
+
 import javax.swing.Timer;
 
 import fnv.parser.InputParser;
 import java.util.Random;
 import processing.core.*;
 import peasy.*;
-import sun.security.provider.certpath.Vertex;
 
 /**
  * Created by IntelliJ IDEA. User: giacomo Date: Nov 1, 2010 Time: 3:12:21 PM To
  * change this template use File | Settings | File Templates.
  */
-public class Space extends PApplet {
+public class Space extends PApplet{
     
-	
+
 	public Space(Interface inter){
 	
 		this.inter = inter;
+	
 	}
 	
 	
@@ -83,6 +91,9 @@ public class Space extends PApplet {
     // http://mrfeinberg.com/peasycam/reference/index.html
     private PeasyCam cam;
 
+    private int WIDTH;
+    private int HEIGHT;
+      
     //Nodi
     ANode[] nodes = new ANode[0];
     Network network = new Network();
@@ -142,12 +153,14 @@ public class Space extends PApplet {
         cam.lookAt(space / 2, -space / 2, space / 2, space * 2, 2000);
 
     }
-
+    
     @Override
     public void setup() {
     	
+    	
         size(800, 600, P3D);
 
+       
         g3d = (PGraphics3D) g;
 
         f = loadFont("ArialMT-48.vlw");
@@ -156,7 +169,7 @@ public class Space extends PApplet {
         smooth();
 
         frameRate(framerate);
-
+   
         //Inizializzazione camera
         cam = new PeasyCam(this, 10,10,10,100);
         //cam = new PeasyCam(this, 300);
@@ -171,8 +184,18 @@ public class Space extends PApplet {
         } catch (FileNotFoundException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }*/
+
     }
 
+    public void resizePanel(int w, int h){
+    	setSize(w, h);
+    	draw();
+    	
+    }
+    
+    
+    
+    
     @Override
     public void keyPressed() {
         if (key == CODED) {
@@ -756,8 +779,7 @@ public class Space extends PApplet {
         return mapped;
     }
 
-    @Override
-    public void size(int i, int i1) {
-        super.size(i, i1);
-    }
+
+
+
 }

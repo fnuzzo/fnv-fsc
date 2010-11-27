@@ -4,8 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
 import java.io.File;
@@ -39,7 +43,7 @@ import fnv.gui.pro.Space;
 import fnv.network.Network;
 import fnv.parser.InputParser;
 
-public class Interface extends JFrame implements ActionListener, ChangeListener, WindowStateListener {
+public class Interface extends JFrame implements ActionListener, ChangeListener, WindowStateListener, ComponentListener{
 
     private JTabbedPane tabpane;
     private JPanel footer;
@@ -69,6 +73,7 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 	contentPane.add(buildFooter(), BorderLayout.SOUTH);
 	pack();
 	addWindowStateListener(this);
+	addComponentListener(this);
     }
 
     /*public static Interface3 getInstance(){
@@ -345,12 +350,58 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 	space.setInstant(t);
     }
 
-    @Override
-    public void windowStateChanged(WindowEvent s) {
-	System.out.println(s.getNewState());
-	//	if (s.getNewState() == 6){
-	System.out.println(s.getNewState());
-	space.resizeSpace(new Dimension(200, 200));
-	//	}
-    }
+ 
+	@Override
+	public void windowStateChanged(WindowEvent e) {
+		int width = (int)this.getSize().getWidth();
+		int heigth = (int)this.getSize().getHeight();
+		System.out.println(width+" "+heigth);
+	
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		System.out.println(this.getSize().getWidth());
+		System.out.println();
+		
+		//int h= (int) (this.getSize().getHeight()-50);
+		//int w = (int) (this.getSize().getWidth()-20);
+		//space.resizePanel(w, h);
+		
+		
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 }
+
+/*
+ Restituisce in base allo schermo le dimensioni massime 
+ Priaticamente state = 6 restituito da windowStateChanged()
+ potrebbe servire per il full screen visto che la libreria fullscreen NON funziona 
+GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+GraphicsDevice devices = environment.getDefaultScreenDevice()
+//  System.out.println(Arrays.toString(devices));
+
+
+     WIDTH =devices.getDisplayMode().getWidth();
+     HEIGHT= devices.getDisplayMode().getHeight();*/
+
+
+
+

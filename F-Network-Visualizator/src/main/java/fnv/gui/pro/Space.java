@@ -28,6 +28,8 @@ import java.util.Random;
 import processing.core.*;
 import peasy.*;
 
+import processing.opengl.*;
+
 /**
  * Created by IntelliJ IDEA. User: giacomo Date: Nov 1, 2010 Time: 3:12:21 PM To
  * change this template use File | Settings | File Templates.
@@ -237,8 +239,7 @@ public class Space extends PApplet{
             if (intk == -1) {
                 switch (key) {
                     case 'p':
-                        //showControlPoint = !showControlPoint;  //Serve metterlo nel menu ?
-                    	
+                        showControlPoint = !showControlPoint;  //Da lasciare per Debug
                         break;
                     case 'f':
                         println(frameRate);
@@ -514,9 +515,9 @@ public class Space extends PApplet{
 		int pcZ = ((nodes[edge.s].az > nodes[edge.t].az) ? 20 : -20);
 
             if (selected == -1) {
-                stroke(edge.c,100,100);
+                stroke(edge.c,100,100);//Archi colorati
             } else {
-                stroke(0,0,100);
+                stroke(0,0,100);//Archi bianchi
             }
             //I collegamenti del nodo selezionato sono più grossi
             boolean ev = false;
@@ -533,6 +534,8 @@ public class Space extends PApplet{
             }
 
             if (edgeVisible || ev) {
+                noFill();
+
                 bezier(
                         //Nodo A
                         nodes[edge.s].cx,
@@ -551,30 +554,70 @@ public class Space extends PApplet{
                         nodes[edge.t].cy,
                         nodes[edge.t].cz);
                 strokeWeight(1);
+
+                //Aereoplano
+                float t = (frameCount % framerate) /  (float) framerate ;
+                //float t = 5 / (float) 10;
+                pushMatrix();
+                translate(
+                        bezierPoint(nodes[edge.s].cx,nodes[edge.s].cx,nodes[edge.t].cx - pcX,nodes[edge.t].cx,t),
+                        bezierPoint(nodes[edge.s].cy,nodes[edge.s].cy - edge.af,nodes[edge.t].cy - edge.af,nodes[edge.t].cy,t),
+                        bezierPoint(nodes[edge.s].cz,nodes[edge.s].cz,nodes[edge.t].cz - pcZ,nodes[edge.t].cz,t)
+                        );
+                fill(0, 0, 100);
+                box(2);
+                popMatrix();
+
+
+
             }
 
-		if (showControlPoint) {
 
-		    //Linea di controllo
-		    stroke(edge.t, 100, 100);
-		    line(
-			    nodes[edge.s].cx,
-			    nodes[edge.s].cy,
-			    nodes[edge.s].cz,
-			    nodes[edge.s].cx,
-			    nodes[edge.s].cy - edge.af,
-			    nodes[edge.s].cz);
-		    //Linea di controllo
-		    stroke(edge.s, 100, 100);
-		    line(
-			    nodes[edge.t].cx,
-			    nodes[edge.t].cy,
-			    nodes[edge.t].cz,
-			    nodes[edge.t].cx - pcX,
-			    nodes[edge.t].cy - edge.af,
-			    nodes[edge.t].cz - pcZ);
-		}
-	    }
+
+            if (showControlPoint) {
+
+                //Linea di controllo
+                stroke(edge.t, 100, 100);
+                line(
+                        nodes[edge.s].cx,
+                        nodes[edge.s].cy,
+                        nodes[edge.s].cz,
+                        nodes[edge.s].cx,
+                        nodes[edge.s].cy - edge.af,
+                        nodes[edge.s].cz);
+                //Linea di controllo
+                stroke(edge.s, 100, 100);
+                line(
+                        nodes[edge.t].cx,
+                        nodes[edge.t].cy,
+                        nodes[edge.t].cz,
+                        nodes[edge.t].cx - pcX,
+                        nodes[edge.t].cy - edge.af,
+                        nodes[edge.t].cz - pcZ);
+                noStroke();
+                pushMatrix();
+                translate(
+                        nodes[edge.s].cx,
+                        nodes[edge.s].cy - edge.af,
+                        nodes[edge.s].cz);
+                fill(edge.s, 100, 100);
+                sphere(2);
+                popMatrix();
+
+                pushMatrix();
+                translate(
+                        nodes[edge.t].cx - pcX,
+                        nodes[edge.t].cy - edge.af,
+                        nodes[edge.t].cz - pcZ);
+                fill(edge.t, 100, 100);
+                sphere(2);
+                popMatrix();
+
+
+            }
+
+
+        }
 	}
 	noFill();
     }

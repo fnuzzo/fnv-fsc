@@ -25,6 +25,16 @@
 			<artifactId>processing-opengl</artifactId>
 			<version>1.2.1</version>
 		</dependency>
+        <dependency>
+			<groupId>org.processing</groupId>
+			<artifactId>processing-gluegen-rt</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+        <dependency>
+			<groupId>org.processing</groupId>
+			<artifactId>processing-jogl</artifactId>
+			<version>1.2.1</version>
+		</dependency>
 		<dependency>
 			<groupId>com.mrfeinberg</groupId>
 			<artifactId>peasycam</artifactId>
@@ -117,6 +127,38 @@
 							<artifactId>processing-opengl</artifactId>
 							<version>1.2.1</version>
 							<file>${basedir}/lib/opengl.jar</file>
+							<repositoryLayout>default</repositoryLayout>
+							<packaging>jar</packaging>
+							<generatePom>true</generatePom>
+						</configuration>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
+                    <execution>
+						<id>hack-gluegen-rt</id>
+						<phase>validate</phase>
+						<configuration>
+							<groupId>org.processing</groupId>
+							<artifactId>processing-gluegen-rt</artifactId>
+							<version>1.2.1</version>
+							<file>${basedir}/lib/gluegen-rt.jar</file>
+							<repositoryLayout>default</repositoryLayout>
+							<packaging>jar</packaging>
+							<generatePom>true</generatePom>
+						</configuration>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
+                    <execution>
+						<id>hack-jogl</id>
+						<phase>validate</phase>
+						<configuration>
+							<groupId>org.processing</groupId>
+							<artifactId>processing-jogl</artifactId>
+							<version>1.2.1</version>
+							<file>${basedir}/lib/jogl.jar</file>
 							<repositoryLayout>default</repositoryLayout>
 							<packaging>jar</packaging>
 							<generatePom>true</generatePom>

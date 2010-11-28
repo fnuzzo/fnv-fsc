@@ -160,7 +160,7 @@ public class Space extends PApplet{
     public void setup() {
     	
     	
-        size(800, 600, P3D);
+        size(800, 600, OPENGL);
 
        
         g3d = (PGraphics3D) g;

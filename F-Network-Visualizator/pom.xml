@@ -203,15 +203,18 @@
                     </executions>
                     <configuration>
                       <mainClass>fnv.gui.Start</mainClass>
+                        <workingDirectory>${basedir}</workingDirectory>
+                        <detail>true</detail>
+
                       <!--<arguments>
                         <argument>argument1</argument>
-                      </arguments>
+                      </arguments>-->
                       <systemProperties>
                         <systemProperty>
-                          <key>myproperty</key>
-                          <value>myvalue</value>
+                          <key>java.library.path</key>
+                          <value>${basedir}/opnegl-lib/</value>
                         </systemProperty>
-                      </systemProperties>-->
+                      </systemProperties>
                     </configuration>
                   </plugin>
 

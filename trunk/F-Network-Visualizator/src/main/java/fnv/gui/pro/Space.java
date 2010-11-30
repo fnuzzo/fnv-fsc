@@ -124,6 +124,8 @@ public class Space extends PApplet{
 
     public void setNetwork(Network network) {
 	this.network = network;
+
+
 	
 	rotate = true;
 

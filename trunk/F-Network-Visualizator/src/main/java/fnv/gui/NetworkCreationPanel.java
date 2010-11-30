@@ -11,19 +11,34 @@
 
 package fnv.gui;
 
-import fnv.network.InteractionElement;
+import fnv.network.InteractionsCube;
+import fnv.network.Network;
 import fnv.network.Node;
-import java.util.HashMap;
+import fnv.network.NodesList;
+import fnv.network.PartialNetwork;
+import fnv.parser.XmlGenerator;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 
 /**
  *
  * @author enrico
  */
 public class NetworkCreationPanel extends javax.swing.JPanel {
-    private boolean isFlat;
-    private int nodeID;
-    private HashMap<String, Node> nodes;
-    private HashMap<Integer, InteractionElement> interactions;
+
+    
+
+    private PartialNetwork partialNetwork;
 
     /** Creates new form NetworkCreationPanel */
     public NetworkCreationPanel() {
@@ -32,10 +47,7 @@ public class NetworkCreationPanel extends javax.swing.JPanel {
     }
 
     private void initNetworkVariables() {
-	isFlat = true;
-	nodeID = 0;
-	nodes = new HashMap<String, Node>();
-	interactions = new HashMap<Integer, InteractionElement>();
+	partialNetwork = new PartialNetwork();
     }
 
     /** This method is called from within the constructor to
@@ -125,6 +137,11 @@ public class NetworkCreationPanel extends javax.swing.JPanel {
         });
 
         jButton4.setText("Carica");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("Esporta come xml");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -289,19 +306,54 @@ public class NetworkCreationPanel extends javax.swing.JPanel {
 	}
 
 	if (allArguments) {
-	    Node node = new Node(++nodeID, label, x, y, z);
+	    Node node = new Node(partialNetwork.getNodeID(), label, x, y, z);
 
-	    nodes.put(label, node);
+	    partialNetwork.getNodes().put(label, node);
+
+	    jTextField2.setText("");
+	    jTextField3.setText("");
+	    jTextField4.setText("");
+	    jTextField5.setText("");
 	}
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-	//SALVA
+	File outputFile = null;
+	JFileChooser fileChooser = new JFileChooser();
 
+	partialNetwork.setNetworkName(jTextField1.getText().trim());
+	partialNetwork.setFlat(jCheckBox2.isSelected());
+	
+	int returnVal = fileChooser.showSaveDialog(this);
+	if (returnVal == JFileChooser.APPROVE_OPTION) {
+	    outputFile = fileChooser.getSelectedFile();
+	}
+	
+	if (outputFile != null) {
+	    try {
+		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(outputFile));
+		oos.writeObject(partialNetwork);
+	    } catch (IOException ex) {
+		Logger.getLogger(NetworkCreationPanel.class.getName()).log(Level.SEVERE, null, ex);
+	    }
+	}
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-	// TODO add your handling code here:
+	String networkName = jTextField1.getText().trim();
+
+	if (!networkName.isEmpty()) {
+	    InteractionsCube interactionCube = partialNetwork.getInteractionsCube();
+
+	    ArrayList<Node> nodesList = new ArrayList<Node>();
+	    nodesList.addAll(partialNetwork.getNodes().values());
+
+	    XmlGenerator.generate(new Network(
+		    networkName,
+		    new NodesList(nodesList),
+		    interactionCube,
+		    partialNetwork.isFlat()));
+	}
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -315,6 +367,7 @@ public class NetworkCreationPanel extends javax.swing.JPanel {
 	float frequency = 0;
 	String sourceLabel = jTextField6.getText().trim();
 	String targetLabel = jTextField7.getText().trim();
+	String instantLabel = jTextField8.getText().trim();
 	boolean allArguments = true;
 
 	try {
@@ -325,19 +378,64 @@ public class NetworkCreationPanel extends javax.swing.JPanel {
 	}
 
 	if (allArguments) {
-	    Node source = nodes.get(sourceLabel);
-	    Node target = nodes.get(targetLabel);
+	    Node source = partialNetwork.getNodes().get(sourceLabel);
+	    Node target = partialNetwork.getNodes().get(targetLabel);
 
 	    if ((source != null) && (target != null)) {
 		sourceID = source.id;
 		targetID = target.id;
+		
+		partialNetwork.addInteraction(instant, sourceID, targetID, frequency, instantLabel);
 
-		InteractionElement interactionElement = new InteractionElement(sourceID, targetID, frequency);
-
-		interactions.put(instant, interactionElement);
+		jTextField6.setText("");
+		jTextField7.setText("");
+		jTextField8.setText("");
+		jTextField9.setText("");
+		jTextField10.setText("");
 	    }
 	}
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+	JFileChooser fileChooser = new JFileChooser("./");
+	File inputFile = null;
+
+	int returnVal = fileChooser.showOpenDialog(this);
+
+	if (returnVal == JFileChooser.APPROVE_OPTION) {
+	    inputFile = fileChooser.getSelectedFile();
+	}
+
+	InputStream inputStream = null;
+	try {
+	    inputStream = new FileInputStream(inputFile);
+	} catch (FileNotFoundException ex) {
+	    Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+	} catch (NullPointerException npe) {
+	}
+
+	if (inputStream != null) {
+	    ObjectInputStream ois = null;
+	    try {
+		ois = new ObjectInputStream(inputStream);
+		partialNetwork = (PartialNetwork) ois.readObject();
+
+		jTextField1.setText(partialNetwork.getNetworkName());
+		jCheckBox2.setSelected(partialNetwork.isFlat());
+	    } catch (ClassNotFoundException ex) {
+		Logger.getLogger(NetworkCreationPanel.class.getName()).log(Level.SEVERE, null, ex);
+	    } catch (IOException ex) {
+		Logger.getLogger(NetworkCreationPanel.class.getName()).log(Level.SEVERE, null, ex);
+	    } finally {
+		try {
+		    ois.close();
+		} catch (IOException ex) {
+		    Logger.getLogger(NetworkCreationPanel.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	    }
+
+	}
+    }//GEN-LAST:event_jButton4ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

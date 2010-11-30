@@ -1,20 +1,14 @@
 package fnv.network;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
 /* struttura dati che rappresenta la lista di nodi presenti nel sistema */
-public class NodesList {
+public class NodesList implements Serializable {
 
     private HashMap<Integer, Node> nodes;
-
-//    public NodesList(Node[] nodes) {
-//	this.nodes = new HashMap<Integer, Node>();
-//	for (Node node : nodes) {
-//	    this.nodes.put(node.getId(), node);
-//	}
-//    }
 
     public NodesList(List<Node> nodes) {
 	this.nodes = new HashMap<Integer, Node>();

@@ -5,11 +5,13 @@
 
 package fnv.network;
 
+import java.io.Serializable;
+
 /**
  *
  * @author enrico
  */
-public class InteractionElement {
+public class InteractionElement implements Serializable {
     public final int source;
     public final int target;
     public final float frequency;

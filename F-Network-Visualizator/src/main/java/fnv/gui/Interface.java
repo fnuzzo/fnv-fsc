@@ -51,7 +51,7 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
     private JPanel networkCreationPanel;
     private JMenuBar menubar;
     private int TICKSPACING = 10;
-    private int TIMEVALUE = 100;
+    //private int TIMEVALUE = 100;
     private Space space;
     private JSlider jsTime;
     private JMenuItem creaN;
@@ -244,6 +244,12 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
     }
 
     private void fimportActionPerformed() {
+	centralPanel.remove(networkCreationPanel);
+	centralPanel.add(space);
+	space.setVisible(true);
+	creaN.setEnabled(true);
+	pack();
+
 	JFileChooser fc = new JFileChooser("./");
 	File inputFile = null;
 	Network network = null;
@@ -269,7 +275,6 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 
 	if (returnVal == JFileChooser.APPROVE_OPTION) {
 	    inputFile = fc.getSelectedFile();
-	} else {
 	}
 
 	InputStream inputStream = null;
@@ -284,8 +289,7 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 	    network = InputParser.parse(inputStream);
 	    if (network != null) {
 		space.setNetwork(network);
-		TIMEVALUE = network.getNumberOfInstants();
-
+		//TIMEVALUE = network.getNumberOfInstants();
 	    } else {
 		System.out.println("File di input mal formattato.");
 	    }
@@ -320,7 +324,6 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 		networkCreationPanel.setVisible(true);
 		creaN.setEnabled(false);
 		pack();
-		
 	} 
 	
 	else if (c.equals("edgeIn")) {

@@ -153,15 +153,12 @@ public class Space extends PApplet{
         space = box * boxN;
 
         cam.lookAt(space / 2, -space / 2, space / 2, space * 2, 2000);
-
     }
     
     @Override
     public void setup() {
-    	
-    	
-        size(800, 600, OPENGL);
-
+        //size(800, 600, OPENGL);
+	size(800, 600, P3D);
        
         g3d = (PGraphics3D) g;
 
@@ -189,11 +186,11 @@ public class Space extends PApplet{
 
     }
 
-    public void resizePanel(int w, int h){
-    	setSize(w, h);
-    	draw();
-    	
-    }
+//    public void resizePanel(int w, int h){
+//    	setSize(w, h);
+//    	draw();
+//
+//    }
     
     
     
@@ -260,8 +257,16 @@ public class Space extends PApplet{
     }
     
     public void resizeSpace(Dimension d){    	
-    	resize(new Dimension(200, 200));
+    	//resize(new Dimension(200, 200));
+	//size(800, 600, OPENGL);
+	//size(d.height, d.width, P3D);
+	//resize(d);
 
+//	setSize(d);
+//	setMinimumSize(d);
+//	setMaximumSize(d);
+//	setPreferredSize(d);
+	resizeRenderer(d.width, d.height);
     }
     
 
@@ -622,27 +627,20 @@ public class Space extends PApplet{
 	noFill();
     }
 
-//    @Override
-//    public void mouseClicked() {
-//	int localSelected = selectNode(mouseX, mouseY);
-//	System.out.println("mouseX: " + mouseX + " mouseY: " + mouseY);
-//	System.out.println("localSelected: " + localSelected);
-//    }
-
     @Override
     public void draw() {
-    	
 	if (rotate) {
 	    cam.rotateY(0.045);
 	} else {
 	    rotationTimer.stop();
 	}
 
-	background(0);
+	//background(0);
+	background(62, 62, 62);
 
 	lights();
 
-    //selected = selectNode();
+    selected = selectNode();
 
 	/* disegna il cubo che contiene la rete e i nodi solo se e' stata inizializzata una rete */
 	if (networkInitialized) {
@@ -706,31 +704,6 @@ public class Space extends PApplet{
         // restore camera
         popMatrix();
         g3d.camera = currCameraMatrix;
-    }
-
-     /* uguale a quello sotto per ora */
-      private int selectNode(int localMouseX, int localMouseY) {
-        int selected = -1;
-        float mouseDisShortest = -1;
-        for (int i = 0; i < nodes.length; i++) {
-
-            float scrX, scrY;
-            scrX = screenX( nodes[i].cx, nodes[i].cy, nodes[i].cz );
-            scrY = screenY( nodes[i].cx, nodes[i].cy, nodes[i].cz );
-
-            float mouseDis = sqrt( sq(localMouseX - scrX) + sq(localMouseY - scrY) );
-
-            if((
-                    mouseDisShortest == -1 ||//Non ancora inizializzato
-                            mouseDis <= mouseDisShortest
-            ) && mouseDis < box//Quasi sopra il nodo
-                    ){
-                selected = i;
-		mouseDisShortest = mouseDis;
-            }
-        }
-
-        return selected;
     }
 
     private int selectNode() {

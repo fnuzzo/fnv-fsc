@@ -55,6 +55,7 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
     private Space space;
     private JSlider jsTime;
     private JMenuItem creaN;
+
 	public Interface() {
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	setTitle("F-Network Visualizator");
@@ -353,9 +354,9 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
  
 	@Override
 	public void windowStateChanged(WindowEvent e) {
-		int width = (int)this.getSize().getWidth();
-		int heigth = (int)this.getSize().getHeight();
-		System.out.println(width+" "+heigth);
+//		int width = (int)this.getSize().getWidth();
+//		int heigth = (int)this.getSize().getHeight();
+//		System.out.println(width+" "+heigth);
 	
 	}
 
@@ -371,17 +372,25 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 		
 	}
 
-	@Override
-	public void componentResized(ComponentEvent e) {
-		System.out.println(this.getSize().getWidth());
-		System.out.println();
-		
-		//int h= (int) (this.getSize().getHeight()-50);
-		//int w = (int) (this.getSize().getWidth()-20);
-		//space.resizePanel(w, h);
-		
-		
-	}
+//	@Override
+//	public void componentResized(ComponentEvent e) {
+//		System.out.println(this.getSize().getWidth());
+//		System.out.println();
+//
+//		//int h= (int) (this.getSize().getHeight()-50);
+//		//int w = (int) (this.getSize().getWidth()-20);
+//		//space.resizePanel(w, h);
+//
+//
+//	}
+	
+    @Override
+    public void componentResized(ComponentEvent evt) {
+	Dimension newSize = getSize();
+
+	space.resizeSpace(newSize);
+	//space.resize(newSize);
+    }
 
 	@Override
 	public void componentShown(ComponentEvent e) {

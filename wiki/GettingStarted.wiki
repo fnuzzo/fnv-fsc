@@ -8,7 +8,7 @@ La visualizzazione è una tecnica per rappresentare graficamente insiemi di dati
 Un modo semplice per rappresentare una rete consiste nell’utilizzare una tabella con l’elenco di tutto i nodi della rete riportato sia nelle righe che nelle colonne. In questo modo nella cella che incrocia due nodi viene memorizzato il valore che rappresenta l’interazione avvenuta tra quei dati nodi. Dato che spesso è utile sapere  i cambiamenti nell’evolversi del tempo delle interazioni, occorre creare una tabella di questo tipo per ogni istante di tempo. 
 Nonostante questo approccio sia molto semplice, non e’ auspicabile perche’ inefficiente dal punto di vista computazionale e della leggibilità dei risultati; Se per esempio volessimo rappresentare le interazioni che avvengono in ogni istante di tempo che non coinvolgono tutte le coppie di nodi, le tabelle risulterebbero sparse, perciò viene utilizzata una gran quantità di memoria per memorizzare in realtà una piccola quantità di informazione. Questo problema viene ulteriormente peggiorato quando la rete contiene un gran numero di nodi.
 
-_*3D-Network Visualizator*_ è come il nome lascia intendere, un visualizzare grafico 3D delle variazioni nel tempo delle connessioni che intercorrono tra i nodi in una rete. 
+_*3D-Network Visualizator*_  come il nome lascia intendere, un visualizzare grafico 3D delle variazioni nel tempo delle connessioni che intercorrono tra i nodi in una rete. 
 
 = Details =
 Per la realizzazione di questo progetto sono state utilizzate diverse tecnologie: 

@@ -1,4 +1,7 @@
 #labels processing,java,3D,xml,network,visualizator
+= Indice =
+
+
 = Introduction =
 La visualizzazione è una tecnica per rappresentare graficamente insiemi di dati. Quando i dati sono di grandi dimensione o astratti, Il modo in cui questi dati sono visualizzati può aiutare a rendere quest'ultimi più facili da leggere, comprendere e successivamente agire. 
 

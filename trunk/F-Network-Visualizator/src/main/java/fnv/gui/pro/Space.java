@@ -102,16 +102,19 @@ public class Space extends PApplet{
     /* indica se e' stata inizializzata una rete */
     boolean networkInitialized = false;
 
+    //Archi
+    AEdge[][] edges = new AEdge[0][0];
+
     public void incrementInstant() {
 	if (network != null) {
-	    if (instant < network.getNumberOfInstants()) {
+	    if (instant < (network.getNumberOfInstants()-1)) {
 		instant++;
 	    }
 	}
     }
 
     public void decrementInstant() {
-	if (instant != 0) {
+	if (instant > 0) {
 	    instant--;
 	}
     }
@@ -124,8 +127,6 @@ public class Space extends PApplet{
 
     public void setNetwork(Network network) {
 	this.network = network;
-
-
 	
 	rotate = true;
 
@@ -146,6 +147,18 @@ public class Space extends PApplet{
         nodes = allnodes.toArray(new ANode[allnodes.size()]);
         nodesDrawn = 0;
         colorMode(HSB, nodes.length, 100, 100);
+
+        //Inizializza archi
+        ArrayList<AEdge[]> aedgeList = new ArrayList<AEdge[]>();
+        for (int i = 0; i < network.getNumberOfInstants(); i++) {
+            InteractionElement[] eds = network.getInteractionCube().getAllInteractions(i);
+            AEdge[] aEdges = new AEdge[eds.length];
+            for (int j = 0; j < eds.length; j++) {
+                aEdges[j] = new AEdge(eds[j]);
+            }
+            aedgeList.add(i,aEdges);
+        }
+        edges = aedgeList.toArray(new AEdge[0][aedgeList.size()]);
     }
 
     public void initializeBox() {
@@ -155,12 +168,15 @@ public class Space extends PApplet{
         space = box * boxN;
 
         cam.lookAt(space / 2, -space / 2, space / 2, space * 2, 2000);
+
     }
     
     @Override
     public void setup() {
-        //size(800, 600, OPENGL);
-	size(800, 600, P3D);
+    	
+    	
+        size(800, 600, P3D);
+
        
         g3d = (PGraphics3D) g;
 
@@ -194,6 +210,11 @@ public class Space extends PApplet{
 //
 //    }
     
+    @Override
+    public void mouseClicked() {
+        println(frameRate+" "+selected);
+
+    }
     
     
     
@@ -486,13 +507,6 @@ public class Space extends PApplet{
 		pushMatrix();
 
 		fill(i, 100, 100);
-		/*fill(
-		i * 100,
-		255,
-		255 / (i + 1),
-		127//Trasparenza
-		);
-		 */
 		//Nodo Quadrato
 		stroke(0);
 		translate(
@@ -510,16 +524,10 @@ public class Space extends PApplet{
     public void drawEdges() {
 
 	//Disegno i nodi per l'istante giusto
-	InteractionElement[] edges = network.getInteractionCube().getAllInteractions(instant);
+	//InteractionElement[] edges = network.getInteractionCube().getAllInteractions(instant);
 
-	for (InteractionElement anEdge : edges) {
-        AEdge edge = new AEdge(anEdge);
+	for (AEdge edge : edges[instant]) {
 	    if (nodes[edge.s].visible && nodes[edge.t].visible) {
-
-		//Scostamento punti controllo
-		int pcX = ((nodes[edge.s].ax > nodes[edge.t].ax) ? 20 : -20);
-		int pcY = ((nodes[edge.s].ay < nodes[edge.t].ay) ? 20 : -20);
-		int pcZ = ((nodes[edge.s].az > nodes[edge.t].az) ? 20 : -20);
 
             if (selected == -1) {
                 stroke(edge.c,100,100);//Archi colorati
@@ -528,13 +536,11 @@ public class Space extends PApplet{
             }
             //I collegamenti del nodo selezionato sono più grossi
             boolean ev = false;
-            if (edgeIn) {
-                if(selected == edge.t) {
-                    strokeWeight(3);
-                    stroke(edge.c, 100, 100);
-                    ev = true;
-                }
-            } else if(selected == edge.s) {
+            if (//Archi visualizzati colorati se
+                    (edgeIn && selected == edge.t)//Nodo selezionato è una destinazione
+                    ^
+                    (!edgeIn && selected == edge.s)//Nodo selezionato è una sorgente
+                    ) {
                 strokeWeight(3);
                 stroke(edge.c, 100, 100);
                 ev = true;
@@ -542,41 +548,38 @@ public class Space extends PApplet{
 
             if (edgeVisible || ev) {
                 noFill();
-
+                bezierDetail(40);//Aumenta dettaglio grafico dei collegamenti
                 bezier(
                         //Nodo A
-                        nodes[edge.s].cx,
-                        nodes[edge.s].cy,
-                        nodes[edge.s].cz,
+                        edge.ns.cx,
+                        edge.ns.cy,
+                        edge.ns.cz,
                         //Punto Controllo A
-                        nodes[edge.s].cx,
-                        nodes[edge.s].cy - edge.af,
-                        nodes[edge.s].cz,
+                        edge.cpsx,
+                        edge.cpsy,
+                        edge.cpsz,
                         //Punto Controllo B
-                        nodes[edge.t].cx - pcX,
-                        nodes[edge.t].cy - edge.af,
-                        nodes[edge.t].cz - pcZ,
+                        edge.cptx,
+                        edge.cpty,
+                        edge.cptz,
                         //Nodo B
-                        nodes[edge.t].cx,
-                        nodes[edge.t].cy,
-                        nodes[edge.t].cz);
+                        edge.nt.cx,
+                        edge.nt.cy,
+                        edge.nt.cz);
                 strokeWeight(1);
 
                 //Aereoplano
-                float t = (frameCount % framerate) /  (float) framerate ;
-                //float t = 5 / (float) 10;
+                int t = (frameCount % framerate)  ;
                 pushMatrix();
                 translate(
-                        bezierPoint(nodes[edge.s].cx,nodes[edge.s].cx,nodes[edge.t].cx - pcX,nodes[edge.t].cx,t),
-                        bezierPoint(nodes[edge.s].cy,nodes[edge.s].cy - edge.af,nodes[edge.t].cy - edge.af,nodes[edge.t].cy,t),
-                        bezierPoint(nodes[edge.s].cz,nodes[edge.s].cz,nodes[edge.t].cz - pcZ,nodes[edge.t].cz,t)
+                        edge.beizPx[t],
+                        edge.beizPy[t],
+                        edge.beizPz[t]
                         );
                 fill(0, 0, 100);
+                //sphere(2);
                 box(2);
                 popMatrix();
-
-
-
             }
 
 
@@ -586,36 +589,37 @@ public class Space extends PApplet{
                 //Linea di controllo
                 stroke(edge.t, 100, 100);
                 line(
-                        nodes[edge.s].cx,
-                        nodes[edge.s].cy,
-                        nodes[edge.s].cz,
-                        nodes[edge.s].cx,
-                        nodes[edge.s].cy - edge.af,
-                        nodes[edge.s].cz);
+                        edge.ns.cx,
+                        edge.ns.cy,
+                        edge.ns.cz,
+                        edge.cpsx,
+                        edge.cpsy,
+                        edge.cpsz);
                 //Linea di controllo
                 stroke(edge.s, 100, 100);
                 line(
-                        nodes[edge.t].cx,
-                        nodes[edge.t].cy,
-                        nodes[edge.t].cz,
-                        nodes[edge.t].cx - pcX,
-                        nodes[edge.t].cy - edge.af,
-                        nodes[edge.t].cz - pcZ);
+                        edge.nt.cx,
+                        edge.nt.cy,
+                        edge.nt.cz,
+                        edge.cptx,
+                        edge.cpty,
+                        edge.cptz);
                 noStroke();
+                //Palline sul punto di controllo
                 pushMatrix();
                 translate(
-                        nodes[edge.s].cx,
-                        nodes[edge.s].cy - edge.af,
-                        nodes[edge.s].cz);
+                        edge.cpsx,
+                        edge.cpsy,
+                        edge.cpsz);
                 fill(edge.s, 100, 100);
                 sphere(2);
                 popMatrix();
 
                 pushMatrix();
                 translate(
-                        nodes[edge.t].cx - pcX,
-                        nodes[edge.t].cy - edge.af,
-                        nodes[edge.t].cz - pcZ);
+                        edge.cptx,
+                        edge.cpty,
+                        edge.cptz);
                 fill(edge.t, 100, 100);
                 sphere(2);
                 popMatrix();
@@ -631,6 +635,7 @@ public class Space extends PApplet{
 
     @Override
     public void draw() {
+    	
 	if (rotate) {
 	    cam.rotateY(0.045);
 	} else {
@@ -642,7 +647,9 @@ public class Space extends PApplet{
 
 	lights();
 
-    selected = selectNode();
+        if (mousePressed) {
+            selected = selectNode();
+        }
 
 	/* disegna il cubo che contiene la rete e i nodi solo se e' stata inizializzata una rete */
 	if (networkInitialized) {
@@ -680,10 +687,7 @@ public class Space extends PApplet{
         // reset camera and disable depth test and blending
         currCameraMatrix = new PMatrix3D(g3d.camera);
         camera();
-         double distance = cam.getDistance();
          pushMatrix();
-
-         //translate(0,0,(float) distance);
 
         noSmooth();
         stroke(0,0,100);
@@ -694,12 +698,6 @@ public class Space extends PApplet{
              //Label
              fill(0,0,100);
              text(text, scrX+mbox, scrY-mbox);
-
-         /*line(width-(textWidth(text)/2),
-                     fontSize + 2,
-                     scrX,
-                     scrY
-             );*/
         }
 
         smooth();
@@ -722,7 +720,8 @@ public class Space extends PApplet{
             if((
                     mouseDisShortest == -1 ||//Non ancora inizializzato
                             mouseDis <= mouseDisShortest
-            ) && mouseDis < box//Quasi sopra il nodo
+            ) &&
+                    (mouseDis < box)//Quasi sopra il nodo
                     ){
                 selected = i;
 		mouseDisShortest = mouseDis;
@@ -734,18 +733,77 @@ public class Space extends PApplet{
 
     class AEdge {
 
-        public int s;
-        public int t;
+        public int s;//indice nodo sorgente
+        public int t;//indice nodo target
+        public ANode ns;
+        public ANode nt;
+        //Coordinate punti di controllo
+        public float cpsx;
+        public float cpsy;
+        public float cpsz;
+        public float cptx;
+        public float cpty;
+        public float cptz;
+
+        //bezierPoint per disegnare aereoplani
+        public float[] beizPx;
+        public float[] beizPy;
+        public float[] beizPz;
+
         public float f;
         public float af;
         public float c;//color
 
         AEdge(InteractionElement ie) {
             this.s = ie.source;
+            this.ns = nodes[s];
             this.t = ie.target;
+            this.nt = nodes[t];
             this.f = ie.frequency;
             this.af = map(ie.frequency, network.getInteractionCube().getMinFrequency(), network.getInteractionCube().getMaxFrequency(),0,space);
             this.c = map(ie.frequency, network.getInteractionCube().getMinFrequency(), network.getInteractionCube().getMaxFrequency(),0,nodes.length);
+
+            //Scostamento punti controllo
+		    int pcX = ((ns.ax > nt.ax) ? 20 : -20);
+		    int pcY = ((ns.ay < nt.ay) ? 20 : -20);
+		    int pcZ = ((ns.az > nt.az) ? 20 : -20);
+
+            //punti controllo
+            this.cpsx = ns.cx;
+            this.cpsy = ns.cy - this.af;
+            this.cpsz = ns.cz;
+            this.cptx = nt.cx - pcX;
+            this.cpty = nt.cy - this.af;
+            this.cptz = nt.cz - pcZ;
+
+            //beizerPoint
+            this.beizPx  = new float[framerate];
+            this.beizPy  = new float[framerate];
+            this.beizPz  = new float[framerate];
+
+            for (int i = 0; i < framerate; i++) {
+                float t = i /  (float) framerate ;
+                this.beizPx[i] = bezierPoint(
+                        ns.cx,
+                        cpsx,
+                        cptx,
+                        nt.cx,
+                        t);
+                this.beizPy[i] = bezierPoint(
+                        ns.cy,
+                        cpsy,
+                        cpty,
+                        nt.cy,
+                        t);
+                this.beizPz[i] = bezierPoint(
+                        ns.cz,
+                        cpsz,
+                        cptz,
+                        nt.cz,
+                        t);
+            }
+
+
         }
     }
 

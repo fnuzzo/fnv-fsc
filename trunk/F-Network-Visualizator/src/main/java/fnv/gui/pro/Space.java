@@ -377,13 +377,13 @@ public class Space extends PApplet{
     //Disegna il Cubo dello spazio
 
     public void draw3DSpaceFlat() {
-        pushMatrix();
+//        pushMatrix();
         //Spazio 3D
 //        stroke(0,0,100);
 //        noFill();
-        translate(space / 2, -space / 2, space / 2);
+//        translate(space / 2, -space / 2, space / 2);
 //        box(spaceBox);
-        popMatrix();
+//        popMatrix();
 
         for (int i = 0; i <= space; i += space / boxN) {
             //stroke(255, 0, 255, 127);
@@ -768,13 +768,33 @@ public class Space extends PApplet{
 		    int pcY = ((ns.ay < nt.ay) ? 20 : -20);
 		    int pcZ = ((ns.az > nt.az) ? 20 : -20);
 
-            //punti controllo
-            this.cpsx = ns.cx;
-            this.cpsy = ns.cy - this.af;
-            this.cpsz = ns.cz;
-            this.cptx = nt.cx - pcX;
-            this.cpty = nt.cy - this.af;
-            this.cptz = nt.cz - pcZ;
+            //punti controllo sorgente
+            if (network.flat) {
+                this.cpsx = ns.cx;
+                this.cpsy = ns.cy - this.af;
+                this.cpsz = ns.cz;
+            } else {
+                /*this.cpsx = (ns.ax > nt.ax) ? ns.cx + 50 : ns.cx -50;
+                this.cpsy = (ns.ay < nt.ay) ? ns.cy + 50 : ns.cy -50;
+                this.cpsz = (ns.az > nt.az) ? ns.cz + 50 : ns.cz -50;*/
+                this.cpsx = ns.cx + 50 ;
+                this.cpsy = ((ns.y + nt.y) < boxN) ? ns.cy + space : ns.cy -space;
+                this.cpsz = ns.cz ;
+            }
+            //punti di controllo target
+            if (network.flat) {
+                this.cptx = nt.cx - pcX;
+                this.cpty = nt.cy - this.af;
+                this.cptz = nt.cz - pcZ;
+            } else {
+                /*this.cptx = (ns.ax < nt.ax) ? nt.cx + 50 : nt.cx -50;
+                this.cpty = (ns.ay > nt.ay) ? nt.cy + 50 : nt.cy -50;
+                this.cptz = (ns.az < nt.az) ? nt.cz + 50 : nt.cz -50;*/
+                this.cptx = nt.cx + 50;
+                this.cpty = ((ns.y + nt.y) < boxN) ? nt.cy + space : nt.cy - space;
+                this.cptz = nt.cz;
+
+            }
 
             //beizerPoint
             this.beizPx  = new float[framerate];

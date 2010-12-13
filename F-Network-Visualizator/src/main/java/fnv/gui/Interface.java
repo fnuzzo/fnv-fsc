@@ -42,6 +42,9 @@ import javax.swing.filechooser.FileFilter;
 import fnv.gui.pro.Space;
 import fnv.network.Network;
 import fnv.parser.InputParser;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 
 public class Interface extends JFrame implements ActionListener, ChangeListener, WindowStateListener, ComponentListener{
 
@@ -54,6 +57,7 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
     //private int TIMEVALUE = 100;
     private Space space;
     private JSlider jsTime;
+    private JSpinner spinner;
     private JMenuItem creaN;
 
 	public Interface() {
@@ -65,12 +69,11 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 	Container contentPane = getContentPane();
 	contentPane.setLayout(new BorderLayout());
 
-	
-	//networkCreationPanel.setVisible(false);
+//	networkCreationPanel.setVisible(false);
 
 	contentPane.add(buildMenu(), BorderLayout.NORTH);
 	contentPane.add(buildCentralPanel(), BorderLayout.CENTER);
-	//contentPane.add(networkCreationPanel, BorderLayout.CENTER);
+//	contentPane.add(networkCreationPanel, BorderLayout.CENTER);
 	contentPane.add(buildFooter(), BorderLayout.SOUTH);
 	pack();
 	addWindowStateListener(this);
@@ -211,6 +214,15 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 	jsTime.setValue(0);
 	jsTime.addChangeListener(this);
 
+	SpinnerModel model = new SpinnerNumberModel(space.getAnimationTime(), 0, Double.MAX_VALUE, 50);
+	spinner = new JSpinner(model);
+	Dimension spinnerDimension = new Dimension(50, 50);
+	spinner.setSize(spinnerDimension);
+	spinner.setPreferredSize(spinnerDimension);
+	spinner.setMinimumSize(spinnerDimension);
+	spinner.setMaximumSize(spinnerDimension);
+	spinner.addChangeListener(this);
+
 	//---- Build command ----
 	command = new JPanel();
 	command.setLayout(new BoxLayout(command, BoxLayout.LINE_AXIS));
@@ -219,6 +231,7 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 	command.add(pause);
 	command.add(stop);
 	command.add(jsTime);
+	command.add(spinner);
 
 	// --- tab log e config ---
 	tabpane = new JTabbedPane();
@@ -244,7 +257,9 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
     }
 
     private void fimportActionPerformed() {
-	centralPanel.remove(networkCreationPanel);
+	if (networkCreationPanel != null) {
+	    centralPanel.remove(networkCreationPanel);
+	}
 	centralPanel.add(space);
 	space.setVisible(true);
 	creaN.setEnabled(true);
@@ -350,10 +365,17 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 
     @Override
     public void stateChanged(ChangeEvent event) {
-	int t = ((JSlider) event.getSource()).getValue();
-	space.setInstant(t);
+	if (event.getSource() instanceof JSlider) {
+	    int t = ((JSlider) event.getSource()).getValue();
+	    space.setInstant(t);
+	} else if (event.getSource() instanceof JSpinner) {
+	    SpinnerModel dateModel = spinner.getModel();
+	    if (dateModel instanceof SpinnerNumberModel) {
+		int newAnimationTimeSec = ((SpinnerNumberModel) dateModel).getNumber().intValue();
+		space.setAnimationTime(newAnimationTimeSec);
+	    }
+	}
     }
-
  
 	@Override
 	public void windowStateChanged(WindowEvent e) {

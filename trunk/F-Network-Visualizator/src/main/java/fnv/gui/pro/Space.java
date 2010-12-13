@@ -38,9 +38,7 @@ public class Space extends PApplet{
     
 
 	public Space(Interface inter){
-	
 		this.inter = inter;
-	
 	}
 	
 	
@@ -95,6 +93,8 @@ public class Space extends PApplet{
 
     private int WIDTH;
     private int HEIGHT;
+
+    private int animationTimeSec = 1;
       
     //Nodi
     ANode[] nodes = new ANode[0];
@@ -104,6 +104,17 @@ public class Space extends PApplet{
 
     //Archi
     AEdge[][] edges = new AEdge[0][0];
+
+    public int getAnimationTime() {
+	return animationTimeSec;
+    }
+
+    public void setAnimationTime(int animationTimeSec) {
+	this.animationTimeSec = animationTimeSec;
+	updateAnimationTimer(animationTimeSec);
+    }
+
+
 
     public void incrementInstant() {
 	if (network != null) {
@@ -133,6 +144,8 @@ public class Space extends PApplet{
 	initializeBox();
 	initializeNodes();
 	initializeTimer();
+	setAnimationTime();
+	
 	rotationTimer.start();
 
 	networkInitialized = true;
@@ -302,15 +315,14 @@ public class Space extends PApplet{
     		spaceVisible = !spaceVisible;
     }
 
-    private void setTime() {
-	if (network != null) {
-	 animationTimer = new Timer(1000, new ActionListener() {
+    private void setAnimationTime() {
+	//if (networkInitialized) {
+
+	 animationTimer = new Timer(animationTimeSec * 1000, new ActionListener() {
 
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		//TODO debug
-		System.out.println("PRIMA: network.getNumberOfInstants() = " + network.getNumberOfInstants() + " instant = " + instant);
-
+		if (networkInitialized) {
 		if (network.getNumberOfInstants() != instant) {
 		    incrementInstant();
 		    int value = (instant * 100) / network.getNumberOfInstants();
@@ -318,12 +330,14 @@ public class Space extends PApplet{
 		} else {
 		    animationTimer.stop();
 		}
-
-		//TODO debug
-		System.out.println("DOPO: network.getNumberOfInstants() = " + network.getNumberOfInstants() + " instant = " + instant);
+		}
 	    }
 	});
-	}
+	//}
+    }
+
+    public void updateAnimationTimer(int newAnimationTimeSec) {
+	animationTimer.setDelay(newAnimationTimeSec);
     }
     
     
@@ -368,7 +382,7 @@ public class Space extends PApplet{
 		    nodesDrawn += nodesFraction;
 		} else {
 		    rotate = false;
-		    setTime();
+		    //setAnimationTime();
 		}
 	    }
 	});

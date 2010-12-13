@@ -214,7 +214,7 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 	jsTime.setValue(0);
 	jsTime.addChangeListener(this);
 
-	SpinnerModel model = new SpinnerNumberModel(space.getAnimationTime(), 0, Double.MAX_VALUE, 50);
+	SpinnerModel model = new SpinnerNumberModel(space.getAnimationTime(), 0, Double.MAX_VALUE, 0.5);
 	spinner = new JSpinner(model);
 	Dimension spinnerDimension = new Dimension(50, 50);
 	spinner.setSize(spinnerDimension);
@@ -359,7 +359,7 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 	//footer.remove(jsTime);
 	jsTime.setValue(value);
 	//footer.add(jsTime);
-	System.out.println(value);
+	//System.out.println(value);
 	//jsTime.repaint();
     }
 
@@ -371,7 +371,7 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 	} else if (event.getSource() instanceof JSpinner) {
 	    SpinnerModel dateModel = spinner.getModel();
 	    if (dateModel instanceof SpinnerNumberModel) {
-		int newAnimationTimeSec = ((SpinnerNumberModel) dateModel).getNumber().intValue();
+		double newAnimationTimeSec = ((SpinnerNumberModel) dateModel).getNumber().doubleValue();
 		space.setAnimationTime(newAnimationTimeSec);
 	    }
 	}

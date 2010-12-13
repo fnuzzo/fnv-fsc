@@ -94,7 +94,7 @@ public class Space extends PApplet{
     private int WIDTH;
     private int HEIGHT;
 
-    private int animationTimeSec = 1;
+    private double animationTimeSec = 1;
       
     //Nodi
     ANode[] nodes = new ANode[0];
@@ -105,11 +105,11 @@ public class Space extends PApplet{
     //Archi
     AEdge[][] edges = new AEdge[0][0];
 
-    public int getAnimationTime() {
+    public double getAnimationTime() {
 	return animationTimeSec;
     }
 
-    public void setAnimationTime(int animationTimeSec) {
+    public void setAnimationTime(double animationTimeSec) {
 	this.animationTimeSec = animationTimeSec;
 	updateAnimationTimer(animationTimeSec);
     }
@@ -117,8 +117,9 @@ public class Space extends PApplet{
 
 
     public void incrementInstant() {
-	if (network != null) {
-	    if (instant < (network.getNumberOfInstants()-1)) {
+	if (networkInitialized) {
+	    //if (instant < (network.getNumberOfInstants()-1)) {
+	    if (instant < network.getNumberOfInstants()) {
 		instant++;
 	    }
 	}
@@ -131,7 +132,7 @@ public class Space extends PApplet{
     }
 
     public void setInstant(int sliderValue) {
-	if (network != null) {
+	if (networkInitialized) {
 	    instant = (network.getNumberOfInstants() * sliderValue) / 100;
 	}
     }
@@ -316,47 +317,43 @@ public class Space extends PApplet{
     }
 
     private void setAnimationTime() {
-	//if (networkInitialized) {
-
-	 animationTimer = new Timer(animationTimeSec * 1000, new ActionListener() {
+	animationTimer = new Timer((int) (animationTimeSec * 1000), new ActionListener() {
 
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 		if (networkInitialized) {
-		if (network.getNumberOfInstants() != instant) {
+		    //TODO debug
+		    System.out.println("animationTimer.getDelay(): " + animationTimer.getDelay() + " instant = " + instant);
+
 		    incrementInstant();
 		    int value = (instant * 100) / network.getNumberOfInstants();
 		    inter.setValuejstime(value);
-		} else {
-		    animationTimer.stop();
-		}
+
+		    if (instant == network.getNumberOfInstants()) {
+			animationTimer.stop();
+		    }
 		}
 	    }
 	});
-	//}
     }
 
-    public void updateAnimationTimer(int newAnimationTimeSec) {
-	animationTimer.setDelay(newAnimationTimeSec);
+    public void updateAnimationTimer(double newAnimationTimeSec) {
+	animationTimer.setDelay((int) (newAnimationTimeSec * 1000));
     }
     
-    
-    public void optionsTime(String options){
-    	if(options.equals("play"))
-    		animationTimer.start();
-    	else if (options.equals("pause"))
-    		animationTimer.stop();
-    	else if (options.equals("stop")){
-    			//instant = network.getNumberOfInstants();
-	    instant = 0;
-    			animationTimer.stop();
-    		}
-    	
-    	
+    public void optionsTime(String options) {
+	if (!rotate) {
+	    if (options.equals("play")) {
+		animationTimer.start();
+	    } else if (options.equals("pause")) {
+		animationTimer.stop();
+	    } else if (options.equals("stop")) {
+		instant = 0;
+		animationTimer.stop();
+	    }
+	}
     }
-  
-    
-    
+
     public void initializeTimer() {
 
 	rotationTimer = new Timer(1000, new ActionListener() {
@@ -382,7 +379,6 @@ public class Space extends PApplet{
 		    nodesDrawn += nodesFraction;
 		} else {
 		    rotate = false;
-		    //setAnimationTime();
 		}
 	    }
 	});
@@ -391,127 +387,23 @@ public class Space extends PApplet{
     //Disegna il Cubo dello spazio
 
     public void draw3DSpaceFlat() {
-//        pushMatrix();
-        //Spazio 3D
-//        stroke(0,0,100);
-//        noFill();
-//        translate(space / 2, -space / 2, space / 2);
-//        box(spaceBox);
-//        popMatrix();
-
-        for (int i = 0; i <= space; i += space / boxN) {
-            //stroke(255, 0, 255, 127);
-            stroke(0,0,50);
-            line(i, 0, 0, i, 0, space);//Linee verticali
-            line(0, 0, i, space, 0, i);//Linee orizzontali
-            stroke(0,0,50);
-//            line(i, 0, spaceBox, spaceBox, 0, i);//Linee trasversali
-//            line(i, 0, 0, 0, 0, i);
-//
-//            stroke(nodes.length/2,100,100);
-//            line(0, i * -1, 0, spaceBox, i * -1, 0);//Parete dietro
-        }
+	for (int i = 0; i <= space; i += space / boxN) {
+	    //stroke(255, 0, 255, 127);
+	    stroke(0, 0, 50);
+	    line(i, 0, 0, i, 0, space);//Linee verticali
+	    line(0, 0, i, space, 0, i);//Linee orizzontali
+	    stroke(0, 0, 50);
+	}
 
     }
 
     public void draw3DSpaceSphere() {
-        pushMatrix();
-        translate(space / 2, -space / 2, space / 2);
-        sphere(space / 2);
+	pushMatrix();
+	translate(space / 2, -space / 2, space / 2);
+	sphere(space / 2);
 
-//	ellipse(network.maxCoordinate, network.maxCoordinate, space, space);
-        popMatrix();
-
-	//drawSphere(space / 2, 10);
-//	draw3dCircle();
-
-//	for (int i = network.maxCoordinate * 2; i > 0; i -= box) {
-//	    ellipse(network.maxCoordinate, i, space, space);
-//
-//	}
+	popMatrix();
     }
-
- 
-
-
-
-    void drawSphere(int heightSteps, int points) {
-	//int radius = space / 2;
-	int sphereRow = 1; //(int)random(8);
-	int sphereRowInc = 2;
-	int sphereColumn = 1; //(int)random(8);
-	int sphereColumnInc = 2;
-//	boolean isSelected = true;
-
-
-	float cx[][] = new float[heightSteps][points], cy[][] = new float[heightSteps][points], cz[][] = new float[heightSteps][points];
-
-//	for (int i = 0; i < heightSteps; i++) {
-//	    float czTmp = radius * cos(i * TWO_PI / (heightSteps - 1) / 2);
-//	    float radiusTmp = sqrt(sq(radius) - sq(czTmp));
-//	    for (int j = 0; j < points; j++) {
-//		float cxTmp = radiusTmp * sin(j * TWO_PI / points + rotZ);
-//		float cyTmp = radiusTmp * cos(j * TWO_PI / points + rotZ);
-//		cx[i][j] = cxTmp + x;
-//		cy[i][j] = cyTmp + y;
-//		cz[i][j] = czTmp + 0;
-//		//stroke(255); strokeWeight(2);
-//		//point(cxTmp, cyTmp, czTmp);
-//	    } // end for j
-	    //cz += heightStepsDis;
-//	} // end for i
-
-	// draw sphere
-	if (frameCount % 4 == 0) {
-	    sphereRow += sphereRowInc;
-	    if (sphereRow >= cx.length - 1 || sphereRow <= 0) {
-		sphereRowInc *= -1;
-	    }
-
-	    sphereColumn += sphereColumnInc;
-	    if (sphereColumn >= points) {
-		sphereColumn = 1;
-	    }
-	}
-	for (int i = 0; i < cx.length - 1; i++) {
-	    for (int j = 0; j < cx[i].length; j++) {
-//		fill((int)(255 - (i + 1) * 255 / heightSteps * 1.0));
-//		if (i == sphereRow || j == sphereColumn) {
-//		    fill((float)(255 - (i + 1) * 255 / heightSteps * 1.0), (float)0, (float)0);
-//		}
-//		if (isSelected) {
-//		    fill((float)(255 - (i + 1) * 255 / heightSteps * 1.0), (float)(150 - (i + 1) * 150 / heightSteps * 1.0), (float)0);
-//		}
-//		if (isSelected && (i == sphereRow || j == sphereColumn)) {
-//		    fill((float)(255 - (i + 1) * 255 / heightSteps * 1.0));
-//		}
-		//else continue;
-//		if ((j) % 2 == 0 && i % 2 == 0) {
-//		    continue;
-//		}
-		float scaleSphere = 1;
-		int indexNext = j + 1;
-		if (j == cx[i].length - 1) {
-		    indexNext = 0;
-		}
-		float x1 = cx[i + 0][j + 0] * scaleSphere, y1 = cy[i + 0][j + 0] * scaleSphere, z1 = cz[i + 0][j + 0] * scaleSphere;
-		float x2 = cx[i + 0][indexNext] * scaleSphere, y2 = cy[i + 0][indexNext] * scaleSphere, z2 = cz[i + 0][indexNext] * scaleSphere;
-		float x3 = cx[i + 1][indexNext] * scaleSphere, y3 = cy[i + 1][indexNext] * scaleSphere, z3 = cz[i + 1][indexNext] * scaleSphere;
-		float x4 = cx[i + 1][j + 0] * scaleSphere, y4 = cy[i + 1][j + 0] * scaleSphere, z4 = cz[i + 1][j + 0] * scaleSphere;
-
-		noStroke();
-		beginShape(TRIANGLE_STRIP);
-		vertex(x1, y1, z1);
-		vertex(x2, y2, z2);
-		vertex(x4, y4, z4);
-		vertex(x3, y3, z3);
-		endShape();
-		//stroke(0);
-		//strokeWeight((float)0.2);
-		//line(x1, y1, z1, x2, y2, z2); line(x2, y2, z2, x3, y3, z3); line(x3, y3, z3, x4, y4, z4); line(x4, y4, z4, x1, y1, z1);
-	    } // end for j
-	} // end for i
-    } // end void drawSphere(int heightSteps, int points)
 
     /* disegna i nodi nello spazio 3d */
     public void drawNodes() {
@@ -536,113 +428,111 @@ public class Space extends PApplet{
     }
 
     public void drawEdges() {
+	int displayedInstant;
+	if (instant < edges.length) {
+	    displayedInstant = instant;
+	} else {
+	    displayedInstant = edges.length - 1;
+	}
 
 	//Disegno i nodi per l'istante giusto
 	//InteractionElement[] edges = network.getInteractionCube().getAllInteractions(instant);
 
-	for (AEdge edge : edges[instant]) {
+	for (AEdge edge : edges[displayedInstant]) {
 	    if (nodes[edge.s].visible && nodes[edge.t].visible) {
 
-            if (selected == -1) {
-                stroke(edge.c,100,100);//Archi colorati
-            } else {
-                stroke(0,0,100);//Archi bianchi
-            }
-            //I collegamenti del nodo selezionato sono più grossi
-            boolean ev = false;
-            if (//Archi visualizzati colorati se
-                    (edgeIn && selected == edge.t)//Nodo selezionato è una destinazione
-                    ^
-                    (!edgeIn && selected == edge.s)//Nodo selezionato è una sorgente
-                    ) {
-                strokeWeight(3);
-                stroke(edge.c, 100, 100);
-                ev = true;
-            }
+		if (selected == -1) {
+		    stroke(edge.c, 100, 100);//Archi colorati
+		} else {
+		    stroke(0, 0, 100);//Archi bianchi
+		}
+		//I collegamenti del nodo selezionato sono più grossi
+		boolean ev = false;
+		if (//Archi visualizzati colorati se
+			(edgeIn && selected == edge.t)//Nodo selezionato è una destinazione
+			^ (!edgeIn && selected == edge.s)//Nodo selezionato è una sorgente
+			) {
+		    strokeWeight(3);
+		    stroke(edge.c, 100, 100);
+		    ev = true;
+		}
 
-            if (edgeVisible || ev) {
-                noFill();
-                bezierDetail(40);//Aumenta dettaglio grafico dei collegamenti
-                bezier(
-                        //Nodo A
-                        edge.ns.cx,
-                        edge.ns.cy,
-                        edge.ns.cz,
-                        //Punto Controllo A
-                        edge.cpsx,
-                        edge.cpsy,
-                        edge.cpsz,
-                        //Punto Controllo B
-                        edge.cptx,
-                        edge.cpty,
-                        edge.cptz,
-                        //Nodo B
-                        edge.nt.cx,
-                        edge.nt.cy,
-                        edge.nt.cz);
-                strokeWeight(1);
+		if (edgeVisible || ev) {
+		    noFill();
+		    bezierDetail(40);//Aumenta dettaglio grafico dei collegamenti
+		    bezier(
+			    //Nodo A
+			    edge.ns.cx,
+			    edge.ns.cy,
+			    edge.ns.cz,
+			    //Punto Controllo A
+			    edge.cpsx,
+			    edge.cpsy,
+			    edge.cpsz,
+			    //Punto Controllo B
+			    edge.cptx,
+			    edge.cpty,
+			    edge.cptz,
+			    //Nodo B
+			    edge.nt.cx,
+			    edge.nt.cy,
+			    edge.nt.cz);
+		    strokeWeight(1);
 
-                //Aereoplano
-                int t = (frameCount % framerate)  ;
-                pushMatrix();
-                translate(
-                        edge.beizPx[t],
-                        edge.beizPy[t],
-                        edge.beizPz[t]
-                        );
-                fill(0, 0, 100);
-                //sphere(2);
-                box(2);
-                popMatrix();
-            }
+		    //Aereoplano
+		    int t = (frameCount % framerate);
+		    pushMatrix();
+		    translate(
+			    edge.beizPx[t],
+			    edge.beizPy[t],
+			    edge.beizPz[t]);
+		    fill(0, 0, 100);
+		    //sphere(2);
+		    box(2);
+		    popMatrix();
+		}
 
+		if (showControlPoint) {
 
+		    //Linea di controllo
+		    stroke(edge.t, 100, 100);
+		    line(
+			    edge.ns.cx,
+			    edge.ns.cy,
+			    edge.ns.cz,
+			    edge.cpsx,
+			    edge.cpsy,
+			    edge.cpsz);
+		    //Linea di controllo
+		    stroke(edge.s, 100, 100);
+		    line(
+			    edge.nt.cx,
+			    edge.nt.cy,
+			    edge.nt.cz,
+			    edge.cptx,
+			    edge.cpty,
+			    edge.cptz);
+		    noStroke();
+		    //Palline sul punto di controllo
+		    pushMatrix();
+		    translate(
+			    edge.cpsx,
+			    edge.cpsy,
+			    edge.cpsz);
+		    fill(edge.s, 100, 100);
+		    sphere(2);
+		    popMatrix();
 
-            if (showControlPoint) {
-
-                //Linea di controllo
-                stroke(edge.t, 100, 100);
-                line(
-                        edge.ns.cx,
-                        edge.ns.cy,
-                        edge.ns.cz,
-                        edge.cpsx,
-                        edge.cpsy,
-                        edge.cpsz);
-                //Linea di controllo
-                stroke(edge.s, 100, 100);
-                line(
-                        edge.nt.cx,
-                        edge.nt.cy,
-                        edge.nt.cz,
-                        edge.cptx,
-                        edge.cpty,
-                        edge.cptz);
-                noStroke();
-                //Palline sul punto di controllo
-                pushMatrix();
-                translate(
-                        edge.cpsx,
-                        edge.cpsy,
-                        edge.cpsz);
-                fill(edge.s, 100, 100);
-                sphere(2);
-                popMatrix();
-
-                pushMatrix();
-                translate(
-                        edge.cptx,
-                        edge.cpty,
-                        edge.cptz);
-                fill(edge.t, 100, 100);
-                sphere(2);
-                popMatrix();
-
-
-            }
-
-
-        }
+		    pushMatrix();
+		    translate(
+			    edge.cptx,
+			    edge.cpty,
+			    edge.cptz);
+		    fill(edge.t, 100, 100);
+		    sphere(2);
+		    popMatrix();
+		}
+	    }
 	}
 	noFill();
     }

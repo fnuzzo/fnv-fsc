@@ -68,16 +68,22 @@ public class NetworkGenerator {
 	}
 
 	for (int i = 0; i < instants; i++) {
-	    int instant = i + 1;
-	    int sources = random.nextInt(nodes.size());
-
+	    int instant = i;
+	    /* ogni istante deve avere almeno un'interazione */
+	    int sources = Math.max(1, random.nextInt(nodes.size()));
+	    
 	    for (int j = 0; j < sources; j++) {
-		int target = random.nextInt(nodes.size());
-
+		/* ogni istante deve avere almeno un'interazione */
+		int target = Math.max(1, random.nextInt(nodes.size()));
+		
 		int source = nodes.get(random.nextInt(nodes.size())).id;
 
 		for (int k = 0; k < target; k++) {
-		    int destination = nodes.get(random.nextInt(nodes.size())).id;
+		    int destination;
+		    do {
+			destination = nodes.get(random.nextInt(nodes.size())).id;
+//			System.out.println(source + " " + destination);
+		    } while (source == destination);
 
 		    interactionCube.addInteraction(instant, source, destination, random.nextFloat(), String.valueOf(instant));
 		}
@@ -87,6 +93,5 @@ public class NetworkGenerator {
 	Network network = new Network(name, new NodesList(nodes), interactionCube, flat);
 
 	XmlGenerator.generate(network);
-//	System.out.println(network);
     }
 }

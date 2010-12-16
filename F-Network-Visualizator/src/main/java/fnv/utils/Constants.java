@@ -21,4 +21,11 @@ public final class Constants {
 	public final static String XML_INTERACTION_SOURCE_ATTR = "source";
 	public final static String XML_INTERACTION_TARGET_ATTR = "target";
 	public final static String XML_INTERACTION_FREQUENCY_ATTR = "frequency";
+
+	//
+	public final static String GUI_ABOUT_MESSAGE = "Network Visualizator\n"
+		+ "Autori:\n"
+		+ "Giacomo Benvenuti\n"
+		+ "Enrico D'Angelo\n"
+		+ "Fabrizio Nuzzo";
 }

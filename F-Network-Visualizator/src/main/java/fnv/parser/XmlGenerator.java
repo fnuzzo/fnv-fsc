@@ -11,6 +11,7 @@ import fnv.network.Node;
 import fnv.utils.Constants;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.Format;
@@ -60,10 +61,28 @@ public class XmlGenerator {
 	/* interazioni tra i nodi */
 	for (int i = 0; i < network.getNumberOfInstants(); i++) {
 	    Element networkInstant = new Element(Constants.XML_INSTANT);
-	    networkInstant.setAttribute(Constants.XML_INSTANT_VALUE_ATTR, String.valueOf(i + 1));
-	    networkInstant.setAttribute(Constants.XML_INSTANT_LABEL_ATTR, String.valueOf(i + 1));
+	    networkInstant.setAttribute(Constants.XML_INSTANT_VALUE_ATTR, String.valueOf(i));
+	    networkInstant.setAttribute(Constants.XML_INSTANT_LABEL_ATTR, String.valueOf(i));
 
-	    InteractionElement[] allInteractions = network.getInteractionCube().getAllInteractions(i + 1);
+//	    //TODO debug
+//	    if (network == null) {
+//		System.out.println("network e' null");
+//		System.out.println(network);
+//	    }
+//	    if (network.getInteractionCube() == null) {
+//		System.out.println("network.getInteractionCube() e' null");
+//		System.out.println(network);
+//	    }
+//	    if (network.getInteractionCube().getInstant(i) == null) {
+//		System.out.println("network.getInteractionCube().getInstant(" + i + ") e' null");
+//		System.out.println(network);
+//	    }
+//	    if (network.getInteractionCube().getInstant(i).getAllInteractions() == null) {
+//		System.out.println("network.getInteractionCube().getInstant(" + i + ").getAllInteractions() e' null");
+//		System.out.println(network);
+//	    }
+
+	    ArrayList<InteractionElement> allInteractions = network.getInteractionCube().getInstant(i).getAllInteractions();
 	    for (InteractionElement interactionElement : allInteractions) {
 		Element networkInteraction = new Element(Constants.XML_INTERACTION);
 		networkInteraction.setAttribute(Constants.XML_INTERACTION_SOURCE_ATTR, String.valueOf(interactionElement.source));

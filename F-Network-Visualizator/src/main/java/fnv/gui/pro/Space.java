@@ -36,26 +36,15 @@ import processing.opengl.*;
  */
 public class Space extends PApplet{
     
-
-	public Space(Interface inter){
-		this.inter = inter;
-	}
-	
-	
-	Interface inter;
-	
-	Timer rotationTimer, animationTimer;
-   
+    Interface swingInterface;
+    Timer rotationTimer, animationTimer;
     //Frame al secondo
     int framerate = 20;
-
     //Font etichette
     PFont f;
     int fontSize = 32;
     String text = "";
-
-    private int instant = 0;
-
+    private int instant = -1;
     //Lato dello spazio in box
     int boxN;
     /* Lato di un box in px */
@@ -64,23 +53,17 @@ public class Space extends PApplet{
     int mbox;
     /* Lato dello spazio in px */
     int space;
-
     boolean spaceVisible = true;
     //Evidenzia gli archi entranti al posto degli uscenti
     boolean edgeIn = false;
-
     //Il nodo correntemente selezionato
     int selected = -1;
-
     //Nasconde gli archi non selezionati
     boolean edgeVisible = true;
-
     //Lato dei nodi in px
     int nodesize = 10;
-
     //Visualizza i punti e le linee di controllo
     boolean showControlPoint = false;
-
     //Per disegnare in primo piano, ad esempio il mirino
     PMatrix3D currCameraMatrix;
     PGraphics3D g3d;
@@ -90,20 +73,20 @@ public class Space extends PApplet{
     boolean rotate = false;
     // http://mrfeinberg.com/peasycam/reference/index.html
     private PeasyCam cam;
-
     private int WIDTH;
     private int HEIGHT;
-
     private double animationTimeSec = 1;
-      
     //Nodi
     ANode[] nodes = new ANode[0];
     Network network = new Network();
     /* indica se e' stata inizializzata una rete */
     boolean networkInitialized = false;
-
     //Archi
     AEdge[][] edges = new AEdge[0][0];
+
+    public Space(Interface inter) {
+	this.swingInterface = inter;
+    }
 
     public double getAnimationTime() {
 	return animationTimeSec;
@@ -114,13 +97,16 @@ public class Space extends PApplet{
 	updateAnimationTimer(animationTimeSec);
     }
 
-
+    public int getInstant() {
+	return instant;
+    }
 
     public void incrementInstant() {
 	if (networkInitialized) {
 	    //if (instant < (network.getNumberOfInstants()-1)) {
 	    if (instant < network.getNumberOfInstants()) {
 		instant++;
+		swingInterface.instantChanged();
 	    }
 	}
     }
@@ -128,6 +114,7 @@ public class Space extends PApplet{
     public void decrementInstant() {
 	if (instant > 0) {
 	    instant--;
+	    swingInterface.instantChanged();
 	}
     }
 
@@ -152,6 +139,10 @@ public class Space extends PApplet{
 	networkInitialized = true;
     }
 
+    public Network getNetwork() {
+	return network;
+    }
+
     public void initializeNodes() {
         /* crea gli oggetti che rappresentano i nodi nello spazio 3d */
         ArrayList<ANode> allnodes = new ArrayList<ANode>();
@@ -165,11 +156,16 @@ public class Space extends PApplet{
         //Inizializza archi
         ArrayList<AEdge[]> aedgeList = new ArrayList<AEdge[]>();
         for (int i = 0; i < network.getNumberOfInstants(); i++) {
-            InteractionElement[] eds = network.getInteractionCube().getAllInteractions(i);
-            AEdge[] aEdges = new AEdge[eds.length];
-            for (int j = 0; j < eds.length; j++) {
-                aEdges[j] = new AEdge(eds[j]);
+	    ArrayList<InteractionElement> eds2 = network.getInteractionCube().getInstant(i).getAllInteractions();
+	    AEdge[] aEdges = new AEdge[eds2.size()];
+            for (int j = 0; j < eds2.size(); j++) {
+                aEdges[j] = new AEdge(eds2.get(j));
             }
+	    //InteractionElement[] eds = network.getInteractionCube().getInstant(i).getAllInteractions().toArray(new InteractionElement[0]);
+            //AEdge[] aEdges = new AEdge[eds.length];
+            //for (int j = 0; j < eds.length; j++) {
+            //    aEdges[j] = new AEdge(eds[j]);
+            //}
             aedgeList.add(i,aEdges);
         }
         edges = aedgeList.toArray(new AEdge[0][aedgeList.size()]);
@@ -230,8 +226,18 @@ public class Space extends PApplet{
 
     }
     
-    
-    
+    private void toggleEdgesIn() {
+	edgeIn = !edgeIn;
+    }
+
+    private void toggleEdges() {
+	edgeVisible = !edgeVisible;
+    }
+
+    private void toggleSpaceVisible() {
+	spaceVisible = !spaceVisible;
+    }
+
     @Override
     public void keyPressed() {
         if (key == CODED) {
@@ -245,19 +251,19 @@ public class Space extends PApplet{
                     break;
                 case RIGHT:
                 	resize(new Dimension(800, 600));
-                    println(instant);
+//                    println(instant);
                     break;
                 case LEFT:
                 	resize(new Dimension(200, 200));
-                    println(instant);
+//                    println(instant);
                     break;
                 case KeyEvent.VK_PAGE_UP:
 		    incrementInstant();
-                    print(instant);
+//                    print(instant);
                     break;
                 case KeyEvent.VK_PAGE_DOWN:
 		    decrementInstant();
-                    print(instant);
+//                    print(instant);
                     break;
 
             }
@@ -279,18 +285,26 @@ public class Space extends PApplet{
                         println(frameRate);
                         break;
                     case 's':
-                        spaceVisible = !spaceVisible;  //ok
+                        toggleSpaceVisible();  //ok
                         break;
                     case 'e':
-                        edgeIn = !edgeIn;  //ok
+                        toggleEdgesIn();  //ok
                         break;
                     case 'r':
-                    	edgeVisible = !edgeVisible;  //ok
+                    	toggleEdges();  //ok
                         break;
                 }
             }
         }
+    }
 
+    public void setOptions(String options){
+    	if(options.equals("edgeIn"))
+    		toggleEdgesIn();
+    	else if(options.equals("edgeOut"))
+    		toggleEdges();
+    	else if(options.equals("spaceVisible"))
+    		toggleSpaceVisible();
     }
     
     public void resizeSpace(Dimension d){    	
@@ -305,16 +319,6 @@ public class Space extends PApplet{
 //	setPreferredSize(d);
 	resizeRenderer(d.width, d.height);
     }
-    
-
-    public void setOptions(String options){
-    	if(options.equals("edgeIn"))
-    		edgeIn = !edgeIn;
-    	else if(options.equals("edgeOut"))
-    		edgeVisible = !edgeVisible;
-    	else if(options.equals("spaceVisible"))
-    		spaceVisible = !spaceVisible;
-    }
 
     private void setAnimationTime() {
 	animationTimer = new Timer((int) (animationTimeSec * 1000), new ActionListener() {
@@ -327,7 +331,7 @@ public class Space extends PApplet{
 
 		    incrementInstant();
 		    int value = (instant * 100) / network.getNumberOfInstants();
-		    inter.setValuejstime(value);
+		    swingInterface.setValuejstime(value);
 
 		    if (instant == network.getNumberOfInstants()) {
 			animationTimer.stop();
@@ -428,113 +432,115 @@ public class Space extends PApplet{
     }
 
     public void drawEdges() {
-	int displayedInstant;
-	if (instant < edges.length) {
-	    displayedInstant = instant;
-	} else {
-	    displayedInstant = edges.length - 1;
-	}
+	if (instant != -1) {
+	    int displayedInstant;
+	    if (instant < edges.length) {
+		displayedInstant = instant;
+	    } else {
+		displayedInstant = edges.length - 1;
+	    }
 
-	//Disegno i nodi per l'istante giusto
-	//InteractionElement[] edges = network.getInteractionCube().getAllInteractions(instant);
+	    //Disegno i nodi per l'istante giusto
+	    //InteractionElement[] edges = network.getInteractionCube().getAllInteractions(instant);
 
-	for (AEdge edge : edges[displayedInstant]) {
-	    if (nodes[edge.s].visible && nodes[edge.t].visible) {
+	    for (AEdge edge : edges[displayedInstant]) {
+		if (nodes[edge.s].visible && nodes[edge.t].visible) {
 
-		if (selected == -1) {
-		    stroke(edge.c, 100, 100);//Archi colorati
-		} else {
-		    stroke(0, 0, 100);//Archi bianchi
-		}
-		//I collegamenti del nodo selezionato sono più grossi
-		boolean ev = false;
-		if (//Archi visualizzati colorati se
-			(edgeIn && selected == edge.t)//Nodo selezionato è una destinazione
-			^ (!edgeIn && selected == edge.s)//Nodo selezionato è una sorgente
-			) {
-		    strokeWeight(3);
-		    stroke(edge.c, 100, 100);
-		    ev = true;
-		}
+		    if (selected == -1) {
+			stroke(edge.c, 100, 100);//Archi colorati
+		    } else {
+			stroke(0, 0, 100);//Archi bianchi
+		    }
+		    //I collegamenti del nodo selezionato sono più grossi
+		    boolean ev = false;
+		    if (//Archi visualizzati colorati se
+			    (edgeIn && selected == edge.t)//Nodo selezionato è una destinazione
+			    ^ (!edgeIn && selected == edge.s)//Nodo selezionato è una sorgente
+			    ) {
+			strokeWeight(3);
+			stroke(edge.c, 100, 100);
+			ev = true;
+		    }
 
-		if (edgeVisible || ev) {
-		    noFill();
-		    bezierDetail(40);//Aumenta dettaglio grafico dei collegamenti
-		    bezier(
-			    //Nodo A
-			    edge.ns.cx,
-			    edge.ns.cy,
-			    edge.ns.cz,
-			    //Punto Controllo A
-			    edge.cpsx,
-			    edge.cpsy,
-			    edge.cpsz,
-			    //Punto Controllo B
-			    edge.cptx,
-			    edge.cpty,
-			    edge.cptz,
-			    //Nodo B
-			    edge.nt.cx,
-			    edge.nt.cy,
-			    edge.nt.cz);
-		    strokeWeight(1);
+		    if (edgeVisible || ev) {
+			noFill();
+			bezierDetail(40);//Aumenta dettaglio grafico dei collegamenti
+			bezier(
+				//Nodo A
+				edge.ns.cx,
+				edge.ns.cy,
+				edge.ns.cz,
+				//Punto Controllo A
+				edge.cpsx,
+				edge.cpsy,
+				edge.cpsz,
+				//Punto Controllo B
+				edge.cptx,
+				edge.cpty,
+				edge.cptz,
+				//Nodo B
+				edge.nt.cx,
+				edge.nt.cy,
+				edge.nt.cz);
+			strokeWeight(1);
 
-		    //Aereoplano
-		    int t = (frameCount % framerate);
-		    pushMatrix();
-		    translate(
-			    edge.beizPx[t],
-			    edge.beizPy[t],
-			    edge.beizPz[t]);
-		    fill(0, 0, 100);
-		    //sphere(2);
-		    box(2);
-		    popMatrix();
-		}
+			//Aereoplano
+			int t = (frameCount % framerate);
+			pushMatrix();
+			translate(
+				edge.beizPx[t],
+				edge.beizPy[t],
+				edge.beizPz[t]);
+			fill(0, 0, 100);
+			//sphere(2);
+			box(2);
+			popMatrix();
+		    }
 
-		if (showControlPoint) {
+		    if (showControlPoint) {
 
-		    //Linea di controllo
-		    stroke(edge.t, 100, 100);
-		    line(
-			    edge.ns.cx,
-			    edge.ns.cy,
-			    edge.ns.cz,
-			    edge.cpsx,
-			    edge.cpsy,
-			    edge.cpsz);
-		    //Linea di controllo
-		    stroke(edge.s, 100, 100);
-		    line(
-			    edge.nt.cx,
-			    edge.nt.cy,
-			    edge.nt.cz,
-			    edge.cptx,
-			    edge.cpty,
-			    edge.cptz);
-		    noStroke();
-		    //Palline sul punto di controllo
-		    pushMatrix();
-		    translate(
-			    edge.cpsx,
-			    edge.cpsy,
-			    edge.cpsz);
-		    fill(edge.s, 100, 100);
-		    sphere(2);
-		    popMatrix();
+			//Linea di controllo
+			stroke(edge.t, 100, 100);
+			line(
+				edge.ns.cx,
+				edge.ns.cy,
+				edge.ns.cz,
+				edge.cpsx,
+				edge.cpsy,
+				edge.cpsz);
+			//Linea di controllo
+			stroke(edge.s, 100, 100);
+			line(
+				edge.nt.cx,
+				edge.nt.cy,
+				edge.nt.cz,
+				edge.cptx,
+				edge.cpty,
+				edge.cptz);
+			noStroke();
+			//Palline sul punto di controllo
+			pushMatrix();
+			translate(
+				edge.cpsx,
+				edge.cpsy,
+				edge.cpsz);
+			fill(edge.s, 100, 100);
+			sphere(2);
+			popMatrix();
 
-		    pushMatrix();
-		    translate(
-			    edge.cptx,
-			    edge.cpty,
-			    edge.cptz);
-		    fill(edge.t, 100, 100);
-		    sphere(2);
-		    popMatrix();
+			pushMatrix();
+			translate(
+				edge.cptx,
+				edge.cpty,
+				edge.cptz);
+			fill(edge.t, 100, 100);
+			sphere(2);
+			popMatrix();
+		    }
 		}
 	    }
+	    noFill();
 	}
-	noFill();
     }
 
     @Override

@@ -40,15 +40,24 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 
 import fnv.gui.pro.Space;
+import fnv.network.Instant;
+import fnv.network.InteractionElement;
 import fnv.network.Network;
 import fnv.parser.InputParser;
+import fnv.utils.Constants;
+import java.awt.Font;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
 public class Interface extends JFrame implements ActionListener, ChangeListener, WindowStateListener, ComponentListener{
 
-    private JTabbedPane tabpane;
+//    private JTabbedPane tabpane;
+    JPanel logPanel;
+    //JScrollPane logPanel;
+    JTextArea logTextArea;
+
     private JPanel footer;
     private JPanel centralPanel;
     private JPanel networkCreationPanel;
@@ -93,7 +102,7 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 	JMenu help;
 	
 	JMenuItem importM;
-	JMenuItem helpbox;
+	//JMenuItem helpbox;
 	JMenuItem about;
 	JCheckBoxMenuItem structure;
 	JCheckBoxMenuItem details;
@@ -104,26 +113,26 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 	importM.setActionCommand("import");
 	creaN = new JMenuItem("Crea Network");
 	creaN.setActionCommand("creaN");
-	helpbox = new JMenuItem("help");
-	helpbox.setActionCommand("help");
+	//helpbox = new JMenuItem("help");
+	//helpbox.setActionCommand("help");
 	about = new JMenuItem("About");
 	about.setActionCommand("about");
-	structure = new JCheckBoxMenuItem("Nascondi scheletro");
+	structure = new JCheckBoxMenuItem("Visualizza spazio 3d di riferimento (s)");
 	structure.setActionCommand("struct");
 	structure.setSelected(true);
-	edgeIn = new JCheckBoxMenuItem("Only Connections in");
+	edgeIn = new JCheckBoxMenuItem("Mostra solo archi entranti (e)");
 	edgeIn.setActionCommand("edgeIn");
-	edgeOut = new JCheckBoxMenuItem("Only Connections out");
+	edgeOut = new JCheckBoxMenuItem("Mostra gli archi di tutti i nodi (r)");
 	edgeOut.setSelected(true);
 	edgeOut.setActionCommand("edgeOut");
-	details = new JCheckBoxMenuItem("Nascondi log e config");
+	details = new JCheckBoxMenuItem("Nascondi log delle interazioni");
 	details.setActionCommand("vis");
 
 	importM.addActionListener(this);
 	creaN.addActionListener(this);
 	structure.addActionListener(this);
 	details.addActionListener(this);
-	helpbox.addActionListener(this);
+	//helpbox.addActionListener(this);
 	about.addActionListener(this);
 	edgeIn.addActionListener(this);
 	edgeOut.addActionListener(this);
@@ -135,13 +144,13 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 	
 	view = new JMenu("View");
 	view.add(structure);
-	view.addSeparator();
-	view.add(details);
 	view.add(edgeIn);
 	view.add(edgeOut);
+	view.addSeparator();
+	view.add(details);
 
 	help = new JMenu("Help");
-	help.add(helpbox);
+	//help.add(helpbox);
 	help.add(about);
 
 	menubar = new JMenuBar();
@@ -170,10 +179,7 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 	JButton play;
 	JButton pause;
 	JButton stop;
-
-	JTextArea log;
-	JPanel logtab;
-	JPanel conftab;
+//	JPanel conftab;
 
 	//---- play ----
 	play = new JButton();
@@ -234,26 +240,51 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 	command.add(spinner);
 
 	// --- tab log e config ---
-	tabpane = new JTabbedPane();
+//	tabpane = new JTabbedPane();
 
-	log = new JTextArea("asdadadadadss");
-	log.setEditable(false);
+	logTextArea = new JTextArea("\n\n\n\n\n\n");
+	logTextArea.setEditable(false);
+	Font font = logTextArea.getFont();
+	logTextArea.setFont(new Font(font.getFontName(), font.getStyle(), 16));
 
-	logtab = new JPanel();
-	logtab.add(log);
+	logPanel = new JPanel();
+	//logPanel = new JScrollPane();
+	logPanel.add(logTextArea);
 
-	conftab = new JPanel();
+//	conftab = new JPanel();
 
-	tabpane.addTab("Log", logtab);
-	tabpane.addTab("Configurations", conftab);
+//	tabpane.addTab("Log", logtab);
+//	tabpane.addTab("Configurations", conftab);
 
 	//build footer
 	footer = new JPanel();
 	footer.setLayout(new BoxLayout(footer, BoxLayout.Y_AXIS));
 	footer.add(command);
-	footer.add(tabpane);
+//	footer.add(tabpane);
+	footer.add(logPanel);
 
 	return footer;
+    }
+
+    public void instantChanged() {
+	String logText = "";
+	int currentInstant = space.getInstant();
+
+	Network network = space.getNetwork();
+	Instant instant = network.getInteractionCube().getInstant(currentInstant);
+
+	logText += "Instant: " + instant.getLabel() + "\n";
+	for (InteractionElement interactionElement : instant.getAllInteractions()) {
+	    logText +=
+		    network.getNode(interactionElement.source).label +
+		    " -> " +
+		    network.getNode(interactionElement.target).label +
+		    ": " +
+		    interactionElement.frequency +
+		    "\n";
+	}
+
+	logTextArea.setText(logText);
     }
 
     private void fimportActionPerformed() {
@@ -304,7 +335,6 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 	    network = InputParser.parse(inputStream);
 	    if (network != null) {
 		space.setNetwork(network);
-		//TIMEVALUE = network.getNumberOfInstants();
 	    } else {
 		System.out.println("File di input mal formattato.");
 	    }
@@ -319,17 +349,19 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
 
 	if (c.equals("import")) {
 	    fimportActionPerformed();
-	} else if (c.equals("about")) {
-	    JOptionPane.showMessageDialog(this, "e' bene che fai una donazione");
-	} else if (c.equals("help")) {
-	    JOptionPane.showMessageDialog(this, "istruzioni per l'uso");
+	} else if (c.equals("About")) {
+	    JOptionPane.showMessageDialog(this, Constants.GUI_ABOUT_MESSAGE);
+//	} else if (c.equals("help")) {
+//	    JOptionPane.showMessageDialog(this, "istruzioni per l'uso");
 	} else if (c.equals("struct")) {
 	    space.setOptions("spaceVisible");
 	} else if (c.equals("vis")) {
 	    if (abstractButton.getModel().isSelected()) {
-		footer.remove(tabpane);
+		//footer.remove(tabpane);
+		footer.remove(logPanel);
 	    } else {
-		footer.add(tabpane);
+		//footer.add(tabpane);
+		footer.add(logPanel);
 	    }
 	    pack();
 	} else if(c.equals("creaN")){

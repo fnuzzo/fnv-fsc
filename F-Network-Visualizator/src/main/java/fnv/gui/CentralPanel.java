@@ -15,12 +15,14 @@ import javax.swing.JPanel;
  * @author enrico
  */
 public class CentralPanel extends JPanel {
+    private InterfaceFrame interfaceFrame;
     private Space space;
 
     public CentralPanel(InterfaceFrame interfaceFrame) {
+	this.interfaceFrame = interfaceFrame;
 	setPreferredSize(new Dimension(
 		interfaceFrame.getScreenWidth(),
-		interfaceFrame.getScreenHeight() - Constants.FOOTER_HEIGHT));
+		interfaceFrame.getScreenHeight() - Constants.LOG_HEIGHT));
 
 	space = new Space(interfaceFrame,getPreferredSize().width, getPreferredSize().height);
 	space.init();

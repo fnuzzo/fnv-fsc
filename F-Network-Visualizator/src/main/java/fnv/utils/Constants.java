@@ -71,7 +71,8 @@ public final class Constants {
 	public final static String FILE_CHOOSER_FILTER_EXT_UPPER = "XML";
 
 	//
-	public final static int FOOTER_HEIGHT = 200;
+	//public final static int FOOTER_HEIGHT = 200;
+	public final static int LOG_HEIGHT = 150;
 	//
 	public final static String GUI_ABOUT_MESSAGE = "Network Visualizator\n"
 		+ "Autori:\n"

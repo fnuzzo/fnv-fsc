@@ -23,6 +23,56 @@ public final class Constants {
 	public final static String XML_INTERACTION_FREQUENCY_ATTR = "frequency";
 
 	//
+	public final static int JSLIDER_TICK_SPACING = 10;
+
+	//
+	private final static String ICON_PATH = "/img/";
+	public final static String ICON_PLAY = ICON_PATH + "play.png";
+	public final static String ICON_PAUSE = ICON_PATH + "pause.png";
+	public final static String ICON_STOP = ICON_PATH + "stop.png";
+	public final static String ICON_PLAY_TOOLTIP = "Play";
+	public final static String ICON_PAUSE_TOOLTIP = "Pause";
+	public final static String ICON_STOP_TOOLTIP = "Stop";
+
+	//
+	public final static String BUTTON_FILE_LABEL = "File";
+	public final static String BUTTON_VIEW_LABEL = "Visualizza";
+	public final static String BUTTON_ABOUT_LABEL = "About";
+	public final static String BUTTON_AUTHORS_LABEL = "Autori";
+	public final static String BUTTON_IMPORT_LABEL = "Importa una nuova rete";
+	public final static String BUTTON_CREATE_LABEL = "Crea una nuova rete";
+	public final static String BUTTON_EXIT_LABEL = "Esci";
+	public final static String BUTTON_STRUCTURE_LABEL = "Visualizza spazio 3D di riferimento (s)";
+	public final static String BUTTON_EDGEIN_LABEL = "Mostra solo archi entranti (e)";
+	public final static String BUTTON_ALLEDGES_LABEL = "Mostra gli archi di tutti i nodi (r)";
+	//public final static String BUTTON_LOG_LABEL = "Nascondi log delle interazioni";
+
+	//
+	public final static String BUTTON_FILE_ACTIONCOMMAND = "file";
+	public final static String BUTTON_VIEW_ACTIONCOMMAND = "view";
+	public final static String BUTTON_ABOUT_ACTIONCOMMAND = "about";
+	public final static String BUTTON_AUTHORS_ACTIONCOMMAND = "authors";
+	public final static String BUTTON_IMPORT_ACTIONCOMMAND = "import";
+	public final static String BUTTON_CREATE_ACTIONCOMMAND = "create";
+	public final static String BUTTON_EXIT_ACTIONCOMMAND = "exit";
+	public final static String ICON_PLAY_ACTIONCOMMAND = "play";
+	public final static String ICON_PAUSE_ACTIONCOMMAND = "pause";
+	public final static String ICON_STOP_ACTIONCOMMAND = "stop";
+	public final static String BUTTON_STRUCTURE_ACTIONCOMMAND = "structure";
+	public final static String BUTTON_EDGEIN_ACTIONCOMMAND = "edgeIn";
+	public final static String BUTTON_ALLEDGES_ACTIONCOMMAND = "edgeOut";
+	//public final static String BUTTON_LOG_ACTIONCOMMAND = "log";
+
+	//
+	public final static String FILE_CHOOSER_ROOT = "./";
+	public final static String FILE_CHOOSER_ERR_MSG = "File di input mal formattato.";
+	public final static String FILE_CHOOSER_FILTER_DESCRIPTION = "xml files";
+	public final static String FILE_CHOOSER_FILTER_EXT_LOWER = "xml";
+	public final static String FILE_CHOOSER_FILTER_EXT_UPPER = "XML";
+
+	//
+	public final static int FOOTER_HEIGHT = 200;
+	//
 	public final static String GUI_ABOUT_MESSAGE = "Network Visualizator\n"
 		+ "Autori:\n"
 		+ "Giacomo Benvenuti\n"

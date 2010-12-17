@@ -1,6 +1,7 @@
 package fnv.gui.pro;
 
 import fnv.gui.Interface;
+import fnv.gui.InterfaceFrame;
 import fnv.network.InteractionElement;
 import fnv.network.Network;
 import fnv.network.Node;
@@ -24,6 +25,7 @@ import java.awt.event.WindowStateListener;
 import javax.swing.Timer;
 
 import fnv.parser.InputParser;
+import fnv.utils.Constants;
 import java.util.Random;
 import processing.core.*;
 import peasy.*;
@@ -36,7 +38,8 @@ import processing.opengl.*;
  */
 public class Space extends PApplet{
     
-    Interface swingInterface;
+    //Interface swingInterface;
+    InterfaceFrame swingInterface;
     Timer rotationTimer, animationTimer;
     //Frame al secondo
     int framerate = 20;
@@ -73,8 +76,10 @@ public class Space extends PApplet{
     boolean rotate = false;
     // http://mrfeinberg.com/peasycam/reference/index.html
     private PeasyCam cam;
-    private int WIDTH;
-    private int HEIGHT;
+//    private int WIDTH;
+//    private int HEIGHT;
+    private int spaceWidth;
+    private int spaceHeight;
     private double animationTimeSec = 1;
     //Nodi
     ANode[] nodes = new ANode[0];
@@ -84,8 +89,13 @@ public class Space extends PApplet{
     //Archi
     AEdge[][] edges = new AEdge[0][0];
 
-    public Space(Interface inter) {
+//    public Space(Interface inter) {
+//	this.swingInterface = inter;
+//    }
+    public Space(InterfaceFrame inter, int width, int height) {
 	this.swingInterface = inter;
+	spaceWidth = width;
+	spaceHeight = height;
     }
 
     public double getAnimationTime() {
@@ -180,12 +190,13 @@ public class Space extends PApplet{
         cam.lookAt(space / 2, -space / 2, space / 2, space * 2, 2000);
 
     }
-    
+
     @Override
     public void setup() {
     	
     	
-        size(800, 600, P3D);
+        //size(800, 600, P3D);
+	size(spaceWidth, spaceHeight, P3D);
 
        
         g3d = (PGraphics3D) g;
@@ -243,20 +254,20 @@ public class Space extends PApplet{
         if (key == CODED) {
 
             switch (keyCode) {
-                case UP:
-
-                    break;
-                case DOWN:
-
-                    break;
-                case RIGHT:
-                	resize(new Dimension(800, 600));
-//                    println(instant);
-                    break;
-                case LEFT:
-                	resize(new Dimension(200, 200));
-//                    println(instant);
-                    break;
+//                case UP:
+//
+//                    break;
+//                case DOWN:
+//
+//                    break;
+//                case RIGHT:
+//                	resize(new Dimension(800, 600));
+////                    println(instant);
+//                    break;
+//                case LEFT:
+//                	resize(new Dimension(200, 200));
+////                    println(instant);
+//                    break;
                 case KeyEvent.VK_PAGE_UP:
 		    incrementInstant();
 //                    print(instant);
@@ -265,7 +276,6 @@ public class Space extends PApplet{
 		    decrementInstant();
 //                    print(instant);
                     break;
-
             }
 
         } else {
@@ -299,11 +309,11 @@ public class Space extends PApplet{
     }
 
     public void setOptions(String options){
-    	if(options.equals("edgeIn"))
+    	if(options.equals(Constants.BUTTON_EDGEIN_ACTIONCOMMAND))
     		toggleEdgesIn();
-    	else if(options.equals("edgeOut"))
+    	else if(options.equals(Constants.BUTTON_ALLEDGES_ACTIONCOMMAND))
     		toggleEdges();
-    	else if(options.equals("spaceVisible"))
+    	else if(options.equals(Constants.BUTTON_STRUCTURE_ACTIONCOMMAND))
     		toggleSpaceVisible();
     }
     
@@ -331,7 +341,7 @@ public class Space extends PApplet{
 
 		    incrementInstant();
 		    int value = (instant * 100) / network.getNumberOfInstants();
-		    swingInterface.setValuejstime(value);
+		    swingInterface.setJSliderValue(value);
 
 		    if (instant == network.getNumberOfInstants()) {
 			animationTimer.stop();
@@ -347,11 +357,11 @@ public class Space extends PApplet{
     
     public void optionsTime(String options) {
 	if (!rotate) {
-	    if (options.equals("play")) {
+	    if (options.equals(Constants.ICON_PLAY_ACTIONCOMMAND)) {
 		animationTimer.start();
-	    } else if (options.equals("pause")) {
+	    } else if (options.equals(Constants.ICON_PAUSE_ACTIONCOMMAND)) {
 		animationTimer.stop();
-	    } else if (options.equals("stop")) {
+	    } else if (options.equals(Constants.ICON_STOP_ACTIONCOMMAND)) {
 		instant = 0;
 		animationTimer.stop();
 	    }

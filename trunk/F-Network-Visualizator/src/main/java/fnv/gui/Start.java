@@ -12,7 +12,8 @@ public class Start {
 
 	    @Override
 	    public void run() {
-		new Interface();
+		//new Interface();
+		new InterfaceFrame();
 	    }
 	});
     }

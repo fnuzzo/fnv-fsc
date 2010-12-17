@@ -164,7 +164,8 @@ public class Interface extends JFrame implements ActionListener, ChangeListener,
     private JPanel buildCentralPanel() {
 	centralPanel = new JPanel();
 
-	space = new Space(this);
+	//TODO commentato perche' ho cambiato Space a causa del refactoring dell'interfaccia
+//	space = new Space(this);
 	space.init();
 
 	centralPanel.setPreferredSize(new Dimension(800, 600));

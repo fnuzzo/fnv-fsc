@@ -19,6 +19,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
@@ -40,6 +41,7 @@ public class FooterPanel extends JPanel implements ActionListener, ChangeListene
     private JButton stop;
     private JSlider jSlider;
     private JSpinner jSpinner;
+    private JScrollPane jScrollPane;
     private JTextArea logTextArea;
     private JPanel logPanel;
 
@@ -108,19 +110,23 @@ public class FooterPanel extends JPanel implements ActionListener, ChangeListene
 	command.add(jSpinner);
 
 	// --- tab log ---
-	logTextArea = new JTextArea("\n\n\n\n\n\n");
+	//logTextArea = new JTextArea("\n\n\n\n\n\n");
+	logTextArea = new JTextArea();
 	logTextArea.setEditable(false);
 	Font font = logTextArea.getFont();
 	logTextArea.setFont(new Font(font.getFontName(), font.getStyle(), 16));
+	jScrollPane = new JScrollPane(logTextArea);
+	jScrollPane.setPreferredSize(new Dimension(interfaceFrame.getScreenWidth(), Constants.LOG_HEIGHT));
 
 	logPanel = new JPanel();
-	logPanel.add(logTextArea);
+	//logPanel.add(logTextArea);
+	logPanel.add(jScrollPane);
 
 	//build footer
 	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	add(command);
 	add(logPanel);
-	setPreferredSize(new Dimension(interfaceFrame.getScreenWidth(), Constants.FOOTER_HEIGHT));
+	//setPreferredSize(new Dimension(interfaceFrame.getScreenWidth(), Constants.FOOTER_HEIGHT));
     }
 
      public void setLogVisible(boolean visible) {

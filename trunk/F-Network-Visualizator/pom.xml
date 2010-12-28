@@ -51,6 +51,11 @@
 			<version>4.8.2</version>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.superduper</groupId>
+			<artifactId>fullscreen</artifactId>
+			<version>0.98.4</version>
+        </dependency>
 	</dependencies>
 
 	<scm>
@@ -175,6 +180,22 @@
 							<artifactId>peasycam</artifactId>
 							<version>0.91</version>
 							<file>${basedir}/lib/PeasyCam.jar</file>
+							<repositoryLayout>default</repositoryLayout>
+							<packaging>jar</packaging>
+							<generatePom>true</generatePom>
+						</configuration>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
+                    <execution>
+						<id>hack-fullscreen</id>
+						<phase>validate</phase>
+						<configuration>
+							<groupId>org.superduper</groupId>
+							<artifactId>fullscreen</artifactId>
+							<version>0.98.4</version>
+							<file>${basedir}/lib/fullscreen.jar</file>
 							<repositoryLayout>default</repositoryLayout>
 							<packaging>jar</packaging>
 							<generatePom>true</generatePom>

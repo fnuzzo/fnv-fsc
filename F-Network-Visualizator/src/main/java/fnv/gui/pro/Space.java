@@ -29,6 +29,7 @@ import fnv.utils.Constants;
 import java.util.Random;
 import processing.core.*;
 import peasy.*;
+import fullscreen.*;
 
 import processing.opengl.*;
 
@@ -93,6 +94,7 @@ public class Space extends PApplet{
 //	this.swingInterface = inter;
 //    }
     public Space(InterfaceFrame inter, int width, int height) {
+    super();
 	this.swingInterface = inter;
 	spaceWidth = width;
 	spaceHeight = height;
@@ -193,12 +195,9 @@ public class Space extends PApplet{
 
     @Override
     public void setup() {
-    	
-    	
-        //size(800, 600, P3D);
-	size(spaceWidth, spaceHeight, P3D);
 
-       
+	    size(spaceWidth, spaceHeight, P3D);
+
         g3d = (PGraphics3D) g;
 
         f = loadFont("ArialMT-48.vlw");
@@ -254,27 +253,23 @@ public class Space extends PApplet{
         if (key == CODED) {
 
             switch (keyCode) {
-//                case UP:
-//
-//                    break;
-//                case DOWN:
-//
-//                    break;
-//                case RIGHT:
-//                	resize(new Dimension(800, 600));
-////                    println(instant);
-//                    break;
-//                case LEFT:
-//                	resize(new Dimension(200, 200));
-////                    println(instant);
-//                    break;
+                case UP:
+                    cam.rotateX(0.045);
+                    break;
+                case DOWN:
+                    cam.rotateX(-0.045);
+                    break;
+                case RIGHT:
+                    cam.rotateY(0.045);
+                    break;
+                case LEFT:
+                    cam.rotateY(-0.045);
+                    break;
                 case KeyEvent.VK_PAGE_UP:
-		    incrementInstant();
-//                    print(instant);
+		            incrementInstant();
                     break;
                 case KeyEvent.VK_PAGE_DOWN:
-		    decrementInstant();
-//                    print(instant);
+		            decrementInstant();
                     break;
             }
 
@@ -414,6 +409,9 @@ public class Space extends PApplet{
     public void draw3DSpaceSphere() {
 	pushMatrix();
 	translate(space / 2, -space / 2, space / 2);
+    //sphereDetail(3);
+    //stroke(1, 100, 100);
+    //fill(1, 100, 100);
 	sphere(space / 2);
 
 	popMatrix();
@@ -442,13 +440,13 @@ public class Space extends PApplet{
     }
 
     public void drawEdges() {
-	if (instant != -1) {
-	    int displayedInstant;
-	    if (instant < edges.length) {
-		displayedInstant = instant;
-	    } else {
-		displayedInstant = edges.length - 1;
-	    }
+        if (instant != -1) {
+            int displayedInstant;
+            if (instant < edges.length) {
+                displayedInstant = instant;
+            } else {
+                displayedInstant = edges.length - 1;
+            }
 
 	    //Disegno i nodi per l'istante giusto
 	    //InteractionElement[] edges = network.getInteractionCube().getAllInteractions(instant);
@@ -562,8 +560,8 @@ public class Space extends PApplet{
 	    rotationTimer.stop();
 	}
 
-	//background(0);
-	background(62, 62, 62);
+	background(0);
+	//background(62, 62, 62);
 
 	lights();
 
@@ -688,31 +686,25 @@ public class Space extends PApplet{
 		    int pcY = ((ns.ay < nt.ay) ? 20 : -20);
 		    int pcZ = ((ns.az > nt.az) ? 20 : -20);
 
-            //punti controllo sorgente
             if (network.flat) {
+                //punti controllo sorgente
                 this.cpsx = ns.cx;
                 this.cpsy = ns.cy - this.af;
                 this.cpsz = ns.cz;
-            } else {
-                /*this.cpsx = (ns.ax > nt.ax) ? ns.cx + 50 : ns.cx -50;
-                this.cpsy = (ns.ay < nt.ay) ? ns.cy + 50 : ns.cy -50;
-                this.cpsz = (ns.az > nt.az) ? ns.cz + 50 : ns.cz -50;*/
-                this.cpsx = ns.cx + 50 ;
-                this.cpsy = ((ns.y + nt.y) < boxN) ? ns.cy + space : ns.cy -space;
-                this.cpsz = ns.cz ;
-            }
-            //punti di controllo target
-            if (network.flat) {
+                //punti di controllo target
                 this.cptx = nt.cx - pcX;
                 this.cpty = nt.cy - this.af;
                 this.cptz = nt.cz - pcZ;
+
             } else {
-                /*this.cptx = (ns.ax < nt.ax) ? nt.cx + 50 : nt.cx -50;
-                this.cpty = (ns.ay > nt.ay) ? nt.cy + 50 : nt.cy -50;
-                this.cptz = (ns.az < nt.az) ? nt.cz + 50 : nt.cz -50;*/
-                this.cptx = nt.cx + 50;
-                this.cpty = ((ns.y + nt.y) < boxN) ? nt.cy + space : nt.cy - space;
-                this.cptz = nt.cz;
+
+                this.cpsx = ((ns.x + nt.x) > boxN) ? ns.cx + this.af+10 : ns.cx - this.af+10;
+                this.cpsy = ((ns.y + nt.y) > boxN) ? ns.cy - this.af+10 : ns.cy + this.af+10;
+                this.cpsz = ((ns.z + nt.z) > boxN) ? ns.cz + this.af+10 : ns.cz - this.af+10;
+
+                this.cptx = ((ns.x + nt.x) > boxN) ? nt.cx + this.af+10 : nt.cx - this.af+10;
+                this.cpty = ((ns.y + nt.y) > boxN) ? nt.cy - this.af+10 : nt.cy + this.af+10;
+                this.cptz = ((ns.z + nt.z) > boxN) ? nt.cz + this.af+10 : nt.cz - this.af+10;
 
             }
 
@@ -782,20 +774,5 @@ public class Space extends PApplet{
 
 
     }
-
-    //Mappa tutti i valori relativi nello spazio dei pixel
-
-    public float[] mapAll(int[] toMap) {
-        float[] mapped = new float[toMap.length];
-
-        for (int i = 0; i < toMap.length; i++) {
-            mapped[i] = map(toMap[i], 0, boxN, 0, space);
-        }
-
-        return mapped;
-    }
-
-
-
 
 }

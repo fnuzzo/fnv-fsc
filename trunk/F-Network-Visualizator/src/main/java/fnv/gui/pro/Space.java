@@ -230,28 +230,21 @@ public class Space extends PApplet{
 //
 //    }
     
-    @Override
-    public void mouseClicked() {
-        println(frameRate+" "+selected);
-
-    }
-    
     private void toggleEdgesIn() {
-	edgeIn = !edgeIn;
+	    edgeIn = !edgeIn;
     }
 
     private void toggleEdges() {
-	edgeVisible = !edgeVisible;
+	    edgeVisible = !edgeVisible;
     }
 
     private void toggleSpaceVisible() {
-	spaceVisible = !spaceVisible;
+	    spaceVisible = !spaceVisible;
     }
 
     @Override
     public void keyPressed() {
         if (key == CODED) {
-
             switch (keyCode) {
                 case UP:
                     cam.rotateX(0.045);
@@ -271,8 +264,14 @@ public class Space extends PApplet{
                 case KeyEvent.VK_PAGE_DOWN:
 		            decrementInstant();
                     break;
-            }
+                case KeyEvent.VK_CONTROL:
+                    println("Ctrl");
+                    break;
+                default:
+                    println(keyCode);
+                    break;
 
+            }
         } else {
             int intk = -1;
             try {
@@ -457,7 +456,7 @@ public class Space extends PApplet{
 		    if (selected == -1) {
 			stroke(edge.c, 100, 100);//Archi colorati
 		    } else {
-			stroke(0, 0, 100);//Archi bianchi
+			stroke(0, 0, 100, 127);//Archi bianchi
 		    }
 		    //I collegamenti del nodo selezionato sono più grossi
 		    boolean ev = false;
@@ -492,17 +491,19 @@ public class Space extends PApplet{
 				edge.nt.cz);
 			strokeWeight(1);
 
-			//Aereoplano
-			int t = (frameCount % framerate);
-			pushMatrix();
-			translate(
-				edge.beizPx[t],
-				edge.beizPy[t],
-				edge.beizPz[t]);
-			fill(0, 0, 100);
-			//sphere(2);
-			box(2);
-			popMatrix();
+                if (ev || selected == -1) {
+			        //Aereoplano
+			        int t = (frameCount % framerate);
+			        pushMatrix();
+			        translate(
+				        edge.beizPx[t],
+				        edge.beizPy[t],
+				        edge.beizPz[t]);
+			        fill(0, 0, 100);
+                    sphereDetail(3);
+			        sphere(2);
+			        popMatrix();
+                }
 		    }
 
 		    if (showControlPoint) {
@@ -551,6 +552,8 @@ public class Space extends PApplet{
 	}
     }
 
+
+
     @Override
     public void draw() {
     	
@@ -565,8 +568,17 @@ public class Space extends PApplet{
 
 	lights();
 
-        if (mousePressed) {
-            selected = selectNode();
+        if (mousePressed && keyPressed) {
+            int newSelected = selectNode();
+
+            if (selected == newSelected) {//Clicco sullo stesso nodo già selezionato
+                selected = -1;//Deseleziono
+            } else if (newSelected == -1) {//Clicco in un punto vuoto
+                //Non faccio niente
+            } else {
+                selected = newSelected;
+            }
+
         }
 
 	/* disegna il cubo che contiene la rete e i nodi solo se e' stata inizializzata una rete */

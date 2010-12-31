@@ -43,7 +43,7 @@ public class Space extends PApplet{
     InterfaceFrame swingInterface;
     Timer rotationTimer, animationTimer;
     //Frame al secondo
-    int framerate = 20;
+    final int framerate = 20;
     //Font etichette
     PFont f;
     int fontSize = 32;
@@ -196,7 +196,7 @@ public class Space extends PApplet{
     @Override
     public void setup() {
 
-	    size(spaceWidth, spaceHeight, P3D);
+	    size(spaceWidth, spaceHeight, OPENGL);
 
         g3d = (PGraphics3D) g;
 
@@ -215,6 +215,8 @@ public class Space extends PApplet{
         cam.setResetOnDoubleClick(false);
 
         initializeTimer();
+
+        cursor(MOVE);
 
       /*  try {
             this.setNetwork(InputParser.parse(new FileInputStream("./network-test-01.xml")));
@@ -265,7 +267,10 @@ public class Space extends PApplet{
 		            decrementInstant();
                     break;
                 case KeyEvent.VK_CONTROL:
-                    println("Ctrl");
+                    cursor(HAND);
+                    break;
+                case KeyEvent.VK_SHIFT:
+                    cursor(CROSS);
                     break;
                 default:
                     println(keyCode);
@@ -299,6 +304,21 @@ public class Space extends PApplet{
                         break;
                 }
             }
+        }
+    }
+
+    @Override
+    public void keyReleased() {
+        if (key == CODED) {
+            switch (keyCode) {
+                case KeyEvent.VK_CONTROL:
+                    cursor(MOVE);
+                break;
+                case KeyEvent.VK_SHIFT:
+                    cursor(MOVE);
+                break;
+            }
+
         }
     }
 
@@ -568,17 +588,24 @@ public class Space extends PApplet{
 
 	lights();
 
-        if (mousePressed && keyPressed) {
+        if (mousePressed  && keyPressed) {
+            print(selected);
             int newSelected = selectNode();
 
-            if (selected == newSelected) {//Clicco sullo stesso nodo già selezionato
-                selected = -1;//Deseleziono
-            } else if (newSelected == -1) {//Clicco in un punto vuoto
-                //Non faccio niente
-            } else {
-                selected = newSelected;
+            if (key == CODED) {
+                switch (keyCode) {
+                    case KeyEvent.VK_CONTROL:
+                        if (newSelected != -1) selected = newSelected;
+                        break;
+                    case KeyEvent.VK_SHIFT:
+                        selected = -1;//Deseleziono
+                        break;
+                    //default:
+                      //  println(keyCode);
+                        //break;
+                }
             }
-
+            println(" -> "+selected);
         }
 
 	/* disegna il cubo che contiene la rete e i nodi solo se e' stata inizializzata una rete */

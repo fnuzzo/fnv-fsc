@@ -47,7 +47,6 @@ public class Space extends PApplet{
     //Font etichette
     PFont f;
     int fontSize = 32;
-    String text = "";
     private int instant = -1;
     //Lato dello spazio in box
     int boxN;
@@ -60,8 +59,8 @@ public class Space extends PApplet{
     boolean spaceVisible = true;
     //Evidenzia gli archi entranti al posto degli uscenti
     boolean edgeIn = false;
-    //Il nodo correntemente selezionato
-    int selected = -1;
+    //Almeno un nodo correntemente selezionato
+    boolean selected = false;
     //Nasconde gli archi non selezionati
     boolean edgeVisible = true;
     //Lato dei nodi in px
@@ -196,7 +195,7 @@ public class Space extends PApplet{
     @Override
     public void setup() {
 
-	    size(spaceWidth, spaceHeight, OPENGL);
+	    size(spaceWidth, spaceHeight, P3D);
 
         g3d = (PGraphics3D) g;
 
@@ -438,24 +437,55 @@ public class Space extends PApplet{
 
     /* disegna i nodi nello spazio 3d */
     public void drawNodes() {
-	for (int i = 0; i < nodes.length; i++) {
-	    if (nodes[i].visible) {
-		//Nodi
-		pushMatrix();
+        boolean recalcSelection = false; //Così so se sono stati cambiate le selezioni
+        for (int i = 0; i < nodes.length; i++) {
+            if (nodes[i].visible) {
+                //Nodi
+                pushMatrix();
 
-		fill(i, 100, 100);
-		//Nodo Quadrato
-		stroke(0);
-		translate(
-			nodes[i].cx,
-			nodes[i].cy,
-			nodes[i].cz);
-		box(nodesize);
+                fill(i, 100, 100);
+                //Nodo Quadrato
+                stroke(0);
+                translate(
+                        nodes[i].cx,
+                        nodes[i].cy,
+                        nodes[i].cz);
+                box(nodesize);
 
-		popMatrix();
-	    }
-	}
-	noFill();
+                popMatrix();
+                if (mousePressed && keyPressed && selectNode(nodes[i]) && key == CODED) {
+                    switch (keyCode) {
+                        case KeyEvent.VK_CONTROL:
+                            nodes[i].selected = true;
+                            recalcSelection = true;
+                            break;
+                        case KeyEvent.VK_SHIFT:
+                            nodes[i].selected = false;
+                            recalcSelection = true;
+                            break;
+                        //default:
+                        //  println(keyCode);
+                        //break;
+                    }
+
+                }
+
+
+            }
+        }
+        if (recalcSelection) {
+            //Almeno un nodo selezionato
+            for (int i = 0; i < nodes.length; i++) {
+                selected = selected || nodes[i].selected;
+            }
+        }
+        noFill();
+    }
+
+    public boolean isNodeSelect() {
+        boolean selected = false;
+
+        return selected;
     }
 
     public void drawEdges() {
@@ -473,45 +503,45 @@ public class Space extends PApplet{
 	    for (AEdge edge : edges[displayedInstant]) {
 		if (nodes[edge.s].visible && nodes[edge.t].visible) {
 
-		    if (selected == -1) {
-			stroke(edge.c, 100, 100);//Archi colorati
+		    if (selected) {
+			   stroke(0, 0, 100, 127);//Archi bianchi
 		    } else {
-			stroke(0, 0, 100, 127);//Archi bianchi
+               stroke(edge.c, 100, 100);//Archi colorati
 		    }
 		    //I collegamenti del nodo selezionato sono più grossi
 		    boolean ev = false;
 		    if (//Archi visualizzati colorati se
-			    (edgeIn && selected == edge.t)//Nodo selezionato è una destinazione
-			    ^ (!edgeIn && selected == edge.s)//Nodo selezionato è una sorgente
+			    (edgeIn && nodes[edge.t].selected)//Nodo selezionato è una destinazione
+			    ^ (!edgeIn && nodes[edge.s].selected)//Nodo selezionato è una sorgente
 			    ) {
-			strokeWeight(3);
-			stroke(edge.c, 100, 100);
-			ev = true;
+			    strokeWeight(3);
+			    stroke(edge.c, 100, 100);
+			    ev = true;
 		    }
 
 		    if (edgeVisible || ev) {
-			noFill();
-			bezierDetail(40);//Aumenta dettaglio grafico dei collegamenti
-			bezier(
+			    noFill();
+			    bezierDetail(40);//Aumenta dettaglio grafico dei collegamenti
+			    bezier(
 				//Nodo A
-				edge.ns.cx,
-				edge.ns.cy,
-				edge.ns.cz,
+				    edge.ns.cx,
+				    edge.ns.cy,
+				    edge.ns.cz,
 				//Punto Controllo A
-				edge.cpsx,
-				edge.cpsy,
-				edge.cpsz,
+				    edge.cpsx,
+				    edge.cpsy,
+				    edge.cpsz,
 				//Punto Controllo B
-				edge.cptx,
-				edge.cpty,
-				edge.cptz,
+				    edge.cptx,
+				    edge.cpty,
+				    edge.cptz,
 				//Nodo B
-				edge.nt.cx,
-				edge.nt.cy,
-				edge.nt.cz);
-			strokeWeight(1);
+				    edge.nt.cx,
+				    edge.nt.cy,
+				    edge.nt.cz);
+			    strokeWeight(1);
 
-                if (ev || selected == -1) {
+                if (ev || !selected) {
 			        //Aereoplano
 			        int t = (frameCount % framerate);
 			        pushMatrix();
@@ -588,8 +618,8 @@ public class Space extends PApplet{
 
 	lights();
 
-        if (mousePressed  && keyPressed) {
-            print(selected);
+        /*if (mousePressed  && keyPressed) {
+            //print(selected);
             int newSelected = selectNode();
 
             if (key == CODED) {
@@ -605,8 +635,8 @@ public class Space extends PApplet{
                         //break;
                 }
             }
-            println(" -> "+selected);
-        }
+            //println(" -> " + selected);
+        }*/
 
 	/* disegna il cubo che contiene la rete e i nodi solo se e' stata inizializzata una rete */
 	if (networkInitialized) {
@@ -627,18 +657,6 @@ public class Space extends PApplet{
     }
     
      private void foreground() {
-         float scrX = 0;
-         float scrY = 0;
-
-         if (selected != -1) {
-
-             text = network.nodesList.getNode(selected).label;
-
-             stroke(0,0,100);
-             scrX = screenX(nodes[selected].cx,nodes[selected].cy,nodes[selected].cz);
-             scrY = screenY(nodes[selected].cx,nodes[selected].cy,nodes[selected].cz);
-
-         }
 
         //Mirino
         // reset camera and disable depth test and blending
@@ -651,16 +669,32 @@ public class Space extends PApplet{
         line(width / 2 - 9, height / 2 , width / 2 + 9, height / 2);
         line(width / 2 , height / 2 - 9, width / 2 , height / 2 + 9);
 
-        if (selected != -1) {
-             //Label
-             fill(0,0,100);
-             text(text, scrX+mbox, scrY-mbox);
+         //Label
+        for (int i = 0; i < nodes.length; i++) {
+            if (nodes[i].selected) {
+                fill(0,0,100);
+                float labelX = screenX(nodes[i].cx,nodes[i].cy,nodes[i].cz)+mbox;
+                float labelY = screenY(nodes[i].cx,nodes[i].cy,nodes[i].cz)-mbox;
+                text(nodes[i].label, labelX, labelY);
+            }
         }
 
         smooth();
         // restore camera
         popMatrix();
         g3d.camera = currCameraMatrix;
+    }
+
+    private boolean selectNode(ANode node) {
+        float scrX, scrY;
+        scrX = screenX( node.cx, node.cy, node.cz );
+        scrY = screenY( node.cx, node.cy, node.cz );
+        float mouseDis = sqrt( sq(mouseX - scrX) + sq(mouseY - scrY) );
+        if (mouseDis < box) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private int selectNode() {
@@ -782,6 +816,10 @@ public class Space extends PApplet{
 
         boolean visible = false;
 
+        boolean selected = false;
+
+        String label = "";
+
         //Posizioni relative
         public int x;
         public int y;
@@ -795,7 +833,7 @@ public class Space extends PApplet{
         public float cy;
         public float cz;
 
-        ANode(int x, int y, int z) {
+        ANode(int x, int y, int z, String label) {
             this.x = x;
             this.z = z;
             this.y = y;
@@ -805,10 +843,12 @@ public class Space extends PApplet{
             this.cx = ax + mbox;
             this.cy = (map(y, 0, boxN, 0, space) + mbox) * -1;
             this.cz = az + mbox;
+            this.label = label;
+
         }
 
         ANode(Node n) {
-            this(n.x, n.y, n.z);
+            this(n.x, n.y, n.z, n.label);
         }
 
 

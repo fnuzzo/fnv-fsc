@@ -76,8 +76,7 @@ public class Space extends PApplet{
     boolean rotate = false;
     // http://mrfeinberg.com/peasycam/reference/index.html
     private PeasyCam cam;
-//    private int WIDTH;
-//    private int HEIGHT;
+
     private int spaceWidth;
     private int spaceHeight;
     private double animationTimeSec = 1;
@@ -195,7 +194,8 @@ public class Space extends PApplet{
     @Override
     public void setup() {
 
-	    size(spaceWidth, spaceHeight, P3D);
+	    size(spaceWidth, spaceHeight, OPENGL);
+        //hint(ENABLE_OPENGL_4X_SMOOTH);
 
         g3d = (PGraphics3D) g;
 
@@ -443,14 +443,27 @@ public class Space extends PApplet{
                 //Nodi
                 pushMatrix();
 
-                fill(i, 100, 100);
+                if (selected && !nodes[i].selected) {
+                    //I nodi non selezionati sono in trasparenza
+                    fill(i, 100, 100, 100);
+                } else {
+                    fill(i, 100, 100);
+                }
+
                 //Nodo Quadrato
                 stroke(0);
                 translate(
                         nodes[i].cx,
                         nodes[i].cy,
                         nodes[i].cz);
-                box(nodesize);
+                //if (nodes[i].selected) {
+                   // noStroke();
+
+                   // sphereDetail(30);
+                   // sphere(nodesize);
+                //} else {
+                    box(nodesize);
+                //}
 
                 popMatrix();
                 if (mousePressed && keyPressed && selectNode(nodes[i]) && key == CODED) {
@@ -475,6 +488,7 @@ public class Space extends PApplet{
         }
         if (recalcSelection) {
             //Almeno un nodo selezionato
+            selected = false;
             for (int i = 0; i < nodes.length; i++) {
                 selected = selected || nodes[i].selected;
             }
@@ -504,9 +518,9 @@ public class Space extends PApplet{
 		if (nodes[edge.s].visible && nodes[edge.t].visible) {
 
 		    if (selected) {
-			   stroke(0, 0, 100, 127);//Archi bianchi
+			   stroke(0, 50, 50, 100);//Archi grigi semitrasparenti
 		    } else {
-               stroke(edge.c, 100, 100);//Archi colorati
+               stroke(edge.c, 80, 80);//Archi colorati
 		    }
 		    //I collegamenti del nodo selezionato sono più grossi
 		    boolean ev = false;
@@ -544,15 +558,26 @@ public class Space extends PApplet{
                 if (ev || !selected) {
 			        //Aereoplano
 			        int t = (frameCount % framerate);
-			        pushMatrix();
+                    if (t == 0) t = 1;
+                    strokeWeight(4);
+                    stroke(edge.c, 100, 100);
+                    line(edge.beizPx[t-1],
+                            edge.beizPy[t-1],
+                            edge.beizPz[t-1],
+                            edge.beizPx[t],
+				        edge.beizPy[t],
+				        edge.beizPz[t]);
+                    strokeWeight(1);
+			        /*pushMatrix();
 			        translate(
 				        edge.beizPx[t],
 				        edge.beizPy[t],
 				        edge.beizPz[t]);
 			        fill(0, 0, 100);
-                    sphereDetail(3);
-			        sphere(2);
-			        popMatrix();
+                    //sphereDetail(3);
+			        //sphere(2);
+                    box(2);
+			        popMatrix();*/
                 }
 		    }
 
@@ -612,31 +637,19 @@ public class Space extends PApplet{
 	} else {
 	    rotationTimer.stop();
 	}
+        //Durante la rotazione le luci vengono calcolate
+        cam.feed();
 
 	background(0);
 	//background(62, 62, 62);
 
-	lights();
-
-        /*if (mousePressed  && keyPressed) {
-            //print(selected);
-            int newSelected = selectNode();
-
-            if (key == CODED) {
-                switch (keyCode) {
-                    case KeyEvent.VK_CONTROL:
-                        if (newSelected != -1) selected = newSelected;
-                        break;
-                    case KeyEvent.VK_SHIFT:
-                        selected = -1;//Deseleziono
-                        break;
-                    //default:
-                      //  println(keyCode);
-                        //break;
-                }
-            }
-            //println(" -> " + selected);
-        }*/
+    //Illuminazione
+    //lightSpecular(0, 0, 60);
+    //directionalLight(0, 0, 90, 0, 0, -1);
+    //ambientLight(0,0,60);
+    //specular(0,0,60);
+    //shininess(5);
+        lights();
 
 	/* disegna il cubo che contiene la rete e i nodi solo se e' stata inizializzata una rete */
 	if (networkInitialized) {
@@ -658,6 +671,13 @@ public class Space extends PApplet{
     
      private void foreground() {
 
+         for (int i = 0; i < nodes.length; i++) {
+            if (nodes[i].selected) {
+                nodes[i].labelX = screenX(nodes[i].cx,nodes[i].cy,nodes[i].cz)+mbox;
+                nodes[i].labelY = screenY(nodes[i].cx,nodes[i].cy,nodes[i].cz)-mbox;
+            }
+         }
+
         //Mirino
         // reset camera and disable depth test and blending
         currCameraMatrix = new PMatrix3D(g3d.camera);
@@ -669,13 +689,15 @@ public class Space extends PApplet{
         line(width / 2 - 9, height / 2 , width / 2 + 9, height / 2);
         line(width / 2 , height / 2 - 9, width / 2 , height / 2 + 9);
 
+        textFont(loadFont("ArialMT-48.vlw"),fontSize);
+        text(frameRate, 20, fontSize);
+
          //Label
         for (int i = 0; i < nodes.length; i++) {
             if (nodes[i].selected) {
                 fill(0,0,100);
-                float labelX = screenX(nodes[i].cx,nodes[i].cy,nodes[i].cz)+mbox;
-                float labelY = screenY(nodes[i].cx,nodes[i].cy,nodes[i].cz)-mbox;
-                text(nodes[i].label, labelX, labelY);
+                text(nodes[i].label, nodes[i].labelX, nodes[i].labelY);
+                //Debug text(nodes[i].label, width - textWidth(nodes[i].label) - 20, fontSize);
             }
         }
 
@@ -818,7 +840,9 @@ public class Space extends PApplet{
 
         boolean selected = false;
 
-        String label = "";
+        String label;
+        float labelX;
+        float labelY;
 
         //Posizioni relative
         public int x;
@@ -850,7 +874,6 @@ public class Space extends PApplet{
         ANode(Node n) {
             this(n.x, n.y, n.z, n.label);
         }
-
 
     }
 

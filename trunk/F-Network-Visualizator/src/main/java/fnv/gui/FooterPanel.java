@@ -90,7 +90,7 @@ public class FooterPanel extends JPanel implements ActionListener, ChangeListene
 	jSlider.addChangeListener(this);
 
 	//TODO da mettere in constants?
-	SpinnerModel spinnerModel = new SpinnerNumberModel(interfaceFrame.getCentralPanel().getSpace().getAnimationTime(), 0, Double.MAX_VALUE, 0.5);
+	SpinnerModel spinnerModel = new SpinnerNumberModel(interfaceFrame.getSpace().getAnimationTime(), 0, Double.MAX_VALUE, 0.5);
 	jSpinner = new JSpinner(spinnerModel);
 	Dimension spinnerDimension = new Dimension(50, 50);
 	jSpinner.setSize(spinnerDimension);
@@ -116,7 +116,7 @@ public class FooterPanel extends JPanel implements ActionListener, ChangeListene
 	Font font = logTextArea.getFont();
 	logTextArea.setFont(new Font(font.getFontName(), font.getStyle(), 16));
 	jScrollPane = new JScrollPane(logTextArea);
-	jScrollPane.setPreferredSize(new Dimension(interfaceFrame.getScreenWidth(), Constants.LOG_HEIGHT));
+	//jScrollPane.setPreferredSize(new Dimension(interfaceFrame.getScreenWidth(), Constants.LOG_HEIGHT));
 
 	logPanel = new JPanel();
 	//logPanel.add(logTextArea);
@@ -145,7 +145,7 @@ public class FooterPanel extends JPanel implements ActionListener, ChangeListene
 	    setJSliderValue(0);
 	}
 
-	interfaceFrame.getCentralPanel().getSpace().optionsTime(actionCommand);
+	interfaceFrame.getSpace().optionsTime(actionCommand);
     }
 
     public void setJSliderValue(int value) {
@@ -156,21 +156,21 @@ public class FooterPanel extends JPanel implements ActionListener, ChangeListene
     public void stateChanged(ChangeEvent changeEvent) {
 	if (changeEvent.getSource() instanceof JSlider) {
 	    int t = ((JSlider) changeEvent.getSource()).getValue();
-	    interfaceFrame.getCentralPanel().getSpace().setInstant(t);
+	    interfaceFrame.getSpace().setInstant(t);
 	} else if (changeEvent.getSource() instanceof JSpinner) {
 	    SpinnerModel dateModel = jSpinner.getModel();
 	    if (dateModel instanceof SpinnerNumberModel) {
 		double newAnimationTimeSec = ((SpinnerNumberModel) dateModel).getNumber().doubleValue();
-		interfaceFrame.getCentralPanel().getSpace().setAnimationTime(newAnimationTimeSec);
+		interfaceFrame.getSpace().setAnimationTime(newAnimationTimeSec);
 	    }
 	}
     }
 
     public void instantChanged() {
 	String logText = "";
-	int currentInstant = interfaceFrame.getCentralPanel().getSpace().getInstant();
+	int currentInstant = interfaceFrame.getSpace().getInstant();
 
-	Network network = interfaceFrame.getCentralPanel().getSpace().getNetwork();
+	Network network = interfaceFrame.getSpace().getNetwork();
 	Instant instant = network.getInteractionCube().getInstant(currentInstant);
 
 	logText += "Instant: " + instant.getLabel() + "\n";

@@ -5,6 +5,7 @@
 
 package fnv.gui;
 
+import fnv.gui.pro.Space;
 import fnv.network.Network;
 import fnv.parser.InputParser;
 import fnv.utils.Constants;
@@ -107,11 +108,11 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
 	} else if (actionCommand.equals(Constants.BUTTON_EXIT_ACTIONCOMMAND)) {
 	    System.exit(0);
 	} else if (actionCommand.equals(Constants.BUTTON_STRUCTURE_ACTIONCOMMAND)) {
-	    interfaceFrame.getCentralPanel().getSpace().setOptions(Constants.BUTTON_STRUCTURE_ACTIONCOMMAND);
+	    interfaceFrame.getSpace().setOptions(Constants.BUTTON_STRUCTURE_ACTIONCOMMAND);
 	} else if (actionCommand.equals(Constants.BUTTON_EDGEIN_ACTIONCOMMAND)) {
-	    interfaceFrame.getCentralPanel().getSpace().setOptions(Constants.BUTTON_EDGEIN_ACTIONCOMMAND);
+	    interfaceFrame.getSpace().setOptions(Constants.BUTTON_EDGEIN_ACTIONCOMMAND);
 	} else if (actionCommand.equals(Constants.BUTTON_ALLEDGES_ACTIONCOMMAND)) {
-	    interfaceFrame.getCentralPanel().getSpace().setOptions(Constants.BUTTON_ALLEDGES_ACTIONCOMMAND);
+	    interfaceFrame.getSpace().setOptions(Constants.BUTTON_ALLEDGES_ACTIONCOMMAND);
 	//} else if (actionCommand.equals(Constants.BUTTON_LOG_ACTIONCOMMAND)) {
 	//    if (abstractButton.getModel().isSelected()) {
 	//	interfaceFrame.getFooterPanel().setLogVisible(false);
@@ -125,13 +126,7 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
     }
 
      private void importNetwork() {
-	if (interfaceFrame.getNetworkCreationPanel() != null) {
-	    interfaceFrame.getCentralPanel().remove(interfaceFrame.getNetworkCreationPanel());
-	}
-	interfaceFrame.getCentralPanel().add(interfaceFrame.getCentralPanel().getSpace());
-	interfaceFrame.getCentralPanel().getSpace().setVisible(true);
-	createNetwork.setEnabled(true);
-	interfaceFrame.pack();
+
 
 	JFileChooser fc = new JFileChooser(Constants.FILE_CHOOSER_ROOT);
 	File inputFile = null;
@@ -173,15 +168,18 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
 	if (inputStream != null) {
 	    network = InputParser.parse(inputStream);
 	    if (network != null) {
-		interfaceFrame.getCentralPanel().getSpace().setNetwork(network);
+	    	interfaceFrame.switchToNetworkCreationPanel(network);
 	    } else {
 		System.out.println(Constants.FILE_CHOOSER_ERR_MSG);
 	    }
 	}
+	
+	
+	
     }
 
     private void createNetwork(JMenuItem source) {
 	source.setEnabled(false);
-	interfaceFrame.switchToNetworkCreationPanel();
+	//interfaceFrame.switchToNetworkCreationPanel();
     }
 }

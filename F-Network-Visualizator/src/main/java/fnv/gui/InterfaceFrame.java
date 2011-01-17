@@ -7,14 +7,17 @@ package fnv.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 
 import javax.swing.JFrame;
 
+import fnv.gui.pro.Space;
 import fnv.network.Instant;
 import fnv.network.InteractionElement;
 import fnv.network.Network;
+import fnv.utils.Constants;
 
 /**
  *
@@ -29,32 +32,32 @@ public class InterfaceFrame extends JFrame {
     private CentralPanel centralPanel;
     private NetworkCreationPanel networkCreationPanel;
     private FooterPanel footerPanel;
-
+    private Space space;
+	private Container contentPane;
+	
+	
+	
+	
     public InterfaceFrame() {
-	/* fullscreen */
+    	
 	GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 	GraphicsDevice defaultGraphicsDevice = ge.getDefaultScreenDevice();
 	screenWidth = defaultGraphicsDevice.getDisplayMode().getWidth();
 	screenHeight = defaultGraphicsDevice.getDisplayMode().getHeight();
-	defaultGraphicsDevice.setFullScreenWindow(this);
+	//defaultGraphicsDevice.setFullScreenWindow(this);
 
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	setTitle("F-Network Visualizator");
+	setTitle("3D Network Visualizator");
 	setResizable(true);
 	setVisible(true);
-
+	setPreferredSize(new Dimension(800, 600));
+	
 	appMenuBar = new AppMenuBar(this);
-	centralPanel = new CentralPanel(this);
 	networkCreationPanel = new NetworkCreationPanel();
-	footerPanel = new FooterPanel(this);
-
-	Container contentPane = getContentPane();
+	contentPane = getContentPane();
 	contentPane.setLayout(new BorderLayout());
-
-
 	contentPane.add(appMenuBar, BorderLayout.NORTH);
-	contentPane.add(centralPanel, BorderLayout.CENTER);
-	contentPane.add(footerPanel, BorderLayout.SOUTH);
+	contentPane.add(networkCreationPanel, BorderLayout.CENTER);
 	pack();
     }
 
@@ -69,26 +72,29 @@ public class InterfaceFrame extends JFrame {
     public AppMenuBar getAppMenuBar() {
 	return appMenuBar;
     }
+   
+    public Space getSpace() {
+		return space;
+	}
 
-    public NetworkCreationPanel getNetworkCreationPanel() {
-	return networkCreationPanel;
-    }
+    public void switchToNetworkCreationPanel(Network network) {
 
-    public int getScreenHeight() {
-	return screenHeight;
-    }
+        setPreferredSize(new Dimension(screenWidth, screenHeight));
+        remove(networkCreationPanel);
+        space = new Space(this ,screenWidth, screenHeight -
+ Constants.FOOTER_HEIGHT);
+                space.init();
 
-    public int getScreenWidth() {
-	return screenWidth;
-    }
+                footerPanel = new FooterPanel(this);
 
-    public void switchToNetworkCreationPanel() {
-	centralPanel.remove(centralPanel.getSpace());
-	networkCreationPanel = new NetworkCreationPanel();
-	centralPanel.add(networkCreationPanel);
-	networkCreationPanel.setVisible(true);
-	pack();
-    }
+                contentPane.add(footerPanel, BorderLayout.SOUTH);
+                contentPane.add(space);
+
+                space.setNetwork(network);
+
+        pack();
+       }
+    
 
     public void instantChanged() {
 	footerPanel.instantChanged();

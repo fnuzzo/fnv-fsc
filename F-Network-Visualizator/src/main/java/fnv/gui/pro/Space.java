@@ -194,7 +194,7 @@ public class Space extends PApplet{
     public void setup() {
     	System.out.println(spaceWidth+" "+spaceHeight);
 
-	    size(spaceWidth, spaceHeight, P3D);
+	    size(spaceWidth, spaceHeight-8, P3D);
         //hint(ENABLE_OPENGL_4X_SMOOTH);
 
         g3d = (PGraphics3D) g;

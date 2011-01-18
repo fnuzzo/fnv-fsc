@@ -53,7 +53,7 @@ public class Space extends PApplet{
     /* Meta' del valore di "box". Variabile di comodita' */
     int mbox;
     /* Lato dello spazio in px */
-    int space;
+    int space = -1;
     boolean spaceVisible = true;
     //Evidenzia gli archi entranti al posto degli uscenti
     boolean edgeIn = false;
@@ -185,7 +185,8 @@ public class Space extends PApplet{
         mbox = box / 2;
         space = box * boxN;
 
-        cam.lookAt(space / 2, -space / 2, space / 2, space * 2, 2000);
+        if (cam != null)
+            cam.lookAt(space / 2, -space / 2, space / 2, space * 2, 2000);
 
     }
 
@@ -204,13 +205,16 @@ public class Space extends PApplet{
         smooth();
 
         frameRate(framerate);
-   
+
         //Inizializzazione camera
         cam = new PeasyCam(this, 10,10,10,100);
         //cam = new PeasyCam(this, 300);
         cam.setMinimumDistance(10);
         //cam.setMaximumDistance(700);
         cam.setResetOnDoubleClick(false);
+
+        if (space != -1)
+            cam.lookAt(space / 2, -space / 2, space / 2, space * 2, 2000);
 
         initializeTimer();
 
@@ -658,8 +662,14 @@ public class Space extends PApplet{
         line(width / 2 - 9, height / 2 , width / 2 + 9, height / 2);
         line(width / 2 , height / 2 - 9, width / 2 , height / 2 + 9);
 
+        fill(0,0,100);
         textFont(loadFont("ArialMT-48.vlw"),fontSize);
         text(frameRate, 20, fontSize);
+        //Stampo label
+        if (instant != -1) {
+            String insLabel = "Time:" + network.getInteractionCube().getInstant(instant).getLabel();
+            text(insLabel, width - textWidth(insLabel) - 20, height - fontSize);
+        }
 
          //Label
         for (int i = 0; i < nodes.length; i++) {

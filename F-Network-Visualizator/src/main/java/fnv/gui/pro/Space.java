@@ -349,7 +349,6 @@ public class Space extends PApplet{
 	    } else if (options.equals(Constants.ICON_PAUSE_ACTIONCOMMAND)) {
 		animationTimer.stop();
 	    } else if (options.equals(Constants.ICON_STOP_ACTIONCOMMAND)) {
-		//instant = 0;
 		instant = -1;
 		animationTimer.stop();
 	    }

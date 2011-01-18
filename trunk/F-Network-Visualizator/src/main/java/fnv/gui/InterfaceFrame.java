@@ -96,6 +96,7 @@ public class InterfaceFrame extends JFrame {
        }
     
 
+    
     public void instantChanged() {
 	footerPanel.instantChanged();
     }

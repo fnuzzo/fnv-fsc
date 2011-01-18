@@ -14,8 +14,6 @@ import java.awt.GraphicsEnvironment;
 import javax.swing.JFrame;
 
 import fnv.gui.pro.Space;
-import fnv.network.Instant;
-import fnv.network.InteractionElement;
 import fnv.network.Network;
 import fnv.utils.Constants;
 
@@ -27,19 +25,14 @@ public class InterfaceFrame extends JFrame {
 
     private int screenWidth;
     private int screenHeight;
-
     private AppMenuBar appMenuBar;
-    private CentralPanel centralPanel;
     private NetworkCreationPanel networkCreationPanel;
     private FooterPanel footerPanel;
     private Space space;
-	private Container contentPane;
-	
-	
-	
-	
+    private Container contentPane;
+
     public InterfaceFrame() {
-    	
+
 	GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 	GraphicsDevice defaultGraphicsDevice = ge.getDefaultScreenDevice();
 	screenWidth = defaultGraphicsDevice.getDisplayMode().getWidth();
@@ -51,7 +44,7 @@ public class InterfaceFrame extends JFrame {
 	setResizable(true);
 	setVisible(true);
 	setPreferredSize(new Dimension(800, 600));
-	
+
 	appMenuBar = new AppMenuBar(this);
 	networkCreationPanel = new NetworkCreationPanel();
 	contentPane = getContentPane();
@@ -61,8 +54,12 @@ public class InterfaceFrame extends JFrame {
 	pack();
     }
 
-    public CentralPanel getCentralPanel() {
-	return centralPanel;
+    public int getScreenHeight() {
+	return screenHeight;
+    }
+
+    public int getScreenWidth() {
+	return screenWidth;
     }
 
     public FooterPanel getFooterPanel() {
@@ -72,31 +69,28 @@ public class InterfaceFrame extends JFrame {
     public AppMenuBar getAppMenuBar() {
 	return appMenuBar;
     }
-   
+
     public Space getSpace() {
-		return space;
-	}
+	return space;
+    }
 
     public void switchToNetworkCreationPanel(Network network) {
 
-        setPreferredSize(new Dimension(screenWidth, screenHeight));
-        remove(networkCreationPanel);
-        space = new Space(this ,screenWidth, screenHeight -
- Constants.FOOTER_HEIGHT);
-                space.init();
+	setPreferredSize(new Dimension(screenWidth, screenHeight));
+	remove(networkCreationPanel);
+	space = new Space(this, screenWidth, screenHeight - Constants.FOOTER_HEIGHT);
+	space.init();
 
-                footerPanel = new FooterPanel(this);
+	footerPanel = new FooterPanel(this);
 
-                contentPane.add(footerPanel, BorderLayout.SOUTH);
-                contentPane.add(space);
+	contentPane.add(footerPanel, BorderLayout.SOUTH);
+	contentPane.add(space);
 
-                space.setNetwork(network);
+	space.setNetwork(network);
 
-        pack();
-       }
-    
+	pack();
+    }
 
-    
     public void instantChanged() {
 	footerPanel.instantChanged();
     }

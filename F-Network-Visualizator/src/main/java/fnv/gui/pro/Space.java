@@ -1,6 +1,5 @@
 package fnv.gui.pro;
 
-import fnv.gui.Interface;
 import fnv.gui.InterfaceFrame;
 import fnv.network.InteractionElement;
 import fnv.network.Network;
@@ -216,20 +215,7 @@ public class Space extends PApplet{
         initializeTimer();
 
         cursor(MOVE);
-
-      /*  try {
-            this.setNetwork(InputParser.parse(new FileInputStream("./network-test-01.xml")));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }*/
-
     }
-
-//    public void resizePanel(int w, int h){
-//    	setSize(w, h);
-//    	draw();
-//
-//    }
     
     private void toggleEdgesIn() {
 	    edgeIn = !edgeIn;
@@ -331,15 +317,6 @@ public class Space extends PApplet{
     }
     
     public void resizeSpace(Dimension d){    	
-    	//resize(new Dimension(200, 200));
-	//size(800, 600, OPENGL);
-	//size(d.height, d.width, P3D);
-	//resize(d);
-
-//	setSize(d);
-//	setMinimumSize(d);
-//	setMaximumSize(d);
-//	setPreferredSize(d);
 	resizeRenderer(d.width, d.height);
     }
 
@@ -349,9 +326,6 @@ public class Space extends PApplet{
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 		if (networkInitialized) {
-		    //TODO debug
-		    System.out.println("animationTimer.getDelay(): " + animationTimer.getDelay() + " instant = " + instant);
-
 		    incrementInstant();
 		    int value = (instant * 100) / network.getNumberOfInstants();
 		    swingInterface.setJSliderValue(value);
@@ -375,7 +349,8 @@ public class Space extends PApplet{
 	    } else if (options.equals(Constants.ICON_PAUSE_ACTIONCOMMAND)) {
 		animationTimer.stop();
 	    } else if (options.equals(Constants.ICON_STOP_ACTIONCOMMAND)) {
-		instant = 0;
+		//instant = 0;
+		instant = -1;
 		animationTimer.stop();
 	    }
 	}
@@ -412,10 +387,8 @@ public class Space extends PApplet{
     }
 
     //Disegna il Cubo dello spazio
-
     public void draw3DSpaceFlat() {
 	for (int i = 0; i <= space; i += space / boxN) {
-	    //stroke(255, 0, 255, 127);
 	    stroke(0, 0, 50);
 	    line(i, 0, 0, i, 0, space);//Linee verticali
 	    line(0, 0, i, space, 0, i);//Linee orizzontali
@@ -427,9 +400,6 @@ public class Space extends PApplet{
     public void draw3DSpaceSphere() {
 	pushMatrix();
 	translate(space / 2, -space / 2, space / 2);
-    //sphereDetail(3);
-    //stroke(1, 100, 100);
-    //fill(1, 100, 100);
 	sphere(space / 2);
 
 	popMatrix();

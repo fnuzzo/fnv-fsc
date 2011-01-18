@@ -410,7 +410,7 @@ public class NetworkCreationPanel extends javax.swing.JPanel {
 	try {
 	    inputStream = new FileInputStream(inputFile);
 	} catch (FileNotFoundException ex) {
-	    Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+	    Logger.getLogger(NetworkCreationPanel.class.getName()).log(Level.SEVERE, null, ex);
 	} catch (NullPointerException npe) {
 	}
 

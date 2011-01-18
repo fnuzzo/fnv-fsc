@@ -29,7 +29,6 @@ import fnv.utils.Constants;
 import java.util.Random;
 import processing.core.*;
 import peasy.*;
-import fullscreen.*;
 
 import processing.opengl.*;
 
@@ -193,8 +192,9 @@ public class Space extends PApplet{
 
     @Override
     public void setup() {
+    	System.out.println(spaceWidth+" "+spaceHeight);
 
-	    size(spaceWidth, spaceHeight, OPENGL);
+	    size(spaceWidth, spaceHeight, P3D);
         //hint(ENABLE_OPENGL_4X_SMOOTH);
 
         g3d = (PGraphics3D) g;

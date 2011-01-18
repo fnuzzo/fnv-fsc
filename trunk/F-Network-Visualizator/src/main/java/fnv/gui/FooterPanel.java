@@ -120,7 +120,7 @@ public class FooterPanel extends JPanel implements ActionListener, ChangeListene
 
 	logPanel = new JPanel();
 	//logPanel.add(logTextArea);
-	logPanel.add(jScrollPane);
+	//logPanel.add(jScrollPane);
 
 	//build footer
 	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

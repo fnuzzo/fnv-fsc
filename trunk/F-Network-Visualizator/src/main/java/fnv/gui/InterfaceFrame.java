@@ -91,9 +91,9 @@ public class InterfaceFrame extends JFrame {
 	pack();
     }
 
-    public void instantChanged() {
-	footerPanel.instantChanged();
-    }
+//    public void instantChanged() {
+//	footerPanel.instantChanged();
+//    }
 
     public void setJSliderValue(int value) {
 	footerPanel.setJSliderValue(value);

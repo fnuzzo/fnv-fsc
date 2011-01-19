@@ -77,7 +77,7 @@ public class Space extends PApplet{
 
     private int spaceWidth;
     private int spaceHeight;
-    private double animationTimeSec = 1;
+    private double animationTimeSec = 2;
     //Nodi
     ANode[] nodes = new ANode[0];
     Network network = new Network();
@@ -86,11 +86,8 @@ public class Space extends PApplet{
     //Archi
     AEdge[][] edges = new AEdge[0][0];
 
-//    public Space(Interface inter) {
-//	this.swingInterface = inter;
-//    }
     public Space(InterfaceFrame inter, int width, int height) {
-    super();
+        super();
 	this.swingInterface = inter;
 	spaceWidth = width;
 	spaceHeight = height;
@@ -111,10 +108,8 @@ public class Space extends PApplet{
 
     public void incrementInstant() {
 	if (networkInitialized) {
-	    //if (instant < (network.getNumberOfInstants()-1)) {
-	    if (instant < network.getNumberOfInstants()) {
+	    if (instant < (network.getNumberOfInstants() - 1)) {
 		instant++;
-		swingInterface.instantChanged();
 	    }
 	}
     }
@@ -122,13 +117,12 @@ public class Space extends PApplet{
     public void decrementInstant() {
 	if (instant > 0) {
 	    instant--;
-	    swingInterface.instantChanged();
 	}
     }
 
     public void setInstant(int sliderValue) {
 	if (networkInitialized) {
-	    instant = (network.getNumberOfInstants() * sliderValue) / 100;
+	    instant = ((network.getNumberOfInstants() - 1) * sliderValue) / 100;
 	}
     }
 
@@ -330,7 +324,8 @@ public class Space extends PApplet{
 	    public void actionPerformed(ActionEvent e) {
 		if (networkInitialized) {
 		    incrementInstant();
-		    int value = (instant * 100) / network.getNumberOfInstants();
+		    int value = (instant * 100) / (network.getNumberOfInstants() - 1);
+
 		    swingInterface.setJSliderValue(value);
 
 		    if (instant == network.getNumberOfInstants()) {
@@ -654,7 +649,7 @@ public class Space extends PApplet{
         // reset camera and disable depth test and blending
         currCameraMatrix = new PMatrix3D(g3d.camera);
         camera();
-         pushMatrix();
+        pushMatrix();
 
         noSmooth();
         stroke(0,0,100);
@@ -697,30 +692,30 @@ public class Space extends PApplet{
         }
     }
 
-    private int selectNode() {
-        int selected = -1;
-        float mouseDisShortest = -1;
-        for (int i = 0; i < nodes.length; i++) {
-
-            float scrX, scrY;
-            scrX = screenX( nodes[i].cx, nodes[i].cy, nodes[i].cz );
-            scrY = screenY( nodes[i].cx, nodes[i].cy, nodes[i].cz );
-
-            float mouseDis = sqrt( sq(mouseX - scrX) + sq(mouseY - scrY) );
-
-            if((
-                    mouseDisShortest == -1 ||//Non ancora inizializzato
-                            mouseDis <= mouseDisShortest
-            ) &&
-                    (mouseDis < box)//Quasi sopra il nodo
-                    ){
-                selected = i;
-		mouseDisShortest = mouseDis;
-            }
-        }
-
-        return selected;
-    }
+//    private int selectNode() {
+//        int selected = -1;
+//        float mouseDisShortest = -1;
+//        for (int i = 0; i < nodes.length; i++) {
+//
+//            float scrX, scrY;
+//            scrX = screenX( nodes[i].cx, nodes[i].cy, nodes[i].cz );
+//            scrY = screenY( nodes[i].cx, nodes[i].cy, nodes[i].cz );
+//
+//            float mouseDis = sqrt( sq(mouseX - scrX) + sq(mouseY - scrY) );
+//
+//            if((
+//                    mouseDisShortest == -1 ||//Non ancora inizializzato
+//                            mouseDis <= mouseDisShortest
+//            ) &&
+//                    (mouseDis < box)//Quasi sopra il nodo
+//                    ){
+//                selected = i;
+//		mouseDisShortest = mouseDis;
+//            }
+//        }
+//
+//        return selected;
+//    }
 
     class AEdge {
 

@@ -187,7 +187,6 @@ public class Space extends PApplet{
 
         if (cam != null)
             cam.lookAt(space / 2, -space / 2, space / 2, space * 2, 2000);
-
     }
 
     @Override

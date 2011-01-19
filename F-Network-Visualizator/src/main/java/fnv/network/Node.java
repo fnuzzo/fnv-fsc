@@ -24,22 +24,6 @@ public class Node implements Serializable {
 	this.z = z;
     }
 
-//    private void writeObject(ObjectOutputStream out) throws IOException {
-//	out.writeInt(id);
-//	out.writeUTF(label);
-//	out.writeInt(x);
-//	out.writeInt(y);
-//	out.writeInt(z);
-//    }
-//
-//    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-//	id = in.readInt();
-//	label = in.readUTF();
-//	x = in.readInt();
-//	y = in.readInt();
-//	z = in.readInt();
-//    }
-
     @Override
     public String toString() {
 	String string = "";

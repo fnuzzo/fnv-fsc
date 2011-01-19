@@ -41,9 +41,6 @@ public class FooterPanel extends JPanel implements ActionListener, ChangeListene
     private JButton stop;
     private JSlider jSlider;
     private JSpinner jSpinner;
-    private JScrollPane jScrollPane;
-    private JTextArea logTextArea;
-    private JPanel logPanel;
 
     public FooterPanel(InterfaceFrame interfaceFrame) {
 	this.interfaceFrame = interfaceFrame;
@@ -109,33 +106,10 @@ public class FooterPanel extends JPanel implements ActionListener, ChangeListene
 	command.add(jSlider);
 	command.add(jSpinner);
 
-	// --- tab log ---
-	//logTextArea = new JTextArea("\n\n\n\n\n\n");
-	logTextArea = new JTextArea();
-	logTextArea.setEditable(false);
-	Font font = logTextArea.getFont();
-	logTextArea.setFont(new Font(font.getFontName(), font.getStyle(), 16));
-	jScrollPane = new JScrollPane(logTextArea);
-	//jScrollPane.setPreferredSize(new Dimension(interfaceFrame.getScreenWidth(), Constants.LOG_HEIGHT));
-
-	logPanel = new JPanel();
-	//logPanel.add(logTextArea);
-	//logPanel.add(jScrollPane);
-
 	//build footer
 	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	add(command);
-	add(logPanel);
-	//setPreferredSize(new Dimension(interfaceFrame.getScreenWidth(), Constants.FOOTER_HEIGHT));
     }
-
-     public void setLogVisible(boolean visible) {
-	 if (visible) {
-	     add(logPanel);
-	 } else {
-	     remove(logPanel);
-	 }
-     }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
@@ -164,26 +138,5 @@ public class FooterPanel extends JPanel implements ActionListener, ChangeListene
 		interfaceFrame.getSpace().setAnimationTime(newAnimationTimeSec);
 	    }
 	}
-    }
-
-    public void instantChanged() {
-	String logText = "";
-	int currentInstant = interfaceFrame.getSpace().getInstant();
-
-	Network network = interfaceFrame.getSpace().getNetwork();
-	Instant instant = network.getInteractionCube().getInstant(currentInstant);
-
-	logText += "Instant: " + instant.getLabel() + "\n";
-	for (InteractionElement interactionElement : instant.getAllInteractions()) {
-	    logText +=
-		    network.getNode(interactionElement.source).label +
-		    " -> " +
-		    network.getNode(interactionElement.target).label +
-		    ": " +
-		    interactionElement.frequency +
-		    "\n";
-	}
-
-	logTextArea.setText(logText);
     }
 }

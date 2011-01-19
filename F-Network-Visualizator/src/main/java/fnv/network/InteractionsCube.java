@@ -65,17 +65,6 @@ public class InteractionsCube implements Serializable {
 	return frequency;
     }
 
-//    public InteractionElement[] getAllInteractions(int instantIndex) {
-//	Instant instant = interactionsCube.get(instantIndex);
-//	if (instant == null) {
-//	    return new InteractionElement[0];
-//	}
-//
-//	ArrayList<InteractionElement> allInteractions = instant.getAllInteractions();
-//
-//	return allInteractions.toArray(new InteractionElement[0]);
-//    }
-
     public Instant getInstant(int instantIndex) {
 	return interactionsCube.get(instantIndex);
     }
@@ -99,6 +88,5 @@ public class InteractionsCube implements Serializable {
 
 	return string;
     }
-
     
 }

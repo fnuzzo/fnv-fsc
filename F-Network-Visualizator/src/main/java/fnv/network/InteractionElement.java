@@ -21,16 +21,4 @@ public class InteractionElement implements Serializable {
         this.target = target;
         this.frequency = frequency;
     }
-
-//    public int getTarget() {
-//        return target;
-//    }
-//
-//    public double getFrequency() {
-//        return frequency;
-//    }
-//
-//    public int getSource() {
-//        return source;
-//    }
 }

@@ -100,7 +100,7 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
 	String actionCommand = actionEvent.getActionCommand();
 	AbstractButton abstractButton = (AbstractButton) actionEvent.getSource();
-
+	
 	if (actionCommand.equals(Constants.BUTTON_IMPORT_ACTIONCOMMAND)) {
 	    importNetwork();
 	} else if (actionCommand.equals(Constants.BUTTON_CREATE_ACTIONCOMMAND)) {
@@ -120,7 +120,8 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
 	//	interfaceFrame.getFooterPanel().setLogVisible(true);
 	//    }
 	//    interfaceFrame.pack();
-	} else if (actionCommand.equals(Constants.BUTTON_ABOUT_ACTIONCOMMAND)) {
+	} else if (actionCommand.equals(Constants.BUTTON_AUTHORS_ACTIONCOMMAND)) {
+		System.out.println(actionCommand.toString());
 	    JOptionPane.showMessageDialog(this, Constants.GUI_ABOUT_MESSAGE);
 	}
     }

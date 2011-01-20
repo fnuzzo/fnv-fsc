@@ -34,11 +34,12 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
     private InterfaceFrame interfaceFrame;
     private JMenu file;
     private JMenu view;
-    private JMenu help;
+    private JMenu about;
     private JMenuItem importNetwork;
     private JMenuItem createNetwork;
     private JMenuItem exit;
     private JMenuItem authors;
+    private JMenuItem help;
     private JCheckBoxMenuItem structure;
     //private JCheckBoxMenuItem log;
     private JCheckBoxMenuItem edgeIn;
@@ -67,6 +68,9 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
 
 	authors = new JMenuItem(Constants.BUTTON_AUTHORS_LABEL);
 	authors.setActionCommand(Constants.BUTTON_AUTHORS_ACTIONCOMMAND);
+	
+	help = new JMenuItem(Constants.BUTTON_HELP_LABEL);
+	help.setActionCommand(Constants.BUTTON_HELP_ACTIONCOMMAND);
 
 	importNetwork.addActionListener(this);
 	createNetwork.addActionListener(this);
@@ -75,7 +79,8 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
 	allEdges.addActionListener(this);
 	//log.addActionListener(this);
 	authors.addActionListener(this);
-
+	help.addActionListener(this);
+	
 	file = new JMenu(Constants.BUTTON_FILE_LABEL);
 	file.add(importNetwork);
 	file.add(createNetwork);
@@ -88,12 +93,13 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
 	//view.addSeparator();
 	//view.add(log);
 
-	help = new JMenu(Constants.BUTTON_ABOUT_LABEL);
-	help.add(authors);
+	about = new JMenu(Constants.BUTTON_ABOUT_LABEL);
+	about.add(authors);
+	about.add(help);
 
 	add(file);
 	add(view);
-	add(help);
+	add(about);
     }
 
     @Override
@@ -113,15 +119,10 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
 	    interfaceFrame.getSpace().setOptions(Constants.BUTTON_EDGEIN_ACTIONCOMMAND);
 	} else if (actionCommand.equals(Constants.BUTTON_ALLEDGES_ACTIONCOMMAND)) {
 	    interfaceFrame.getSpace().setOptions(Constants.BUTTON_ALLEDGES_ACTIONCOMMAND);
-	//} else if (actionCommand.equals(Constants.BUTTON_LOG_ACTIONCOMMAND)) {
-	//    if (abstractButton.getModel().isSelected()) {
-	//	interfaceFrame.getFooterPanel().setLogVisible(false);
-	//    } else {
-	//	interfaceFrame.getFooterPanel().setLogVisible(true);
-	//    }
-	//    interfaceFrame.pack();
+	} else if (actionCommand.equals(Constants.BUTTON_HELP_ACTIONCOMMAND)) {
+		 JOptionPane.showMessageDialog(this, Constants.GUI_HELP_MESSAGE);
 	} else if (actionCommand.equals(Constants.BUTTON_AUTHORS_ACTIONCOMMAND)) {
-		System.out.println(actionCommand.toString());
+		
 	    JOptionPane.showMessageDialog(this, Constants.GUI_ABOUT_MESSAGE);
 	}
     }

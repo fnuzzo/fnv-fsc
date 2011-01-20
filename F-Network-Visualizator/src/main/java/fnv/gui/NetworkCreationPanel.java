@@ -127,7 +127,7 @@ public class NetworkCreationPanel extends javax.swing.JPanel {
             }
         });
 
-        jCheckBox2.setText("I nodi sono posizionati su una sfera");
+        jCheckBox2.setText("Usa sfera come struttura");
 
         jButton3.setText("Salva la rete non completata su disco");
         jButton3.addActionListener(new java.awt.event.ActionListener() {

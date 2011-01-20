@@ -95,6 +95,7 @@ public class FooterPanel extends JPanel implements ActionListener, ChangeListene
 	jSpinner.setMinimumSize(spinnerDimension);
 	jSpinner.setMaximumSize(spinnerDimension);
 	jSpinner.addChangeListener(this);
+	
 
 	//---- Build command ----
 	command = new JPanel();
@@ -109,6 +110,7 @@ public class FooterPanel extends JPanel implements ActionListener, ChangeListene
 	//build footer
 	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	add(command);
+	
     }
 
     @Override

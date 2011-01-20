@@ -1,5 +1,7 @@
 package fnv.utils;
 
+import java.awt.event.KeyEvent;
+
 public final class Constants {
 	/* tag XML del file di input */
 	public final static String XML_ROOT = "network";
@@ -39,6 +41,7 @@ public final class Constants {
 	public final static String BUTTON_VIEW_LABEL = "Visualizza";
 	public final static String BUTTON_ABOUT_LABEL = "About";
 	public final static String BUTTON_AUTHORS_LABEL = "Autori";
+	public final static String BUTTON_HELP_LABEL = "Shortcuts";
 	public final static String BUTTON_IMPORT_LABEL = "Importa una nuova rete";
 	public final static String BUTTON_CREATE_LABEL = "Crea una nuova rete";
 	public final static String BUTTON_EXIT_LABEL = "Esci";
@@ -52,6 +55,7 @@ public final class Constants {
 	public final static String BUTTON_VIEW_ACTIONCOMMAND = "view";
 	public final static String BUTTON_ABOUT_ACTIONCOMMAND = "about";
 	public final static String BUTTON_AUTHORS_ACTIONCOMMAND = "authors";
+	public final static String BUTTON_HELP_ACTIONCOMMAND = "help";
 	public final static String BUTTON_IMPORT_ACTIONCOMMAND = "import";
 	public final static String BUTTON_CREATE_ACTIONCOMMAND = "create";
 	public final static String BUTTON_EXIT_ACTIONCOMMAND = "exit";
@@ -74,9 +78,26 @@ public final class Constants {
 	public final static int FOOTER_HEIGHT = 200;
 	public final static int LOG_HEIGHT = 150;
 	//
-	public final static String GUI_ABOUT_MESSAGE = "Network Visualizator\n"
+	public final static String GUI_ABOUT_MESSAGE = "3D Network Visualizator\n"
 		+ "Autori:\n"
 		+ "Giacomo Benvenuti\n"
 		+ "Enrico D'Angelo\n"
-		+ "Fabrizio Nuzzo";
+		+ "Fabrizio Nuzzo\n";
+		
+	public final static String GUI_HELP_MESSAGE = "3D Network Visualizator Shortcuts\n"
+		+" tramite i tasti: \n"
+		+"- PAGE_UP PAGE_DOWN incrementa e decrementa il tempo dell'animazione\n"
+		+"- Ctrl + cursore sul nodo scelto = seleziona un nodo per visualizzare il nome\n"
+		+"- Shift + cursore sul nodo scelto =  deseleziona un nodo precedentemente selezionato\n"
+		+"- CMD + Trascinamento dell'oggetto col mouse sposta l'oggetto dell'interazione\n"
+		+"- tramite i tasti direzionali è possibile cambiare punto di vista sull'animazione\n"
+		+"- 'e' + nodo selezionato visualizza solo le connessioni in entrata del nodo\n " 
+		+"- 'r' +nodo selezionato visualizza solo le connessioni del nodo selezionato\n"
+		+"- 's' nasconde la struttura";
+	
+	
+
+	
+	
+	
 }

@@ -48,6 +48,19 @@ public class NetworkCreationPanel extends javax.swing.JPanel {
 
     private void initNetworkVariables() {
 	partialNetwork = new PartialNetwork();
+
+	/* resetta tutti i campi dell'interfaccia */
+	jTextField1.setText("");
+	jTextField2.setText("");
+	jTextField3.setText("");
+	jTextField4.setText("");
+	jTextField5.setText("");
+	jTextField6.setText("");
+	jTextField7.setText("");
+	jTextField8.setText("");
+	jTextField9.setText("");
+	jTextField10.setText("");
+	jCheckBox2.setSelected(false);
     }
 
     /** This method is called from within the constructor to
@@ -358,6 +371,9 @@ public class NetworkCreationPanel extends javax.swing.JPanel {
 	}
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    /*
+     * Crea una nuova rete
+     */
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
 	initNetworkVariables();
     }//GEN-LAST:event_jButton6ActionPerformed
@@ -398,6 +414,9 @@ public class NetworkCreationPanel extends javax.swing.JPanel {
 	}
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    /*
+     * Carica una rete incompleta
+     */
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
 	JFileChooser fileChooser = new JFileChooser("./");
 	File inputFile = null;

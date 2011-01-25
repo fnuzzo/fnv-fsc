@@ -75,16 +75,20 @@ public class InterfaceFrame extends JFrame {
     }
 
     public void switchToNetworkCreationPanel(Network network) {
-
-	setPreferredSize(new Dimension(screenWidth, screenHeight));
-	remove(networkCreationPanel);
+       
+    	setPreferredSize(new Dimension(screenWidth, screenHeight));
+    	 contentPane.removeAll();
+    	
+	
+		
 	space = new Space(this, screenWidth, screenHeight - Constants.FOOTER_HEIGHT);
 	space.init();
 
 	footerPanel = new FooterPanel(this);
 
+	contentPane.add(appMenuBar, BorderLayout.NORTH);
 	contentPane.add(footerPanel, BorderLayout.SOUTH);
-	contentPane.add(space);
+	contentPane.add(space, BorderLayout.CENTER);
 
 	space.setNetwork(network);
 

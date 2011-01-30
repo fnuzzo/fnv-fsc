@@ -90,7 +90,7 @@ public final class Constants {
 		+"- Ctrl + cursore sul nodo scelto = seleziona un nodo per visualizzare il nome\n"
 		+"- Shift + cursore sul nodo scelto =  deseleziona un nodo precedentemente selezionato\n"
 		+"- CMD + Trascinamento dell'oggetto col mouse sposta l'oggetto dell'interazione\n"
-		+"- tramite i tasti direzionali è possibile cambiare punto di vista sull'animazione\n"
+		+"- tramite i tasti direzionali e' possibile cambiare punto di vista sull'animazione\n"
 		+"- 'e' + nodo selezionato visualizza solo le connessioni in entrata del nodo\n " 
 		+"- 'r' +nodo selezionato visualizza solo le connessioni del nodo selezionato\n"
 		+"- 's' nasconde la struttura";

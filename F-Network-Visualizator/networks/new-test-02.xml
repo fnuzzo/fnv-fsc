@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<network>
+	<static-data>
+		<network-name>new-test-02</network-name>
+		<nodes-list>
+			<node id="0" label="0" x="2" y="0" z="6" />
+			<node id="1" label="1" x="3" y="0" z="8" />
+		</nodes-list>
+		<flat>true</flat>
+	</static-data>
+	<dynamic-data>
+		<instant value="0" label="0">
+			<interaction source="1" target="0" quantity="1" frequency="0.6080425" />
+		</instant>
+		<instant value="1" label="1">
+			<interaction source="1" target="0" quantity="8" frequency="0.31866568" />
+		</instant>
+	</dynamic-data>
+</network>
+

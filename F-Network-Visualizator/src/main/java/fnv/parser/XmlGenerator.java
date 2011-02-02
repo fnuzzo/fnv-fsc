@@ -87,6 +87,7 @@ public class XmlGenerator {
 		Element networkInteraction = new Element(Constants.XML_INTERACTION);
 		networkInteraction.setAttribute(Constants.XML_INTERACTION_SOURCE_ATTR, String.valueOf(interactionElement.source));
 		networkInteraction.setAttribute(Constants.XML_INTERACTION_TARGET_ATTR, String.valueOf(interactionElement.target));
+		networkInteraction.setAttribute(Constants.XML_INTERACTION_QUANTITY_ATTR, String.valueOf(interactionElement.quantity));
 		networkInteraction.setAttribute(Constants.XML_INTERACTION_FREQUENCY_ATTR, String.valueOf(interactionElement.frequency));
 
 		networkInstant.addContent(networkInteraction);

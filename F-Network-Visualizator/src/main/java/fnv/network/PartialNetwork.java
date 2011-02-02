@@ -34,8 +34,8 @@ public class PartialNetwork implements Serializable {
 	return interactionsCube;
     }
 
-    public void addInteraction(int instantIndex, int source, int target, float frequency, String label) {
-	interactionsCube.addInteraction(instantIndex, source, target, frequency, label);
+    public void addInteraction(int instantIndex, int source, int target, int quantity, float frequency, String label) {
+	interactionsCube.addInteraction(instantIndex, source, target, quantity, frequency, label);
     }
 
     public String getNetworkName() {

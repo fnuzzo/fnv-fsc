@@ -115,9 +115,10 @@ public class InputParser {
 			/* parsing delle interazioni tra i nodi */
 			Integer source = interaction.getAttribute(Constants.XML_INTERACTION_SOURCE_ATTR).getIntValue();
 			Integer target = interaction.getAttribute(Constants.XML_INTERACTION_TARGET_ATTR).getIntValue();
+			Integer quantity = interaction.getAttribute(Constants.XML_INTERACTION_QUANTITY_ATTR).getIntValue();
 			Float frequency = interaction.getAttribute(Constants.XML_INTERACTION_FREQUENCY_ATTR).getFloatValue();
 
-			interactionCube.addInteraction(instantValue, source, target, frequency, instantLabel);
+			interactionCube.addInteraction(instantValue, source, target, quantity, frequency, instantLabel);
 		    } else {
 			System.err.println("Elemento non riconosciuto.");
 			System.err.println(interaction.getName() + ", should be: " + Constants.XML_INTERACTION);

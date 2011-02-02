@@ -32,7 +32,7 @@ public class InteractionsCube implements Serializable {
 	return minFrequency;
     }
 
-    public void addInteraction(int instantIndex, int source, int target, float frequency, String label) {
+    public void addInteraction(int instantIndex, int source, int target, int quantity, float frequency, String label) {
 	if (source != target) {
 	    Instant instant = interactionsCube.get(instantIndex);
 
@@ -40,7 +40,7 @@ public class InteractionsCube implements Serializable {
 		instant = new Instant(label);
 	    }
 
-	    instant.addInteraction(source, target, frequency);
+	    instant.addInteraction(source, target, quantity, frequency);
 
 	    interactionsCube.put(instantIndex, instant);
 
@@ -53,17 +53,17 @@ public class InteractionsCube implements Serializable {
 	}
     }
 
-    public float getInteraction(int instantIndex, int source, int target) {
-	float frequency = 0;
-
-	Instant instant = interactionsCube.get(instantIndex);
-
-	if (instant != null) {
-	    frequency = instant.getInteraction(source, target);
-	}
-
-	return frequency;
-    }
+//    public float getInteraction(int instantIndex, int source, int target) {
+//	float frequency = 0;
+//
+//	Instant instant = interactionsCube.get(instantIndex);
+//
+//	if (instant != null) {
+//	    frequency = instant.getInteraction(source, target);
+//	}
+//
+//	return frequency;
+//    }
 
     public Instant getInstant(int instantIndex) {
 	return interactionsCube.get(instantIndex);

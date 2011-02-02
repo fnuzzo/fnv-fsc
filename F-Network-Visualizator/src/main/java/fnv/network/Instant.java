@@ -14,22 +14,22 @@ import java.util.HashMap;
  */
 public class Instant implements Serializable {
 
-    private HashMap<Integer, HashMap<Integer, Float>> instant;
+    private HashMap<Integer, HashMap<Integer, InstantElement>> instant;
     private String label;
 
     public Instant(String label) {
-	instant = new HashMap<Integer, HashMap<Integer, Float>>();
+	instant = new HashMap<Integer, HashMap<Integer, InstantElement>>();
 	this.label = label;
     }
 
-    public void addInteraction(int source, int target, float frequency) {
-	HashMap<Integer, Float> rowValue = instant.get(source);
+    public void addInteraction(int source, int target, int quantity, float frequency) {
+	HashMap<Integer, InstantElement> rowValue = instant.get(source);
 
 	if (rowValue == null) {
-	    rowValue = new HashMap<Integer, Float>();
+	    rowValue = new HashMap<Integer, InstantElement>();
 	}
 
-	rowValue.put(target, frequency);
+	rowValue.put(target, new InstantElement(quantity, frequency));
 
 	instant.put(source, rowValue);
     }
@@ -38,32 +38,35 @@ public class Instant implements Serializable {
 	return label;
     }
 
-    public float getInteraction(int source, int target) {
-	Float frequency = (float) 0.0;
-
-	HashMap<Integer, Float> rowValue = instant.get(source);
-
-	if (rowValue != null) {
-	    frequency = rowValue.get(target);
-
-	    if (frequency == null) {
-		frequency = (float) 0.0;
-	    }
-	}
-
-	return frequency.floatValue();
-    }
+//    public float getInteraction(int source, int target) {
+//	Integer quantity = 0;
+//	Float frequency = (float) 0.0;
+//
+//	HashMap<Integer, InstantElement> rowValue = instant.get(source);
+//
+//	if (rowValue != null) {
+//	    quantity =  rowValue.get(target).quantity;
+//	    frequency = rowValue.get(target).frequency;
+//
+//	    if (frequency == null) {
+//		frequency = (float) 0.0;
+//	    }
+//	}
+//
+//	return frequency.floatValue();
+//    }
 
     public ArrayList<InteractionElement> getAllInteractions() {
 	ArrayList<InteractionElement> allInteractions = new ArrayList<InteractionElement>();
 
 	for (Integer source : instant.keySet()) {
-	    HashMap<Integer, Float> rowValue = instant.get(source);
+	    HashMap<Integer, InstantElement> rowValue = instant.get(source);
 
 	    for (Integer target : rowValue.keySet()) {
-		float frequency = rowValue.get(target);
+		int quantity = rowValue.get(target).quantity;
+		float frequency = rowValue.get(target).frequency;
 
-		InteractionElement ie = new InteractionElement(source, target, frequency);
+		InteractionElement ie = new InteractionElement(source, target, quantity, frequency);
 		allInteractions.add(ie);
 	    }
 	}
@@ -78,12 +81,13 @@ public class Instant implements Serializable {
 	string += "label: " + label + "\n";
 
 	for (Integer rowKey : instant.keySet()) {
-	    HashMap<Integer, Float> row = instant.get(rowKey);
+	    HashMap<Integer, InstantElement> row = instant.get(rowKey);
 
 	    for (Integer columnKey : row.keySet()) {
-		Float frequency = row.get(columnKey);
+		Integer quantity = row.get(columnKey).quantity;
+		Float frequency = row.get(columnKey).frequency;
 
-		string += rowKey + " -> " + columnKey + ": " + frequency + "\n";
+		string += rowKey + " -> " + columnKey + ": (" + quantity + ") " + frequency + "\n";
 	    }
 	}
 

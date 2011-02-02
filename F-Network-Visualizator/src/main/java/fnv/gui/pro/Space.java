@@ -527,7 +527,7 @@ public class Space extends PApplet{
                     //Aereoplano
                     int t = (frameCount % framerate);
 
-                    for (int i = 0; (i<edge.q && i<t); i++) {
+                    for (int i = t; (i<edge.q+t && i<framerate); i++) {
                         if (i == 0) i = 1;
                         strokeWeight(4);
                         stroke(edge.c, 100, 100);

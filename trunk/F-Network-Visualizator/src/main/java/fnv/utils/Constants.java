@@ -22,6 +22,7 @@ public final class Constants {
 	public final static String XML_INTERACTION = "interaction";
 	public final static String XML_INTERACTION_SOURCE_ATTR = "source";
 	public final static String XML_INTERACTION_TARGET_ATTR = "target";
+	public final static String XML_INTERACTION_QUANTITY_ATTR = "quantity";
 	public final static String XML_INTERACTION_FREQUENCY_ATTR = "frequency";
 
 	//
@@ -42,7 +43,7 @@ public final class Constants {
 	public final static String BUTTON_ABOUT_LABEL = "About";
 	public final static String BUTTON_AUTHORS_LABEL = "Autori";
 	public final static String BUTTON_HELP_LABEL = "Shortcuts";
-	public final static String BUTTON_IMPORT_LABEL = "Importa una nuova rete";
+	public final static String BUTTON_IMPORT_LABEL = "Importa una rete";
 	public final static String BUTTON_CREATE_LABEL = "Crea una nuova rete";
 	public final static String BUTTON_EXIT_LABEL = "Esci";
 	public final static String BUTTON_STRUCTURE_LABEL = "Visualizza spazio 3D di riferimento (s)";

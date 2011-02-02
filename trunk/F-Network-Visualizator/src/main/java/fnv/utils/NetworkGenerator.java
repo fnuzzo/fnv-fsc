@@ -82,10 +82,10 @@ public class NetworkGenerator {
 		    int destination;
 		    do {
 			destination = nodes.get(random.nextInt(nodes.size())).id;
-//			System.out.println(source + " " + destination);
+
 		    } while (source == destination);
 
-		    interactionCube.addInteraction(instant, source, destination, random.nextFloat(), String.valueOf(instant));
+		    interactionCube.addInteraction(instant, source, destination, random.nextInt(10) + 1, random.nextFloat(), String.valueOf(instant));
 		}
 	    }
 	}

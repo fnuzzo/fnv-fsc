@@ -525,10 +525,10 @@ public class Space extends PApplet{
 
                 if (ev || !selected) {
                     //Aereoplano
-                    int t = (frameCount % framerate);
+                    int t = (frameCount % edge.qt)+1;
 
-                    for (int i = t; (i<edge.q+t && i<framerate); i++) {
-                        if (i == 0) i = 1;
+                    for (int i = t; (i<=edge.q+t && i<edge.qt); i++) {
+                        //if (i == 0) i = 1;
                         strokeWeight(4);
                         stroke(edge.c, 100, 100);
                         line(edge.beizPx[i-1],
@@ -735,6 +735,7 @@ public class Space extends PApplet{
 
         public float f;
         public float q;
+        public int qt;
         public float af;
         public float c;//color
 
@@ -745,6 +746,7 @@ public class Space extends PApplet{
             this.nt = nodes[t];
             this.f = ie.frequency;
             this.q = ie.quantity;
+            this.qt = (int) q*10;
             this.af = map(ie.frequency, network.getInteractionCube().getMinFrequency(), network.getInteractionCube().getMaxFrequency(),0,space);
             this.c = map(ie.frequency, network.getInteractionCube().getMinFrequency(), network.getInteractionCube().getMaxFrequency(),0,nodes.length);
 
@@ -776,12 +778,12 @@ public class Space extends PApplet{
             }
 
             //beizerPoint
-            this.beizPx  = new float[framerate];
-            this.beizPy  = new float[framerate];
-            this.beizPz  = new float[framerate];
+            this.beizPx  = new float[qt];
+            this.beizPy  = new float[qt];
+            this.beizPz  = new float[qt];
 
-            for (int i = 0; i < framerate; i++) {
-                float t = i /  (float) framerate ;
+            for (int i = 0; i < qt; i++) {
+                float t = i /  (float) qt ;
                 this.beizPx[i] = bezierPoint(
                         ns.cx,
                         cpsx,

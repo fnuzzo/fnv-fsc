@@ -188,6 +188,7 @@ public class Space extends PApplet{
     	System.out.println(spaceWidth+" "+spaceHeight);
 
 	    size(spaceWidth, spaceHeight-8, P3D);
+        //size(spaceWidth, spaceHeight, OPENGL);
         //hint(ENABLE_OPENGL_4X_SMOOTH);
 
         g3d = (PGraphics3D) g;
@@ -523,28 +524,24 @@ public class Space extends PApplet{
 			    strokeWeight(1);
 
                 if (ev || !selected) {
-			        //Aereoplano
-			        int t = (frameCount % framerate);
-                    if (t == 0) t = 1;
-                    strokeWeight(4);
-                    stroke(edge.c, 100, 100);
-                    line(edge.beizPx[t-1],
-                            edge.beizPy[t-1],
-                            edge.beizPz[t-1],
-                            edge.beizPx[t],
-				        edge.beizPy[t],
-				        edge.beizPz[t]);
-                    strokeWeight(1);
-			        /*pushMatrix();
-			        translate(
-				        edge.beizPx[t],
-				        edge.beizPy[t],
-				        edge.beizPz[t]);
-			        fill(0, 0, 100);
-                    //sphereDetail(3);
-			        //sphere(2);
-                    box(2);
-			        popMatrix();*/
+                    //Aereoplano
+                    int t = (frameCount % framerate);
+
+                    for (int i = 0; (i<edge.q && i<t); i++) {
+                        if (i == 0) i = 1;
+                        strokeWeight(4);
+                        stroke(edge.c, 100, 100);
+                        line(edge.beizPx[i-1],
+                                edge.beizPy[i-1],
+                                edge.beizPz[i-1],
+                                edge.beizPx[i],
+                                edge.beizPy[i],
+                                edge.beizPz[i]);
+                        strokeWeight(1);
+                    }
+
+
+
                 }
 		    }
 
@@ -737,6 +734,7 @@ public class Space extends PApplet{
         public float[] beizPz;
 
         public float f;
+        public float q;
         public float af;
         public float c;//color
 
@@ -746,6 +744,7 @@ public class Space extends PApplet{
             this.t = ie.target;
             this.nt = nodes[t];
             this.f = ie.frequency;
+            this.q = ie.quantity;
             this.af = map(ie.frequency, network.getInteractionCube().getMinFrequency(), network.getInteractionCube().getMaxFrequency(),0,space);
             this.c = map(ie.frequency, network.getInteractionCube().getMinFrequency(), network.getInteractionCube().getMaxFrequency(),0,nodes.length);
 
@@ -802,8 +801,6 @@ public class Space extends PApplet{
                         nt.cz,
                         t);
             }
-
-
         }
     }
 

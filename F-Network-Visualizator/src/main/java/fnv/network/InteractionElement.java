@@ -20,7 +20,7 @@ public class InteractionElement implements Serializable {
     public InteractionElement(int source, int target, int quantity, float frequency) {
         this.source = source;
         this.target = target;
-	this.quantity = quantity;
+	    this.quantity = quantity;
         this.frequency = frequency;
     }
 }

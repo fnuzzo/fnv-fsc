@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<network>
+	<static-data>
+		<network-name>new-test-sfera-01</network-name>
+		<nodes-list>
+			<node id="0" label="0" x="19" y="3" z="6" />
+			<node id="1" label="1" x="11" y="14" z="29" />
+		</nodes-list>
+		<flat>false</flat>
+	</static-data>
+	<dynamic-data>
+		<instant value="0" label="0">
+			<interaction source="0" target="1" quantity="10" frequency="0.7608502" />
+		</instant>
+		<instant value="1" label="1">
+			<interaction source="0" target="1" quantity="6" frequency="0.14497817" />
+		</instant>
+	</dynamic-data>
+</network>
+

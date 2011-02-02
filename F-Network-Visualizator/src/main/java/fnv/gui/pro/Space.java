@@ -41,7 +41,7 @@ public class Space extends PApplet{
     InterfaceFrame swingInterface;
     Timer rotationTimer, animationTimer;
     //Frame al secondo
-    final int framerate = 20;
+    final int framerate = 30;
     //Font etichette
     PFont f;
     int fontSize = 32;

@@ -529,7 +529,7 @@ public class Space extends PApplet{
 
                     for (int i = t; (i<=edge.q+t && i<edge.qt); i++) {
                         //if (i == 0) i = 1;
-                        strokeWeight(4);
+                        /*strokeWeight(4);
                         stroke(edge.c, 100, 100);
                         line(edge.beizPx[i-1],
                                 edge.beizPy[i-1],
@@ -537,7 +537,17 @@ public class Space extends PApplet{
                                 edge.beizPx[i],
                                 edge.beizPy[i],
                                 edge.beizPz[i]);
-                        strokeWeight(1);
+                        strokeWeight(1)*/;
+                        pushMatrix();
+			            translate(
+				            edge.beizPx[i],
+				            edge.beizPy[i],
+				            edge.beizPz[i]);
+			            fill(i*10, 0, 100);
+                    //sphereDetail(3);
+			        //sphere(2);
+                        box(2);
+			            popMatrix();
                     }
 
 
@@ -746,7 +756,7 @@ public class Space extends PApplet{
             this.nt = nodes[t];
             this.f = ie.frequency;
             this.q = ie.quantity;
-            this.qt = (int) q*10;
+            this.qt = (int) (q + (f*100));//Divisione in parti degli archi
             this.af = map(ie.frequency, network.getInteractionCube().getMinFrequency(), network.getInteractionCube().getMaxFrequency(),0,space);
             this.c = map(ie.frequency, network.getInteractionCube().getMinFrequency(), network.getInteractionCube().getMaxFrequency(),0,nodes.length);
 

@@ -546,7 +546,7 @@ public class Space extends PApplet{
 			            fill(i*10, 0, 100);
                     //sphereDetail(3);
 			        //sphere(2);
-                        box(2);
+                        box(3);
 			            popMatrix();
                     }
 
@@ -756,7 +756,7 @@ public class Space extends PApplet{
             this.nt = nodes[t];
             this.f = ie.frequency;
             this.q = ie.quantity;
-            this.qt = (int) (q + (f*100));//Divisione in parti degli archi
+            this.qt = (int) (q + (f*50));//Divisione in parti degli archi
             this.af = map(ie.frequency, network.getInteractionCube().getMinFrequency(), network.getInteractionCube().getMaxFrequency(),0,space);
             this.c = map(ie.frequency, network.getInteractionCube().getMinFrequency(), network.getInteractionCube().getMaxFrequency(),0,nodes.length);
 

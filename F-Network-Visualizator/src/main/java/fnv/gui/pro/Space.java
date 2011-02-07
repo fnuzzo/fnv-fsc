@@ -221,18 +221,17 @@ public class Space extends PApplet{
 	    edgeIn = !edgeIn;
     }
     
-    
-    public void set_visiblelabel(){
-    	if(visible)
-    		visible=false;
-    	else 
-    		visible=true;
-    	
-    	for (int i = 0; i < nodes.length; i++)
-			nodes[i].selected=visible;
-    	
+    private void toggleAllLabels() {
+	if (visible) {
+	    visible = false;
+	} else {
+	    visible = true;
+	}
+
+	for (int i = 0; i < nodes.length; i++) {
+	    nodes[i].selected = visible;
+	}
     }
-    
 
     private void toggleEdges() {
 	    edgeVisible = !edgeVisible;
@@ -244,65 +243,67 @@ public class Space extends PApplet{
 
     @Override
     public void keyPressed() {
-        if (key == CODED) {
-            switch (keyCode) {
-                case UP:
-                    cam.rotateX(0.045);
-                    break;
-                case DOWN:
-                    cam.rotateX(-0.045);
-                    break;
-                case RIGHT:
-                    cam.rotateY(0.045);
-                    break;
-                case LEFT:
-                    cam.rotateY(-0.045);
-                    break;
-                case KeyEvent.VK_PAGE_UP:
-		            incrementInstant();
-                    break;
-                case KeyEvent.VK_PAGE_DOWN:
-		            decrementInstant();
-                    break;
-                case KeyEvent.VK_CONTROL:
-                    cursor(HAND);
-                    break;
-                case KeyEvent.VK_SHIFT:
-                    cursor(CROSS);
-                    break;
-                default:
-                    println(keyCode);
-                    break;
+	if (key == CODED) {
+	    switch (keyCode) {
+		case UP:
+		    cam.rotateX(0.045);
+		    break;
+		case DOWN:
+		    cam.rotateX(-0.045);
+		    break;
+		case RIGHT:
+		    cam.rotateY(0.045);
+		    break;
+		case LEFT:
+		    cam.rotateY(-0.045);
+		    break;
+		case KeyEvent.VK_PAGE_UP:
+		    incrementInstant();
+		    break;
+		case KeyEvent.VK_PAGE_DOWN:
+		    decrementInstant();
+		    break;
+		case KeyEvent.VK_CONTROL:
+		    cursor(HAND);
+		    break;
+		case KeyEvent.VK_SHIFT:
+		    cursor(CROSS);
+		    break;
+		default:
+		    println(keyCode);
+		    break;
 
-            }
-        } else {
-            int intk = -1;
-            try {
-                intk = Integer.parseInt(key + "");
-            } catch (NumberFormatException e) {
+	    }
+	} else {
+	    int intk = -1;
+	    try {
+		intk = Integer.parseInt(key + "");
+	    } catch (NumberFormatException e) {
+	    }
 
-            }
-
-            if (intk == -1) {
-                switch (key) {
-                    case 'p':
-                        showControlPoint = !showControlPoint;  //Da lasciare per Debug
-                        break;
-                    case 'f':
-                        println(frameRate);
-                        break;
-                    case 's':
-                        toggleSpaceVisible();  //ok
-                        break;
-                    case 'e':
-                        toggleEdgesIn();  //ok
-                        break;
-                    case 'r':
-                    	toggleEdges();  //ok
-                        break;
-                }
-            }
-        }
+	    if (intk == -1) {
+		switch (key) {
+		    case 'p':
+			showControlPoint = !showControlPoint;  //Da lasciare per Debug
+			break;
+		    case 'f':
+			println(frameRate);
+			break;
+		    case 's':
+			toggleSpaceVisible();  //ok
+			break;
+		    case 'e':
+			toggleEdgesIn();  //ok
+			break;
+		    case 'r':
+			toggleEdges();  //ok
+			break;
+		    case 'l':
+			toggleAllLabels();  //ok
+			break;
+		}
+	    }
+	}
     }
 
     @Override
@@ -321,14 +322,18 @@ public class Space extends PApplet{
     }
 
     public void setOptions(String options){
-    	if(options.equals(Constants.BUTTON_EDGEIN_ACTIONCOMMAND))
+    	if(options.equals(Constants.BUTTON_EDGEIN_ACTIONCOMMAND)) {
     		toggleEdgesIn();
-    	else if(options.equals(Constants.BUTTON_ALLEDGES_ACTIONCOMMAND))
+	}
+    	else if(options.equals(Constants.BUTTON_ALLEDGES_ACTIONCOMMAND)) {
     		toggleEdges();
-    	else if(options.equals(Constants.BUTTON_STRUCTURE_ACTIONCOMMAND))
+	}
+    	else if(options.equals(Constants.BUTTON_STRUCTURE_ACTIONCOMMAND)) {
     		toggleSpaceVisible();
-    	else if(options.equals(Constants.BUTTON_LABEL_ACTIONCOMMAND))
-    		toggleall_label();
+	}
+    	else if(options.equals(Constants.BUTTON_LABEL_ACTIONCOMMAND)) {
+    		toggleAllLabels();
+	}
     }
     
     public void resizeSpace(Dimension d){    	
@@ -481,9 +486,6 @@ public class Space extends PApplet{
         }
         noFill();
     }
-    
-    public void abel
-    
 
     public boolean isNodeSelect() {
         boolean selected = false;

@@ -398,6 +398,7 @@ public class Space extends PApplet{
     public void draw3DSpaceSphere() {
 	pushMatrix();
 	translate(space / 2, -space / 2, space / 2);
+	noFill();
 	sphere(((network.maxCoordinate - 1) / 2) * box);
 
 	popMatrix();

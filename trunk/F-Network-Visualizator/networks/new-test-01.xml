@@ -3,21 +3,21 @@
 	<static-data>
 		<network-name>new-test-01</network-name>
 		<nodes-list>
-			<node id="0" label="0" x="11" y="0" z="6" />
-			<node id="1" label="1" x="0" y="0" z="1" />
-			<node id="2" label="2" x="9" y="0" z="10" />
-			<node id="3" label="3" x="5" y="0" z="10" />
-			<node id="4" label="4" x="11" y="0" z="7" />
-			<node id="5" label="5" x="9" y="0" z="11" />
-			<node id="6" label="6" x="1" y="0" z="2" />
-			<node id="7" label="7" x="10" y="0" z="3" />
-			<node id="8" label="8" x="9" y="0" z="12" />
-			<node id="9" label="9" x="1" y="0" z="5" />
-			<node id="10" label="10" x="14" y="0" z="7" />
-			<node id="11" label="11" x="2" y="0" z="13" />
-			<node id="12" label="12" x="9" y="0" z="2" />
-			<node id="13" label="13" x="8" y="0" z="9" />
-			<node id="14" label="14" x="2" y="0" z="9" />
+			<node id="0" label="192.168.001.201" x="11" y="0" z="6" />
+			<node id="1" label="192.168.001.201" x="0" y="0" z="1" />
+			<node id="2" label="192.168.190.153" x="9" y="0" z="10" />
+			<node id="3" label="192.168.123.100" x="5" y="0" z="10" />
+			<node id="4" label="192.168.002.100" x="11" y="0" z="7" />
+			<node id="5" label="192.168.232.132" x="9" y="0" z="11" />
+			<node id="6" label="192.168.006.130" x="1" y="0" z="2" />
+			<node id="7" label="192.168.002.199" x="10" y="0" z="3" />
+			<node id="8" label="192.168.123.254" x="9" y="0" z="12" />
+			<node id="9" label="192.168.210.190" x="1" y="0" z="5" />
+			<node id="10" label="192.168.123.253" x="14" y="0" z="7" />
+			<node id="11" label="192.168.111.167" x="2" y="0" z="13" />
+			<node id="12" label="192.168.89.255" x="9" y="0" z="2" />
+			<node id="13" label="192.168.101.100" x="8" y="0" z="9" />
+			<node id="14" label="192.168.781.230" x="2" y="0" z="9" />
 		</nodes-list>
 		<flat>true</flat>
 	</static-data>

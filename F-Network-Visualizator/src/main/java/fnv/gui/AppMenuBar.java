@@ -41,7 +41,7 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
     private JMenuItem authors;
     private JMenuItem help;
     private JCheckBoxMenuItem structure;
-    //private JCheckBoxMenuItem log;
+    private JCheckBoxMenuItem label;
     private JCheckBoxMenuItem edgeIn;
     private JCheckBoxMenuItem allEdges;
 
@@ -63,8 +63,8 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
 	allEdges = new JCheckBoxMenuItem(Constants.BUTTON_ALLEDGES_LABEL);
 	allEdges.setActionCommand(Constants.BUTTON_ALLEDGES_ACTIONCOMMAND);
 	allEdges.setSelected(true);
-	//log = new JCheckBoxMenuItem(Constants.BUTTON_LOG_LABEL);
-	//log.setActionCommand(Constants.BUTTON_LOG_ACTIONCOMMAND);
+	label = new JCheckBoxMenuItem(Constants.BUTTON_VISUALIZE_LABEL);
+	label.setActionCommand(Constants.BUTTON_LABEL_ACTIONCOMMAND);
 
 	authors = new JMenuItem(Constants.BUTTON_AUTHORS_LABEL);
 	authors.setActionCommand(Constants.BUTTON_AUTHORS_ACTIONCOMMAND);
@@ -77,7 +77,7 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
 	structure.addActionListener(this);
 	edgeIn.addActionListener(this);
 	allEdges.addActionListener(this);
-	//log.addActionListener(this);
+	label.addActionListener(this);
 	authors.addActionListener(this);
 	help.addActionListener(this);
 	
@@ -90,8 +90,7 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
 	view.add(structure);
 	view.add(edgeIn);
 	view.add(allEdges);
-	//view.addSeparator();
-	//view.add(log);
+	view.add(label);
 
 	about = new JMenu(Constants.BUTTON_ABOUT_LABEL);
 	about.add(authors);
@@ -122,10 +121,11 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
 	} else if (actionCommand.equals(Constants.BUTTON_HELP_ACTIONCOMMAND)) {
 		 JOptionPane.showMessageDialog(this, Constants.GUI_HELP_MESSAGE);
 	} else if (actionCommand.equals(Constants.BUTTON_AUTHORS_ACTIONCOMMAND)) {
-		
 	    JOptionPane.showMessageDialog(this, Constants.GUI_ABOUT_MESSAGE);
-	}
-    }
+	}else if (actionCommand.equals(Constants.BUTTON_LABEL_ACTIONCOMMAND)){
+		 interfaceFrame.getSpace().setOptions(Constants.BUTTON_LABEL_ACTIONCOMMAND);	
+		}
+   	}
 
      private void importNetwork() {
 

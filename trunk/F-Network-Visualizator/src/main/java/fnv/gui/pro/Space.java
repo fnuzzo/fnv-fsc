@@ -61,6 +61,8 @@ public class Space extends PApplet{
     boolean selected = false;
     //Nasconde gli archi non selezionati
     boolean edgeVisible = true;
+    // visualizza tuutte le label
+    boolean visible = false;
     //Lato dei nodi in px
     int nodesize = 10;
     //Visualizza i punti e le linee di controllo
@@ -218,6 +220,19 @@ public class Space extends PApplet{
     private void toggleEdgesIn() {
 	    edgeIn = !edgeIn;
     }
+    
+    
+    public void set_visiblelabel(){
+    	if(visible)
+    		visible=false;
+    	else 
+    		visible=true;
+    	
+    	for (int i = 0; i < nodes.length; i++)
+			nodes[i].selected=visible;
+    	
+    }
+    
 
     private void toggleEdges() {
 	    edgeVisible = !edgeVisible;
@@ -312,6 +327,8 @@ public class Space extends PApplet{
     		toggleEdges();
     	else if(options.equals(Constants.BUTTON_STRUCTURE_ACTIONCOMMAND))
     		toggleSpaceVisible();
+    	else if(options.equals(Constants.BUTTON_LABEL_ACTIONCOMMAND))
+    		toggleall_label();
     }
     
     public void resizeSpace(Dimension d){    	
@@ -464,6 +481,9 @@ public class Space extends PApplet{
         }
         noFill();
     }
+    
+    public void abel
+    
 
     public boolean isNodeSelect() {
         boolean selected = false;

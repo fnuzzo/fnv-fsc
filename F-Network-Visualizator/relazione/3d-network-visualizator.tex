@@ -62,128 +62,9 @@ Per la realizzazione di questo progetto sono state utilizzate diverse tecnologie
  \item[Java] linguaggio di programmazione orientato agli oggetti, indipendente dalla piattaforma. Grazie all'uso di Java lo stesso codice pu\`o essere eseguito su macchine Windows, Linux, MacOSX.
 \end{description}
         
-\section{Funzioni Implementate}
- 
-\subsection{Creazione di una nuova rete}
-3D-Network-Visualizator permettere di creare una nuova rete che potr\`a poi essere visualizzata. In \figurename~\ref{fig:createnetwork} viene riportata l'interfaccia della creazione di una nuova rete alla quale \`e possibile accedere tramite il men\`u  \textit{File} $\rightarrow$ \textit{crea una nuova rete}.
+\section{Implementazione}
 
-\begin{figure}[htb!]
- \begin{center}
-  \includegraphics[width=\textwidth]{images/create-network.png}
- \end{center}
- \caption{Form per la creazione di una nuova rete.}
- \label{fig:createnetwork}
-\end{figure}
-
-\begin{itemize}
- \item Il campo ``Nome della rete'' indica sia il nome della rete che il nome del file che sar\`a prodotto.
- \item Il campo ``Nome del nodo'' indica l'etichetta del nodo che stiamo inserendo.
- \item I campi ``coordinata X, Y e Z'' indicano ovviamente il valore delle coordinate X, Y e Z.
-\end{itemize}
-Una volta inseriti i valori relativi ad uno nodo, cliccando sul pulsante \textit{Inserisci il nodo}, le informazioni relative al nodo verranno memorizzate, i campi torneranno vuoti e sar\`a possibili inserire i dati relativi ad un altro nodo.
-
-\begin{itemize}
- \item Il campo ``Istante'' indica l'identificativo dell'istante a cui si intende aggiungere un'interazione.
- \item Il campo ``Nodo sorgente'' indica l'etichetta del nodo dal quale ha inizio l'interazione.
- \item Il campo ``Nodo destinazione'' indica l'etichetta del nodo obiettivo dell'interazione.
- \item Il campo ``Tempo'' indica l'etichetta dell'istante. Pu\`o rappresentare, ad esempio, il tempo reale in cui sono state prese le misurazione.
- \item Il campo ``Quantit\`a'' indica la quantit\`a delle interazioni.
- \item Il campo ``Frequenza'' indica la frequenza delle interazioni.
-\end{itemize}
-Anche in questo caso cliccando sul pulsante \textit{Inserisci l'interazione} tutte le informazioni inserite vengono memorizzate e i campi vengono liberati per poter inserire una nuova interazione.
-
-Il checkbox con etichetta ``I nodi sono posizionati su una sfera'' indica ovviamente, come dice l'etichetta, se i nodo sono o meno posizionati su una sfera.
-
-Il pulsante \textit{Salva la rete non completata su disco} permette di memorizzare in un file i progressi finora fatti nella creazione di una rete. Non viene generato un file di input per il visualizzatore, questa funzionalit\`a \`e pensata per permettere all'utente di creare una rete di input in pi\`u tempi.
-
-Il pulsante \textit{Carica una rete non completata da disco} permette invece di caricare una rete incompleta, memorizzata precedentemente, e di continuare con l'inserimento dei nodi e delle interazioni.
-
-Una volta che tutti i dati sono stati inseriti si pu\`o cliccare sul pulsante \textit{Esporta le rete in formato xml} per creare un file di input per il visualizzatore. A questo punto \`e possibile visualizzare la rete appena creata.
-
-Il pulsante \textit{Crea una nuova rete} invece serve per annullare tutte le modifiche fatte finora e ricominciare daccapo con la creazione di una nuova rete.
-
-\subsection{Importare una rete}
-Tramite il menu \textit{File} $\rightarrow$ \textit{Importa una nuova rete} \`e possibile caricare una file di input che rappresenta una rete e le interazioni tra i suoi nodi.
-
-\begin{figure}[htb!]
- \begin{center}
-  \includegraphics[width=\textwidth]{images/image0.png}
- \end{center}
- \caption{File dialog per importare una nuova rete.}
- \label{fig:importnetwork}
-\end{figure}
-
-Una volta importato il file, il programma inizier\`a a visualizzare la rete con una breve animazione introduttiva, finita l'animazione sar\`a possibile far partire la simulazione tramite il tasto \textit{play} posizionato nella barra dei comandi (\figurename~\ref{fig:slider}). 
-
-In qualsiasi momento \`e possibile mettere in pausa la simulazione tramite il tasto \textit{pause}, in questo modo sar\`a possibile soffermarsi sulla visualizzazione dell'istante corrente ed analizzare con cura tutte le interazioni.
-
-Uno slider posto di fianco alla barra dei comandi (\figurename~\ref{fig:slider}) mostra l'avanzamento della simulazione. 
-
-Tramite il campo situato a fianco lo slider \`e possibile cambiare la durata di visualizzazione di un istante, questa opzione permette di velocizzare o rallentare l'animazione.
- 
-\begin{figure}[htb!]
- \begin{center}
-  \includegraphics[width=\textwidth]{images/image1.png}
- \end{center}
- \caption{Slider per controllare l'animazione delle interazioni.}
- \label{fig:slider}
-\end{figure}
- 
-\subsection{Opzioni di Visualizzazione}
-Tramite il menu Visualizza \`e possibile accedere a diverse opzioni di visualizzazioni tra cui:
-1. Visualizza spazio 3d di riferimento (attiva di default) tramite questa opzione \`e possibile nascondere la griglia di riferimento dell'animazione dove sono posizionati i nodi. Questa opzione \`e utile per ridurre al minimo gli elementi presenti nel riquadro.
-2. Visualizza solo archi entranti (disattivata di default) questa opzione \`e molto utile se  vogliamo visualizzare solo le connessioni e il traffico in ingresso; questa opzione \`e utilizzabile in accoppiata alla funzione partizione in modo da visualizzare solo le connessioni e il traffico in ingresso  di determinati nodi.
-3. Visualizza gli archi di tutti i nodi (attiva di default)   Questa opzione permette di nascondere in qualsiasi istante gli archi della rete, utile per visualizzare la posizione dei nodi sulla griglia; questa opzione \`e utilizzabile in accoppiata alla funzione partizione.
- 
- 
- 
-\subsection{Interazione con una partizione della rete}
-Durante i primi test della nostra applicazione abbiamo notato che era difficoltoso concentrare l'attenzione su una ristretta cerchia di nodi, appunto una  partizione della rete. L'attività della rete cambia ogni istante e la possibilità che le connessioni  interessino tutti  i nodi non \`e remota. Uno scenario del genere \`e sicuramente utile per avere un quadro completo della situazione  in un dato istante ma se la nostra analisi \`e rivolta soltanto a determinati nodi tutte le altre interazioni tra i nodi della rete risultano superflue.
-
-\begin{figure}[htb!]
- \begin{center}
-  \includegraphics[width=\textwidth]{images/image2.png}
- \end{center}
- \caption{esempio di visualizzazione senza partizione.}
- \label{fig:slider}
-\end{figure}
- 
-Per ovviare a questo problema \`e stata implementata la funzione partizione; 
-Questa funzione \`e disponibile  in qualsiasi momento dell'animazione; per utilizzarla basta portarsi con il cursore sul nodo/i che ci interessano e selezionarli premendo i tasto “ctrl”.
-
-\begin{figure}[htb!]
- \begin{center}
-  \includegraphics[width=\textwidth]{images/image3.png}
- \end{center}
- \caption{esempio di visualizzazione con  partizione.}
- \label{fig:slider}
-\end{figure}
- 
-In questo screenshot possiamo notare come la funzione partizione faciliti l'analisi di questa parte del network formata da 3 nodi nell'istante 6 
- 
-\subsection{Tipologie di struttura}
- 
-\subsubsection{Piano}
-
-\begin{figure}[htb!]
- \begin{center}
-  \includegraphics[width=\textwidth]{images/image4.png}
- \end{center}
- \caption{esempio di visualizzazione con  partizione.}
- \label{fig:slider}
-\end{figure}
-
-\subsubsection{Sfera}
-
-\begin{figure}[htb!]
- \begin{center}
-  \includegraphics[width=\textwidth]{images/image5.png}
- \end{center}
- \caption{esempio di visualizzazione con  partizione.}
- \label{fig:slider}
-\end{figure}
- 
-\section{Il dataset}
+\subsection{Il dataset}
 Il tipo di dataset che viene visualizzato contiene tutte le informazioni che riguardano i nodi che compongono la rete, e istante per istante, tutte le interazioni che avvengono tra i nodi.
 Gli attributi che riguardano i nodi sono:
 \begin{description}
@@ -256,11 +137,146 @@ Ogni nodo in nodes-list \`e descritto con i seguenti attributi:
   \item frequency: \`e la frequenza dell'interazione
  \end{itemize}
 \end{description}
-
-\section{Conclusioni }
  
-Lo studio e l'implementazione del programma 3D Network Visualizator ci ha dato la possibilità di scoprire i vantaggi derivati da una efficace ed adatta visualizzazione dei dati. Spesso per effettuare analisi non basta avere statistiche dettagliate e indici ricavati da grandi quantità di dati per il semplice motivo che viene a mancare una visione d'insieme che potrebbe portare un risultato d'analisi inaspettato.
-Inizialmente il nostro dominio applicativo erano le reti di calcolatori dislocate geograficamente che scambiano pacchetti di dati. Il dominio in questione per quanto pu\`o essere banalmente descrivibile per esempio tramite un grafico bidimensionale, esclude alcune informazioni che potrebbero essere importanti in caso di analisi approfondite. Una fra tutte la frequenza con cui i nostri ipotetici calcolatori si scambiano pacchetti; come rendere visibile questa informazione? L'introduzione della terza dimensione \`e stata essenziale per poter aggiungere elementi. 
-Prendendo in esempio la frequenza con cui i nodi si scambiano i pacchetti, la nostra soluzione \`e stata di curvare il link in modo da creare un arco in relazione all'aumento della frequenza di comunicazione. Questo tipo di approccio \`e risultato di sicuro impatto per avere un idea dei nodi che hanno un scambio maggiore dei pacchetti nella rete in un dato istante. 
+\subsection{Creazione di una nuova rete}
+3D-Network-Visualizator permettere di creare una nuova rete che potr\`a poi essere visualizzata. In \figurename~\ref{fig:createnetwork} viene riportata l'interfaccia della creazione di una nuova rete alla quale \`e possibile accedere tramite il menu  \textit{File} $\rightarrow$ \textit{crea una nuova rete}.
+
+\begin{figure}[htb!]
+ \begin{center}
+  \includegraphics[width=\textwidth]{images/create-network.png}
+ \end{center}
+ \caption{Form per la creazione di una nuova rete.}
+ \label{fig:createnetwork}
+\end{figure}
+
+\begin{itemize}
+ \item Il campo ``Nome della rete'' indica sia il nome della rete che il nome del file che sar\`a prodotto.
+ \item Il campo ``Nome del nodo'' indica l'etichetta del nodo che stiamo inserendo.
+ \item I campi ``coordinata X, Y e Z'' indicano ovviamente il valore delle coordinate X, Y e Z.
+\end{itemize}
+Una volta inseriti i valori relativi ad uno nodo, cliccando sul pulsante \textit{Inserisci il nodo}, le informazioni relative al nodo verranno memorizzate, i campi torneranno vuoti e sar\`a possibili inserire i dati relativi ad un altro nodo.
+
+\begin{itemize}
+ \item Il campo ``Istante'' indica l'identificativo dell'istante a cui si intende aggiungere un'interazione.
+ \item Il campo ``Nodo sorgente'' indica l'etichetta del nodo dal quale ha inizio l'interazione.
+ \item Il campo ``Nodo destinazione'' indica l'etichetta del nodo obiettivo dell'interazione.
+ \item Il campo ``Tempo'' indica l'etichetta dell'istante. Pu\`o rappresentare, ad esempio, il tempo reale in cui sono state prese le misurazione.
+ \item Il campo ``Quantit\`a'' indica la quantit\`a delle interazioni.
+ \item Il campo ``Frequenza'' indica la frequenza delle interazioni.
+\end{itemize}
+Anche in questo caso cliccando sul pulsante \textit{Inserisci l'interazione} tutte le informazioni inserite vengono memorizzate e i campi vengono liberati per poter inserire una nuova interazione.
+
+Il checkbox con etichetta ``I nodi sono posizionati su una sfera'' indica ovviamente, come dice l'etichetta, se i nodo sono o meno posizionati su una sfera.
+
+Il pulsante \textit{Salva la rete non completata su disco} permette di memorizzare in un file i progressi finora fatti nella creazione di una rete. Non viene generato un file di input per il visualizzatore, questa funzionalit\`a \`e pensata per permettere all'utente di creare una rete di input in pi\`u tempi.
+
+Il pulsante \textit{Carica una rete non completata da disco} permette invece di caricare una rete incompleta, memorizzata precedentemente, e di continuare con l'inserimento dei nodi e delle interazioni.
+
+Una volta che tutti i dati sono stati inseriti si pu\`o cliccare sul pulsante \textit{Esporta le rete in formato xml} per creare un file di input per il visualizzatore. A questo punto \`e possibile visualizzare la rete appena creata.
+
+Il pulsante \textit{Crea una nuova rete} invece serve per annullare tutte le modifiche fatte finora e ricominciare daccapo con la creazione di una nuova rete.
+
+\subsection{Importare una rete}
+Tramite il menu \textit{File} $\rightarrow$ \textit{Importa una nuova rete} \`e possibile caricare una file di input che rappresenta una rete e le interazioni tra i suoi nodi.
+
+\begin{figure}[htb!]
+ \begin{center}
+  \includegraphics[width=\textwidth]{images/image0.png}
+ \end{center}
+ \caption{File dialog per importare una nuova rete.}
+ \label{fig:importnetwork}
+\end{figure}
+
+Una volta importato il file, il programma inizier\`a a visualizzare la rete con una breve animazione introduttiva, finita l'animazione sar\`a possibile far partire la simulazione tramite il tasto \textit{play} posizionato nella barra dei comandi (\figurename~\ref{fig:slider}). 
+
+In qualsiasi momento \`e possibile mettere in pausa la simulazione tramite il tasto \textit{pause}, in questo modo sar\`a possibile soffermarsi sulla visualizzazione dell'istante corrente ed analizzare con cura tutte le interazioni.
+
+Uno slider posto di fianco alla barra dei comandi (\figurename~\ref{fig:slider}) mostra l'avanzamento della simulazione. 
+
+Tramite il campo situato a fianco lo slider \`e possibile cambiare la durata di visualizzazione di un istante, questa opzione permette di velocizzare o rallentare l'animazione.
+ 
+\begin{figure}[htb!]
+ \begin{center}
+  \includegraphics[width=\textwidth]{images/image1.png}
+ \end{center}
+ \caption{Slider per controllare l'animazione delle interazioni.}
+ \label{fig:slider}
+\end{figure}
+ 
+\subsection{Opzioni di Visualizzazione}
+Tramite il menu \textit{Visualizza} \`e possibile, in ogni momento della visualizzazione, accedere a diverse opzioni di visualizzazioni:
+\begin{itemize}
+ \item \textit{Visualizza spazio 3D di riferimento (s)} (attiva di default) tramite questa opzione \`e possibile visualizzare/nascondere la griglia di riferimento dello spazio tridimensionale. Questa opzione \`e utile per ridurre al minimo gli elementi presenti nel riquadro che possono interferire con la comprensione del fenomeno visualizzato.
+ \item \textit{Mostra solo archi entranti (e)} (disattivata di default) questa opzione permette di visualizzare solo gli archi entranti dei nodi. Quest'opzione risulta utile quando sono selezionati solo alcuni dei nodi che compongono la rete, in questo caso \`e possibile concentrarsi sulle interazioni per cui questi nodi sono l'obiettivo, e non la sorgente.
+ \item \textit{Mostra gli archi di tutti i nodi (r)} (attiva di default) questa opzione permette di visualizzare/nascondere tutte le interazioni tra i nodi della rete. Quando sono selezionati dei nodi, quest'opzione ha l'effetto di visualizzare/nascondere tutte le interazioni che si originano dai nodi non selezionati.
+ \item \textit{Visualizza tutte le etichette (l)} (disattivata di default) quest'opzione permette di visualizzare/nascondere tutte le etichette di nodi presenti nella rete.
+\end{itemize}
+\`E possibile attivare/disattivare le stesse opzioni prenendo il tasto corrispondente alla lettere scritta tra parentesi di fianco ai menu.
+
+% Tenendo premuto il tasto \textit{CTRL} e cliccando su un nodo, quest'ultimo viene selezionato. L'effetto di questa operazione \`e che ora tutte le interazioni che si originano in quel nodo sono evidenziate, mentre tutte le altre interazioni passano in secondo piano. \`E possibile selezione diversi nodi contemporaneamente ripetendo quest'operazione. Per deselezionare un nodo occorre cliccare sul nodo stesso tenendo premuto il tasto \textit{Alt}.
+
+Infine, tramite il mouse \`e possibile modificare l'angolo di visualizzazione della rete in tutte le direzioni.
+
+\subsubsection{Visualizzare un sottoinsieme della rete}
+% Durante i primi test della nostra applicazione abbiamo notato che era difficoltoso concentrare l'attenzione su una ristretta cerchia di nodi, appunto una  partizione della rete. L'attività della rete cambia ogni istante e la possibilità che le connessioni  interessino tutti  i nodi non \`e remota. Uno scenario del genere \`e sicuramente utile per avere un quadro completo della situazione  in un dato istante ma se la nostra analisi \`e rivolta soltanto a determinati nodi tutte le altre interazioni tra i nodi della rete risultano superflue.
+Tenendo premuto il tasto \textit{CTRL} e cliccando su un nodo, quest'ultimo viene selezionato. L'effetto di questa operazione \`e che ora tutte le interazioni che si originano in quel nodo sono evidenziate, mentre tutte le altre interazioni passano in secondo piano. \`E possibile selezione diversi nodi contemporaneamente ripetendo quest'operazione. Per deselezionare un nodo occorre cliccare sul nodo stesso tenendo premuto il tasto \textit{Alt}.
+
+Grazie a questa opzione \`e possibile concentrarsi su una parte della rete e delle sue interazioni senza essere disturbati dalle interazioni che non ci interessano.
+
+La \figurename~\ref{fig:caotica} mostra una rete in cui tutte le interazioni sono visualizzate. Nel caso ci si voglia concentrare solo su alcune di tali interazioni, \`e utili selezionare solo i nodi interessati per ottenere una visualizzazione pi\`u chiara del sistema, come mostrato in figura \figurename~\ref{fig:sottoinsieme}.
+
+\begin{figure}[htb!]
+ \begin{center}
+  \includegraphics[width=\textwidth]{images/image2.png}
+ \end{center}
+ \caption{Visualizzazione caotica.}
+ \label{fig:caotica}
+\end{figure}
+ 
+%Per ovviare a questo problema \`e stata implementata la funzione partizione; 
+%Questa funzione \`e disponibile  in qualsiasi momento dell'animazione; per utilizzarla basta portarsi con il cursore sul nodo/i che ci interessano e selezionarli premendo i tasto “ctrl”.
+
+\begin{figure}[htb!]
+ \begin{center}
+  \includegraphics[width=\textwidth]{images/image3.png}
+ \end{center}
+ \caption{Visualizzazione di un sottoinsieme della rete.}
+ \label{fig:sottoinsieme}
+\end{figure}
+ 
+%In questo screenshot possiamo notare come la funzione partizione faciliti l'analisi di questa parte del network formata da 3 nodi nell'istante 6 
+ 
+\subsubsection{Visualizzazione dei nodi su un piano e su una sfera}
+3D-Network-Visualizator supporta la visualizzazione di nodi che possono essere disposti su un piano o su una sfera. Il secondo caso potrebbe essere utile per visualizzare, ad esempio, i piani di volo tra i diversi paesi spari per il globo.
+
+La \figurename~\ref{fig:piano} mostra un esempio di rete visualizzata su un piano, mentre la \figurename~\ref{fig:sfera} mostra un esempio di rete visualizzata su una sfera.
+
+\begin{figure}[htb!]
+ \begin{center}
+  \includegraphics[width=\textwidth]{images/image4.png}
+ \end{center}
+ \caption{Rete visualizzata su un piano.}
+ \label{fig:piano}
+\end{figure}
+
+\begin{figure}[htb!]
+ \begin{center}
+  \includegraphics[width=\textwidth]{images/image5.png}
+ \end{center}
+ \caption{Rete visualizzata su una sfera.}
+ \label{fig:sfera}
+\end{figure}
+
+\section{Conclusioni}
+Lo studio e l'implementazione di 3D-Network-Visualizator ci ha dato la possibilit\`a di scoprire i vantaggi derivanti da un'efficace visualizzazione dei dati. Spesso per analizare un fenomeno non serve avere sotto mano delle statistiche dettagliate e un database contenente l'intero dataset contenente migliaia di entry. Questo per il semplice motivo che viene a mancare una visione d'insieme del fenomeno che potrebbe portare un risultato d'analisi inaspettato.
+
+3D-Network-Visualizator riesce a fornire una visualizzazione chiara delle interazione che avvengono tra i nodi di una rete. Permette di focalizzare l'attenzione solo su un sottoinsieme dei nodi, di guardare alle interazioni che vengono generate da questi nodi o alle interazioni che hanno tali nodi come obiettivo.
+
+L'evoluzione temporale delle interazioni viene presentata come un'animazione che \`e possibile velocizzare, rallentare o fermare per meglio capire i cambiamenti che avvengono. \`E inoltre possibile cambiare angolazione di visualizzazione dello spazio.
+
+Tutte queste caratteristiche rendono, a nostro avviso, 3D-Network-Visualizator un ottimo strumento di analisi di questo tipo di fenomeni.
+% Inizialmente il nostro dominio applicativo erano le reti di calcolatori dislocate geograficamente che scambiano pacchetti di dati. Il dominio in questione per quanto pu\`o essere banalmente descrivibile per esempio tramite un grafico bidimensionale, esclude alcune informazioni che potrebbero essere importanti in caso di analisi approfondite. Una fra tutte la frequenza con cui i nostri ipotetici calcolatori si scambiano pacchetti; come rendere visibile questa informazione? L'introduzione della terza dimensione \`e stata essenziale per poter aggiungere elementi.
+
+% Prendendo in esempio la frequenza con cui i nodi si scambiano i pacchetti, la nostra soluzione \`e stata di curvare il link in modo da creare un arco in relazione all'aumento della frequenza di comunicazione. Questo tipo di approccio \`e risultato di sicuro impatto per avere un idea dei nodi che hanno un scambio maggiore dei pacchetti nella rete in un dato istante. 
 
 \end{document}

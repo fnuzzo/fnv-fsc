@@ -49,7 +49,7 @@ public final class Constants {
 	public final static String BUTTON_STRUCTURE_LABEL = "Visualizza spazio 3D di riferimento (s)";
 	public final static String BUTTON_EDGEIN_LABEL = "Mostra solo archi entranti (e)";
 	public final static String BUTTON_ALLEDGES_LABEL = "Mostra gli archi di tutti i nodi (r)";
-	//public final static String BUTTON_LOG_LABEL = "Nascondi log delle interazioni";
+	public final static String BUTTON_VISUALIZE_LABEL = "Visualizza tutte le labels";
 
 	//
 	public final static String BUTTON_FILE_ACTIONCOMMAND = "file";
@@ -66,7 +66,7 @@ public final class Constants {
 	public final static String BUTTON_STRUCTURE_ACTIONCOMMAND = "structure";
 	public final static String BUTTON_EDGEIN_ACTIONCOMMAND = "edgeIn";
 	public final static String BUTTON_ALLEDGES_ACTIONCOMMAND = "edgeOut";
-	//public final static String BUTTON_LOG_ACTIONCOMMAND = "log";
+	public final static String BUTTON_LABEL_ACTIONCOMMAND = "label";
 
 	//
 	public final static String FILE_CHOOSER_ROOT = "./";

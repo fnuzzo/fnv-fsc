@@ -132,7 +132,7 @@ public class Space extends PApplet{
 	this.network = network;
 	
 	rotate = true;
-
+    instant = -1;
 	initializeBox();
 	initializeNodes();
 	initializeTimer();

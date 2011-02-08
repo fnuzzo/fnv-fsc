@@ -10,10 +10,10 @@
 	</static-data>
 	<dynamic-data>
 		<instant value="0" label="0">
-			<interaction source="1" target="0" quantity="1" frequency="0.6080425" />
+			<interaction source="1" target="0" quantity="2" frequency="0.6080425" />
 		</instant>
 		<instant value="1" label="1">
-			<interaction source="1" target="0" quantity="8" frequency="1.31866568" />
+			<interaction source="1" target="0" quantity="4" frequency="1.31866568" />
 		</instant>
 	</dynamic-data>
 </network>

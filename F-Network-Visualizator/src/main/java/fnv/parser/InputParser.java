@@ -22,7 +22,7 @@ public class InputParser {
 
     private static String name = "";
     private static ArrayList<Node> nodesList = new ArrayList<Node>();
-    private static boolean flat;
+    private static boolean flat = true;
     private static InteractionsCube interactionCube = new InteractionsCube();
 
     /*
@@ -34,6 +34,10 @@ public class InputParser {
 	try {
 	    Document document = new SAXBuilder().build(inputStream);
 	    Element rootElement = document.getRootElement();
+	    name = "";
+	    ArrayList<Node> nodesList = new ArrayList<Node>();
+	    boolean flat = true;
+	    InteractionsCube interactionCube = new InteractionsCube();
 
 	    for (Iterator<Element> childrenIterator = rootElement.getChildren().iterator(); childrenIterator.hasNext();) {
 		Element child = childrenIterator.next();

@@ -188,10 +188,13 @@ public class Space extends PApplet{
             cam.lookAt(space / 2, -space / 2, space / 2, space * 2, 2000);
     }
 
+    boolean setupIS = true;
+
     @Override
     public void setup() {
     	System.out.println(spaceWidth+" "+spaceHeight);
-
+        if (true) {
+            setupIS = false;
 	    size(spaceWidth, spaceHeight-8, P3D);
         //size(spaceWidth, spaceHeight, OPENGL);
         //hint(ENABLE_OPENGL_4X_SMOOTH);
@@ -218,8 +221,9 @@ public class Space extends PApplet{
         initializeTimer();
 
         cursor(MOVE);
+        }
     }
-    
+
     private void toggleEdgesIn() {
 	    edgeIn = !edgeIn;
     }

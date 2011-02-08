@@ -79,9 +79,9 @@ public class InterfaceFrame extends JFrame {
    	 	contentPane.removeAll();
    	 	networkCreationPanel = new NetworkCreationPanel();
    	 	
-   	 	footerPanel = new FooterPanel(this);
+   	 	//footerPanel = new FooterPanel(this);
    	 	contentPane.add(appMenuBar, BorderLayout.NORTH);
-   	 	contentPane.add(footerPanel, BorderLayout.SOUTH);
+   	 	//contentPane.add(footerPanel, BorderLayout.SOUTH);
    	 	contentPane.add(networkCreationPanel, BorderLayout.CENTER);
     	
    	 pack();

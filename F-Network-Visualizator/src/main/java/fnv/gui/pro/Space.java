@@ -130,9 +130,12 @@ public class Space extends PApplet{
 
     public void setNetwork(Network network) {
 	this.network = network;
-	
+
+	if (animationTimer != null) {
+	    animationTimer.stop();
+	}
+	instant = -1;
 	rotate = true;
-    instant = -1;
 	initializeBox();
 	initializeNodes();
 	initializeTimer();

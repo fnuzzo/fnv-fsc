@@ -35,9 +35,9 @@ public class InputParser {
 	    Document document = new SAXBuilder().build(inputStream);
 	    Element rootElement = document.getRootElement();
 	    name = "";
-	    ArrayList<Node> nodesList = new ArrayList<Node>();
-	    boolean flat = true;
-	    InteractionsCube interactionCube = new InteractionsCube();
+	    nodesList = new ArrayList<Node>();
+	    flat = true;
+	    interactionCube = new InteractionsCube();
 
 	    for (Iterator<Element> childrenIterator = rootElement.getChildren().iterator(); childrenIterator.hasNext();) {
 		Element child = childrenIterator.next();

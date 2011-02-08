@@ -82,7 +82,7 @@ public class Space extends PApplet{
     private double animationTimeSec = 2;
     //Nodi
     ANode[] nodes = new ANode[0];
-    Network network = new Network();
+    private Network network = new Network();
     /* indica se e' stata inizializzata una rete */
     boolean networkInitialized = false;
     //Archi

@@ -560,13 +560,13 @@ public class Space extends PApplet{
                                 edge.beizPx[i],
                                 edge.beizPy[i],
                                 edge.beizPz[i]);
-                        strokeWeight(1)*/;
+                        strokeWeight(1);*/
                         pushMatrix();
 			            translate(
 				            edge.beizPx[i],
 				            edge.beizPy[i],
 				            edge.beizPz[i]);
-			            fill(i*10, 0, 100);
+			            fill(i*20, 0, 100);
                     //sphereDetail(3);
 			        //sphere(2);
                         box(3);

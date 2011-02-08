@@ -110,6 +110,7 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
 	    importNetwork();
 	} else if (actionCommand.equals(Constants.BUTTON_CREATE_ACTIONCOMMAND)) {
 	    createNetwork((JMenuItem) actionEvent.getSource());
+	    
 	} else if (actionCommand.equals(Constants.BUTTON_EXIT_ACTIONCOMMAND)) {
 	    System.exit(0);
 	} else if (actionCommand.equals(Constants.BUTTON_STRUCTURE_ACTIONCOMMAND)) {
@@ -170,7 +171,7 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
 	if (inputStream != null) {
 	    network = InputParser.parse(inputStream);
 	    if (network != null) {
-	    	interfaceFrame.switchToNetworkCreationPanel(network);
+	    	interfaceFrame.switchFromNetworkCreationPanel(network);
 	    } else {
 		System.out.println(Constants.FILE_CHOOSER_ERR_MSG);
 	    }
@@ -181,7 +182,6 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
     }
 
     private void createNetwork(JMenuItem source) {
-	source.setEnabled(false);
-	//interfaceFrame.switchToNetworkCreationPanel();
+	interfaceFrame.switchToNetworkCreationPanel();
     }
 }

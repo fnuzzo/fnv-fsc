@@ -73,26 +73,37 @@ public class InterfaceFrame extends JFrame {
     public Space getSpace() {
 	return space;
     }
+    public void switchToNetworkCreationPanel(){
+    
+    	setPreferredSize(new Dimension(800, 600));
+   	 	contentPane.removeAll();
+   	 	networkCreationPanel = new NetworkCreationPanel();
+   	 	
+   	 	footerPanel = new FooterPanel(this);
+   	 	contentPane.add(appMenuBar, BorderLayout.NORTH);
+   	 	contentPane.add(footerPanel, BorderLayout.SOUTH);
+   	 	contentPane.add(networkCreationPanel, BorderLayout.CENTER);
+    	
+   	 pack();
+    }
 
-    public void switchToNetworkCreationPanel(Network network) {
+    public void switchFromNetworkCreationPanel(Network network) {
        
     	setPreferredSize(new Dimension(screenWidth, screenHeight));
-    	 contentPane.removeAll();
-    	
-	
-		
-	space = new Space(this, screenWidth, screenHeight - Constants.FOOTER_HEIGHT);
-	space.init();
+    	contentPane.removeAll();
+    	space = null;	
+    	space = new Space(this, screenWidth, screenHeight - Constants.FOOTER_HEIGHT);
+    	space.init();
 
-	footerPanel = new FooterPanel(this);
+    	footerPanel = new FooterPanel(this);
 
-	contentPane.add(appMenuBar, BorderLayout.NORTH);
-	contentPane.add(footerPanel, BorderLayout.SOUTH);
-	contentPane.add(space, BorderLayout.CENTER);
+    	contentPane.add(appMenuBar, BorderLayout.NORTH);
+    	contentPane.add(footerPanel, BorderLayout.SOUTH);
+    	contentPane.add(space, BorderLayout.CENTER);
 
-	space.setNetwork(network);
+    	space.setNetwork(network);
 
-	pack();
+     pack();
     }
 
 //    public void instantChanged() {

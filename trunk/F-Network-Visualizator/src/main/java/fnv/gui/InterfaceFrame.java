@@ -91,9 +91,11 @@ public class InterfaceFrame extends JFrame {
        
     	setPreferredSize(new Dimension(screenWidth, screenHeight));
     	contentPane.removeAll();
-    	space = null;	
-    	space = new Space(this, screenWidth, screenHeight - Constants.FOOTER_HEIGHT);
-    	space.init();
+
+        if (space == null) {
+            space = new Space(this, screenWidth, screenHeight - Constants.FOOTER_HEIGHT);
+            space.init();
+        }
 
     	footerPanel = new FooterPanel(this);
 

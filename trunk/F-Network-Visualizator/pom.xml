@@ -87,7 +87,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>fvn.gui.Start</mainClass>
+							<mainClass>fnv.gui.Start</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>

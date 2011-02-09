@@ -94,14 +94,12 @@ public class InterfaceFrame extends JFrame {
 
 
 
-        if (space == null) {
             space = new Space(this, screenWidth, screenHeight - Constants.FOOTER_HEIGHT);
-
+            space.init();
             contentPane.add(space, BorderLayout.CENTER);
 
             footerPanel = new FooterPanel(this);
-            space.init();
-        }
+
 
 
         contentPane.add(appMenuBar, BorderLayout.NORTH);

@@ -25,7 +25,9 @@ import javax.swing.Timer;
 
 import fnv.parser.InputParser;
 import fnv.utils.Constants;
+
 import java.util.Random;
+
 import processing.core.*;
 import peasy.*;
 
@@ -35,8 +37,8 @@ import processing.opengl.*;
  * Created by IntelliJ IDEA. User: giacomo Date: Nov 1, 2010 Time: 3:12:21 PM To
  * change this template use File | Settings | File Templates.
  */
-public class Space extends PApplet{
-    
+public class Space extends PApplet {
+
     //Interface swingInterface;
     InterfaceFrame swingInterface;
     Timer rotationTimer, animationTimer;
@@ -90,64 +92,64 @@ public class Space extends PApplet{
 
     public Space(InterfaceFrame inter, int width, int height) {
         super();
-	this.swingInterface = inter;
-	spaceWidth = width;
-	spaceHeight = height;
+        this.swingInterface = inter;
+        spaceWidth = width;
+        spaceHeight = height;
     }
 
     public double getAnimationTime() {
-	return animationTimeSec;
+        return animationTimeSec;
     }
 
     public void setAnimationTime(double animationTimeSec) {
-	this.animationTimeSec = animationTimeSec;
-	updateAnimationTimer(animationTimeSec);
+        this.animationTimeSec = animationTimeSec;
+        updateAnimationTimer(animationTimeSec);
     }
 
     public int getInstant() {
-	return instant;
+        return instant;
     }
 
     public void incrementInstant() {
-	if (networkInitialized) {
-	    if (instant < (network.getNumberOfInstants() - 1)) {
-		instant++;
-	    }
-	}
+        if (networkInitialized) {
+            if (instant < (network.getNumberOfInstants() - 1)) {
+                instant++;
+            }
+        }
     }
 
     public void decrementInstant() {
-	if (instant > 0) {
-	    instant--;
-	}
+        if (instant > 0) {
+            instant--;
+        }
     }
 
     public void setInstant(int sliderValue) {
-	if (networkInitialized) {
-	    instant = ((network.getNumberOfInstants() - 1) * sliderValue) / 100;
-	}
+        if (networkInitialized) {
+            instant = ((network.getNumberOfInstants() - 1) * sliderValue) / 100;
+        }
     }
 
     public void setNetwork(Network network) {
-	this.network = network;
+        this.network = network;
 
-	if (animationTimer != null) {
-	    animationTimer.stop();
-	}
-	instant = -1;
-	rotate = true;
-	initializeBox();
-	initializeNodes();
-	initializeTimer();
-	setAnimationTime();
-	
-	rotationTimer.start();
+        if (animationTimer != null) {
+            animationTimer.stop();
+        }
+        instant = -1;
+        rotate = true;
+        initializeBox();
+        initializeNodes();
+        initializeTimer();
+        setAnimationTime();
 
-	networkInitialized = true;
+        rotationTimer.start();
+
+        networkInitialized = true;
     }
 
     public Network getNetwork() {
-	return network;
+        return network;
     }
 
     public void initializeNodes() {
@@ -158,24 +160,9 @@ public class Space extends PApplet{
         }
         nodes = allnodes.toArray(new ANode[allnodes.size()]);
         nodesDrawn = 0;
-        colorMode(HSB, nodes.length, 100, 100);
 
-        //Inizializza archi
-        ArrayList<AEdge[]> aedgeList = new ArrayList<AEdge[]>();
-        for (int i = 0; i < network.getNumberOfInstants(); i++) {
-	    ArrayList<InteractionElement> eds2 = network.getInteractionCube().getInstant(i).getAllInteractions();
-	    AEdge[] aEdges = new AEdge[eds2.size()];
-            for (int j = 0; j < eds2.size(); j++) {
-                aEdges[j] = new AEdge(eds2.get(j));
-            }
-	    //InteractionElement[] eds = network.getInteractionCube().getInstant(i).getAllInteractions().toArray(new InteractionElement[0]);
-            //AEdge[] aEdges = new AEdge[eds.length];
-            //for (int j = 0; j < eds.length; j++) {
-            //    aEdges[j] = new AEdge(eds[j]);
-            //}
-            aedgeList.add(i,aEdges);
-        }
-        edges = aedgeList.toArray(new AEdge[0][aedgeList.size()]);
+        edges = null;
+        colorMode(HSB, nodes.length, 100, 100);
     }
 
     public void initializeBox() {
@@ -188,129 +175,126 @@ public class Space extends PApplet{
             cam.lookAt(space / 2, -space / 2, space / 2, space * 2, 2000);
     }
 
-    boolean setupIS = true;
-
     @Override
     public void setup() {
-    	System.out.println(spaceWidth+" "+spaceHeight);
-        if (true) {
-            setupIS = false;
-	    size(spaceWidth, spaceHeight-8, P3D);
-        //size(spaceWidth, spaceHeight, OPENGL);
-        //hint(ENABLE_OPENGL_4X_SMOOTH);
+        System.out.println(spaceWidth + " " + spaceHeight);
 
-        g3d = (PGraphics3D) g;
+            size(spaceWidth, spaceHeight-8, P3D);
+            //size(spaceWidth, spaceHeight, OPENGL);
+            //hint(ENABLE_OPENGL_4X_SMOOTH);
 
-        f = loadFont("ArialMT-48.vlw");
-        textFont(f,fontSize);
+            g3d = (PGraphics3D) g;
 
-        smooth();
+            f = loadFont("ArialMT-48.vlw");
+            textFont(f, fontSize);
 
-        frameRate(framerate);
+            smooth();
 
-        //Inizializzazione camera
-        cam = new PeasyCam(this, 10,10,10,100);
-        //cam = new PeasyCam(this, 300);
-        cam.setMinimumDistance(10);
-        //cam.setMaximumDistance(700);
-        cam.setResetOnDoubleClick(false);
+            frameRate(framerate);
 
-        if (space != -1)
-            cam.lookAt(space / 2, -space / 2, space / 2, space * 2, 2000);
+            //Inizializzazione camera
+            cam = new PeasyCam(this, 10, 10, 10, 100);
+            //cam = new PeasyCam(this, 300);
+            cam.setMinimumDistance(10);
+            //cam.setMaximumDistance(700);
+            cam.setResetOnDoubleClick(false);
 
-        initializeTimer();
+            if (space != -1)
+                cam.lookAt(space / 2, -space / 2, space / 2, space * 2, 2000);
 
-        cursor(MOVE);
-        }
+            initializeTimer();
+
+            cursor(MOVE);
+
     }
 
     private void toggleEdgesIn() {
-	    edgeIn = !edgeIn;
+        edgeIn = !edgeIn;
     }
-    
-    private void toggleAllLabels() {
-	if (visible) {
-	    visible = false;
-	} else {
-	    visible = true;
-	}
 
-	for (int i = 0; i < nodes.length; i++) {
-	    nodes[i].selected = visible;
-	}
+    private void toggleAllLabels() {
+        if (visible) {
+            visible = false;
+        } else {
+            visible = true;
+        }
+
+        for (int i = 0; i < nodes.length; i++) {
+            nodes[i].selected = visible;
+        }
     }
 
     private void toggleEdges() {
-	    edgeVisible = !edgeVisible;
+        edgeVisible = !edgeVisible;
     }
 
     private void toggleSpaceVisible() {
-	    spaceVisible = !spaceVisible;
+        spaceVisible = !spaceVisible;
     }
 
     @Override
     public void keyPressed() {
-	if (key == CODED) {
-	    switch (keyCode) {
-		case UP:
-		    cam.rotateX(0.045);
-		    break;
-		case DOWN:
-		    cam.rotateX(-0.045);
-		    break;
-		case RIGHT:
-		    cam.rotateY(0.045);
-		    break;
-		case LEFT:
-		    cam.rotateY(-0.045);
-		    break;
-		case KeyEvent.VK_PAGE_UP:
-		    incrementInstant();
-		    break;
-		case KeyEvent.VK_PAGE_DOWN:
-		    decrementInstant();
-		    break;
-		case KeyEvent.VK_CONTROL:
-		    cursor(HAND);
-		    break;
-		case KeyEvent.VK_SHIFT:
-		    cursor(CROSS);
-		    break;
-		default:
-		    println(keyCode);
-		    break;
+        if (key == CODED) {
+            switch (keyCode) {
+                case UP:
+                    cam.rotateX(0.045);
+                    break;
+                case DOWN:
+                    cam.rotateX(-0.045);
+                    break;
+                case RIGHT:
+                    cam.rotateY(0.045);
+                    break;
+                case LEFT:
+                    cam.rotateY(-0.045);
+                    break;
+                case KeyEvent.VK_PAGE_UP:
+                    incrementInstant();
+                    break;
+                case KeyEvent.VK_PAGE_DOWN:
+                    decrementInstant();
+                    break;
+                case KeyEvent.VK_CONTROL:
+                    cursor(HAND);
+                    break;
+                case KeyEvent.VK_SHIFT:
+                    cursor(CROSS);
+                    break;
+                default:
+                    println(keyCode);
+                    break;
 
-	    }
-	} else {
-	    int intk = -1;
-	    try {
-		intk = Integer.parseInt(key + "");
-	    } catch (NumberFormatException e) {
-	    }
+            }
+        } else {
+            int intk = -1;
+            try {
+                intk = Integer.parseInt(key + "");
+            } catch (NumberFormatException e) {
+            }
 
-	    if (intk == -1) {
-		switch (key) {
-		    case 'p':
-			showControlPoint = !showControlPoint;  //Da lasciare per Debug
-			break;
-		    case 'f':
-			println(frameRate);
-			break;
-		    case 's':
-			toggleSpaceVisible();  //ok
-			break;
-		    case 'e':
-			toggleEdgesIn();  //ok
-			break;
-		    case 'r':
-			toggleEdges();  //ok
-			break;
-		    case 'l':
-			toggleAllLabels();  //ok
-			break;
-		}
-	    }
-	}
+            if (intk == -1) {
+                switch (key) {
+                    case 'p':
+                        showControlPoint = !showControlPoint;  //Da lasciare per Debug
+                        break;
+                    case 'f':
+                        println(frameRate);
+                        break;
+                    case 's':
+                        toggleSpaceVisible();  //ok
+                        break;
+                    case 'e':
+                        toggleEdgesIn();  //ok
+                        break;
+                    case 'r':
+                        toggleEdges();  //ok
+                        break;
+                    case 'l':
+                        toggleAllLabels();  //ok
+                        break;
+                }
+            }
+        }
     }
 
     @Override
@@ -319,118 +303,115 @@ public class Space extends PApplet{
             switch (keyCode) {
                 case KeyEvent.VK_CONTROL:
                     cursor(MOVE);
-                break;
+                    break;
                 case KeyEvent.VK_SHIFT:
                     cursor(MOVE);
-                break;
+                    break;
             }
 
         }
     }
 
-    public void setOptions(String options){
-    	if(options.equals(Constants.BUTTON_EDGEIN_ACTIONCOMMAND)) {
-    		toggleEdgesIn();
-	}
-    	else if(options.equals(Constants.BUTTON_ALLEDGES_ACTIONCOMMAND)) {
-    		toggleEdges();
-	}
-    	else if(options.equals(Constants.BUTTON_STRUCTURE_ACTIONCOMMAND)) {
-    		toggleSpaceVisible();
-	}
-    	else if(options.equals(Constants.BUTTON_LABEL_ACTIONCOMMAND)) {
-    		toggleAllLabels();
-	}
+    public void setOptions(String options) {
+        if (options.equals(Constants.BUTTON_EDGEIN_ACTIONCOMMAND)) {
+            toggleEdgesIn();
+        } else if (options.equals(Constants.BUTTON_ALLEDGES_ACTIONCOMMAND)) {
+            toggleEdges();
+        } else if (options.equals(Constants.BUTTON_STRUCTURE_ACTIONCOMMAND)) {
+            toggleSpaceVisible();
+        } else if (options.equals(Constants.BUTTON_LABEL_ACTIONCOMMAND)) {
+            toggleAllLabels();
+        }
     }
-    
-    public void resizeSpace(Dimension d){    	
-	resizeRenderer(d.width, d.height);
+
+    public void resizeSpace(Dimension d) {
+        resizeRenderer(d.width, d.height);
     }
 
     private void setAnimationTime() {
-	animationTimer = new Timer((int) (animationTimeSec * 1000), new ActionListener() {
+        animationTimer = new Timer((int) (animationTimeSec * 1000), new ActionListener() {
 
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		if (networkInitialized) {
-		    incrementInstant();
-		    int value = (instant * 100) / (network.getNumberOfInstants() - 1);
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (networkInitialized) {
+                    incrementInstant();
+                    int value = (instant * 100) / (network.getNumberOfInstants() - 1);
 
-		    swingInterface.setJSliderValue(value);
+                    swingInterface.setJSliderValue(value);
 
-		    if (instant == network.getNumberOfInstants()) {
-			animationTimer.stop();
-		    }
-		}
-	    }
-	});
+                    if (instant == network.getNumberOfInstants()) {
+                        animationTimer.stop();
+                    }
+                }
+            }
+        });
     }
 
     public void updateAnimationTimer(double newAnimationTimeSec) {
-	animationTimer.setDelay((int) (newAnimationTimeSec * 1000));
+        animationTimer.setDelay((int) (newAnimationTimeSec * 1000));
     }
-    
+
     public void optionsTime(String options) {
-	if (!rotate) {
-	    if (options.equals(Constants.ICON_PLAY_ACTIONCOMMAND)) {
-		animationTimer.start();
-	    } else if (options.equals(Constants.ICON_PAUSE_ACTIONCOMMAND)) {
-		animationTimer.stop();
-	    } else if (options.equals(Constants.ICON_STOP_ACTIONCOMMAND)) {
-		instant = -1;
-		animationTimer.stop();
-	    }
-	}
+        if (!rotate) {
+            if (options.equals(Constants.ICON_PLAY_ACTIONCOMMAND)) {
+                animationTimer.start();
+            } else if (options.equals(Constants.ICON_PAUSE_ACTIONCOMMAND)) {
+                animationTimer.stop();
+            } else if (options.equals(Constants.ICON_STOP_ACTIONCOMMAND)) {
+                instant = -1;
+                animationTimer.stop();
+            }
+        }
     }
 
     public void initializeTimer() {
 
-	rotationTimer = new Timer(1000, new ActionListener() {
-	    int nodesFraction;
+        rotationTimer = new Timer(1000, new ActionListener() {
+            int nodesFraction;
 
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		int seconds = 8;
-		if (nodes.length >= seconds) {
-		    nodesFraction = (int) Math.ceil((double) nodes.length / (double) seconds);
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int seconds = 8;
+                if (nodes.length >= seconds) {
+                    nodesFraction = (int) Math.ceil((double) nodes.length / (double) seconds);
 
-		    if ((nodesDrawn + nodesFraction) > nodes.length) {
-			nodesFraction = nodes.length - nodesDrawn;
-		    }
-		} else {
-		    nodesFraction = 1;
-		}
+                    if ((nodesDrawn + nodesFraction) > nodes.length) {
+                        nodesFraction = nodes.length - nodesDrawn;
+                    }
+                } else {
+                    nodesFraction = 1;
+                }
 
-		if (nodesDrawn != nodes.length) {
-		    for (int i = 0; i < nodesFraction; i++) {
-			nodes[nodesDrawn + i].visible = true;
-		    }
-		    nodesDrawn += nodesFraction;
-		} else {
-		    rotate = false;
-		}
-	    }
-	});
+                if (nodesDrawn != nodes.length) {
+                    for (int i = 0; i < nodesFraction; i++) {
+                        nodes[nodesDrawn + i].visible = true;
+                    }
+                    nodesDrawn += nodesFraction;
+                } else {
+                    rotate = false;
+                }
+            }
+        });
     }
 
     //Disegna il Cubo dello spazio
     public void draw3DSpaceFlat() {
-	for (int i = 0; i <= space; i += space / boxN) {
-	    stroke(0, 0, 50);
-	    line(i, 0, 0, i, 0, space);//Linee verticali
-	    line(0, 0, i, space, 0, i);//Linee orizzontali
-	    stroke(0, 0, 50);
-	}
+        for (int i = 0; i <= space; i += space / boxN) {
+            stroke(0, 0, 50);
+            line(i, 0, 0, i, 0, space);//Linee verticali
+            line(0, 0, i, space, 0, i);//Linee orizzontali
+            stroke(0, 0, 50);
+        }
 
     }
 
     public void draw3DSpaceSphere() {
-	pushMatrix();
-	translate(space / 2, -space / 2, space / 2);
-	noFill();
-	sphere(((network.maxCoordinate - 1) / 2) * box);
+        pushMatrix();
+        translate(space / 2, -space / 2, space / 2);
+        noFill();
+        sphere(((network.maxCoordinate - 1) / 2) * box);
 
-	popMatrix();
+        popMatrix();
     }
 
     /* disegna i nodi nello spazio 3d */
@@ -455,12 +436,12 @@ public class Space extends PApplet{
                         nodes[i].cy,
                         nodes[i].cz);
                 //if (nodes[i].selected) {
-                   // noStroke();
+                // noStroke();
 
-                   // sphereDetail(30);
-                   // sphere(nodesize);
+                // sphereDetail(30);
+                // sphere(nodesize);
                 //} else {
-                    box(nodesize);
+                box(nodesize);
                 //}
 
                 popMatrix();
@@ -509,178 +490,189 @@ public class Space extends PApplet{
                 displayedInstant = edges.length - 1;
             }
 
-	    //Disegno i nodi per l'istante giusto
-	    //InteractionElement[] edges = network.getInteractionCube().getAllInteractions(instant);
+            //Disegno i nodi per l'istante giusto
+            //InteractionElement[] edges = network.getInteractionCube().getAllInteractions(instant);
 
-	    for (AEdge edge : edges[displayedInstant]) {
-		if (nodes[edge.s].visible && nodes[edge.t].visible) {
+            for (AEdge edge : edges[displayedInstant]) {
+                if (nodes[edge.s].visible && nodes[edge.t].visible) {
 
-		    if (selected) {
-			   stroke(0, 50, 50, 100);//Archi grigi semitrasparenti
-		    } else {
-               stroke(edge.c, 80, 80);//Archi colorati
-		    }
-		    //I collegamenti del nodo selezionato sono più grossi
-		    boolean ev = false;
-		    if (//Archi visualizzati colorati se
-			    (edgeIn && nodes[edge.t].selected)//Nodo selezionato è una destinazione
-			    ^ (!edgeIn && nodes[edge.s].selected)//Nodo selezionato è una sorgente
-			    ) {
-			    strokeWeight(3);
-			    stroke(edge.c, 100, 100);
-			    ev = true;
-		    }
-
-		    if (edgeVisible || ev) {
-			    noFill();
-			    bezierDetail(40);//Aumenta dettaglio grafico dei collegamenti
-			    bezier(
-				//Nodo A
-				    edge.ns.cx,
-				    edge.ns.cy,
-				    edge.ns.cz,
-				//Punto Controllo A
-				    edge.cpsx,
-				    edge.cpsy,
-				    edge.cpsz,
-				//Punto Controllo B
-				    edge.cptx,
-				    edge.cpty,
-				    edge.cptz,
-				//Nodo B
-				    edge.nt.cx,
-				    edge.nt.cy,
-				    edge.nt.cz);
-			    strokeWeight(1);
-
-                if (ev || !selected) {
-                    //Aereoplano
-                    int t = (frameCount % edge.qt)+1;
-
-                    for (int i = t; (i<=edge.q+t && i<edge.qt); i++) {
-                        //if (i == 0) i = 1;
-                        /*strokeWeight(4);
+                    if (selected) {
+                        stroke(0, 50, 50, 100);//Archi grigi semitrasparenti
+                    } else {
+                        stroke(edge.c, 80, 80);//Archi colorati
+                    }
+                    //I collegamenti del nodo selezionato sono più grossi
+                    boolean ev = false;
+                    if (//Archi visualizzati colorati se
+                            (edgeIn && nodes[edge.t].selected)//Nodo selezionato è una destinazione
+                                    ^ (!edgeIn && nodes[edge.s].selected)//Nodo selezionato è una sorgente
+                            ) {
+                        strokeWeight(3);
                         stroke(edge.c, 100, 100);
-                        line(edge.beizPx[i-1],
-                                edge.beizPy[i-1],
-                                edge.beizPz[i-1],
-                                edge.beizPx[i],
-                                edge.beizPy[i],
-                                edge.beizPz[i]);
-                        strokeWeight(1);*/
-                        pushMatrix();
-			            translate(
-				            edge.beizPx[i],
-				            edge.beizPy[i],
-				            edge.beizPz[i]);
-			            fill(i*20, 0, 100);
-                    //sphereDetail(3);
-			        //sphere(2);
-                        box(3);
-			            popMatrix();
+                        ev = true;
                     }
 
+                    if (edgeVisible || ev) {
+                        noFill();
+                        bezierDetail(40);//Aumenta dettaglio grafico dei collegamenti
+                        bezier(
+                                //Nodo A
+                                edge.ns.cx,
+                                edge.ns.cy,
+                                edge.ns.cz,
+                                //Punto Controllo A
+                                edge.cpsx,
+                                edge.cpsy,
+                                edge.cpsz,
+                                //Punto Controllo B
+                                edge.cptx,
+                                edge.cpty,
+                                edge.cptz,
+                                //Nodo B
+                                edge.nt.cx,
+                                edge.nt.cy,
+                                edge.nt.cz);
+                        strokeWeight(1);
+
+                        if (ev || !selected) {
+                            //Aereoplano
+                            int t = (frameCount % edge.qt) + 1;
+
+                            for (int i = t; (i <= edge.q + t && i < edge.qt); i++) {
+                                //if (i == 0) i = 1;
+                                /*strokeWeight(4);
+                                stroke(edge.c, 100, 100);
+                                line(edge.beizPx[i-1],
+                                        edge.beizPy[i-1],
+                                        edge.beizPz[i-1],
+                                        edge.beizPx[i],
+                                        edge.beizPy[i],
+                                        edge.beizPz[i]);
+                                strokeWeight(1);*/
+                                pushMatrix();
+                                translate(
+                                        edge.beizPx[i],
+                                        edge.beizPy[i],
+                                        edge.beizPz[i]);
+                                fill(i * 20, 0, 100);
+                                //sphereDetail(3);
+                                //sphere(2);
+                                box(3);
+                                popMatrix();
+                            }
 
 
+                        }
+                    }
+
+                    if (showControlPoint) {
+
+                        //Linea di controllo
+                        stroke(edge.t, 100, 100);
+                        line(
+                                edge.ns.cx,
+                                edge.ns.cy,
+                                edge.ns.cz,
+                                edge.cpsx,
+                                edge.cpsy,
+                                edge.cpsz);
+                        //Linea di controllo
+                        stroke(edge.s, 100, 100);
+                        line(
+                                edge.nt.cx,
+                                edge.nt.cy,
+                                edge.nt.cz,
+                                edge.cptx,
+                                edge.cpty,
+                                edge.cptz);
+                        noStroke();
+                        //Palline sul punto di controllo
+                        pushMatrix();
+                        translate(
+                                edge.cpsx,
+                                edge.cpsy,
+                                edge.cpsz);
+                        fill(edge.s, 100, 100);
+                        sphere(2);
+                        popMatrix();
+
+                        pushMatrix();
+                        translate(
+                                edge.cptx,
+                                edge.cpty,
+                                edge.cptz);
+                        fill(edge.t, 100, 100);
+                        sphere(2);
+                        popMatrix();
+                    }
                 }
-		    }
-
-		    if (showControlPoint) {
-
-			//Linea di controllo
-			stroke(edge.t, 100, 100);
-			line(
-				edge.ns.cx,
-				edge.ns.cy,
-				edge.ns.cz,
-				edge.cpsx,
-				edge.cpsy,
-				edge.cpsz);
-			//Linea di controllo
-			stroke(edge.s, 100, 100);
-			line(
-				edge.nt.cx,
-				edge.nt.cy,
-				edge.nt.cz,
-				edge.cptx,
-				edge.cpty,
-				edge.cptz);
-			noStroke();
-			//Palline sul punto di controllo
-			pushMatrix();
-			translate(
-				edge.cpsx,
-				edge.cpsy,
-				edge.cpsz);
-			fill(edge.s, 100, 100);
-			sphere(2);
-			popMatrix();
-
-			pushMatrix();
-			translate(
-				edge.cptx,
-				edge.cpty,
-				edge.cptz);
-			fill(edge.t, 100, 100);
-			sphere(2);
-			popMatrix();
-		    }
-		}
-	    }
-	    noFill();
-	}
+            }
+            noFill();
+        }
     }
-
 
 
     @Override
     public void draw() {
-    	
-	if (rotate) {
-	    cam.rotateY(0.045);
-	} else {
-	    rotationTimer.stop();
-	}
-        //Durante la rotazione le luci vengono calcolate
-        cam.feed();
-
-	background(0);
-	//background(62, 62, 62);
-
-    //Illuminazione
-    //lightSpecular(0, 0, 60);
-    //directionalLight(0, 0, 90, 0, 0, -1);
-    //ambientLight(0,0,60);
-    //specular(0,0,60);
-    //shininess(5);
-        lights();
-
-	/* disegna il cubo che contiene la rete e i nodi solo se e' stata inizializzata una rete */
-	if (networkInitialized) {
-	    if (spaceVisible) {
-		if (network.flat) {
-		    draw3DSpaceFlat();
-		} else {
-		    draw3DSpaceSphere();
-		}
-		    
-	    }
-	    drawNodes();
-
-	    drawEdges();
-	}
-
-	foreground();
-    }
-    
-     private void foreground() {
-
-         for (int i = 0; i < nodes.length; i++) {
-            if (nodes[i].selected) {
-                nodes[i].labelX = screenX(nodes[i].cx,nodes[i].cy,nodes[i].cz)+mbox;
-                nodes[i].labelY = screenY(nodes[i].cx,nodes[i].cy,nodes[i].cz)-mbox;
+            if (rotate) {
+                cam.rotateY(0.045);
+            } else {
+                rotationTimer.stop();
             }
-         }
+            //Durante la rotazione le luci vengono calcolate
+            cam.feed();
+
+            background(0);
+            //background(62, 62, 62);
+
+            //Illuminazione
+            //lightSpecular(0, 0, 60);
+            //directionalLight(0, 0, 90, 0, 0, -1);
+            //ambientLight(0,0,60);
+            //specular(0,0,60);
+            //shininess(5);
+            lights();
+
+            if (edges == null) {
+                //Inizializza archi
+                ArrayList<AEdge[]> aedgeList = new ArrayList<AEdge[]>();
+                for (int i = 0; i < network.getNumberOfInstants(); i++) {
+                    ArrayList<InteractionElement> eds2 = network.getInteractionCube().getInstant(i).getAllInteractions();
+                    AEdge[] aEdges = new AEdge[eds2.size()];
+                    for (int j = 0; j < eds2.size(); j++) {
+                        aEdges[j] = new AEdge(eds2.get(j));
+                    }
+                    aedgeList.add(i, aEdges);
+                }
+                edges = aedgeList.toArray(new AEdge[0][aedgeList.size()]);
+            }
+
+            /* disegna il cubo che contiene la rete e i nodi solo se e' stata inizializzata una rete */
+            if (networkInitialized) {
+                if (spaceVisible) {
+                    if (network.flat) {
+                        draw3DSpaceFlat();
+                    } else {
+                        draw3DSpaceSphere();
+                    }
+
+                }
+                drawNodes();
+
+                drawEdges();
+            }
+
+            foreground();
+    }
+
+    private void foreground() {
+
+        for (int i = 0; i < nodes.length; i++) {
+            if (nodes[i].selected) {
+                nodes[i].labelX = screenX(nodes[i].cx, nodes[i].cy, nodes[i].cz) + mbox;
+                nodes[i].labelY = screenY(nodes[i].cx, nodes[i].cy, nodes[i].cz) - mbox;
+            }
+        }
 
         //Mirino
         // reset camera and disable depth test and blending
@@ -689,12 +681,12 @@ public class Space extends PApplet{
         pushMatrix();
 
         noSmooth();
-        stroke(0,0,100);
-        line(width / 2 - 9, height / 2 , width / 2 + 9, height / 2);
-        line(width / 2 , height / 2 - 9, width / 2 , height / 2 + 9);
+        stroke(0, 0, 100);
+        line(width / 2 - 9, height / 2, width / 2 + 9, height / 2);
+        line(width / 2, height / 2 - 9, width / 2, height / 2 + 9);
 
-        fill(0,0,100);
-        textFont(loadFont("ArialMT-48.vlw"),fontSize);
+        fill(0, 0, 100);
+        textFont(loadFont("ArialMT-48.vlw"), fontSize);
         text(frameRate, 20, fontSize);
         //Stampo label
         if (instant != -1) {
@@ -702,10 +694,10 @@ public class Space extends PApplet{
             text(insLabel, width - textWidth(insLabel) - 20, height - fontSize);
         }
 
-         //Label
+        //Label
         for (int i = 0; i < nodes.length; i++) {
             if (nodes[i].selected) {
-                fill(0,0,100);
+                fill(0, 0, 100);
                 text(nodes[i].label, nodes[i].labelX, nodes[i].labelY);
                 //Debug text(nodes[i].label, width - textWidth(nodes[i].label) - 20, fontSize);
             }
@@ -719,9 +711,9 @@ public class Space extends PApplet{
 
     private boolean selectNode(ANode node) {
         float scrX, scrY;
-        scrX = screenX( node.cx, node.cy, node.cz );
-        scrY = screenY( node.cx, node.cy, node.cz );
-        float mouseDis = sqrt( sq(mouseX - scrX) + sq(mouseY - scrY) );
+        scrX = screenX(node.cx, node.cy, node.cz);
+        scrY = screenY(node.cx, node.cy, node.cz);
+        float mouseDis = sqrt(sq(mouseX - scrX) + sq(mouseY - scrY));
         if (mouseDis < box) {
             return true;
         } else {
@@ -786,14 +778,14 @@ public class Space extends PApplet{
             this.nt = nodes[t];
             this.f = ie.frequency;
             this.q = ie.quantity;
-            this.qt = (int) (q + (f*50));//Divisione in parti degli archi
-            this.af = map(ie.frequency, network.getInteractionCube().getMinFrequency(), network.getInteractionCube().getMaxFrequency(),0,space);
-            this.c = map(ie.frequency, network.getInteractionCube().getMinFrequency(), network.getInteractionCube().getMaxFrequency(),0,nodes.length);
+            this.qt = (int) (q + (f * 50));//Divisione in parti degli archi
+            this.af = map(ie.frequency, network.getInteractionCube().getMinFrequency(), network.getInteractionCube().getMaxFrequency(), 0, space);
+            this.c = map(ie.frequency, network.getInteractionCube().getMinFrequency(), network.getInteractionCube().getMaxFrequency(), 0, nodes.length);
 
             //Scostamento punti controllo
-		    int pcX = ((ns.ax > nt.ax) ? 20 : -20);
-		    int pcY = ((ns.ay < nt.ay) ? 20 : -20);
-		    int pcZ = ((ns.az > nt.az) ? 20 : -20);
+            int pcX = ((ns.ax > nt.ax) ? 20 : -20);
+            int pcY = ((ns.ay < nt.ay) ? 20 : -20);
+            int pcZ = ((ns.az > nt.az) ? 20 : -20);
 
             if (network.flat) {
                 //punti controllo sorgente
@@ -807,23 +799,23 @@ public class Space extends PApplet{
 
             } else {
 
-                this.cpsx = ((ns.x + nt.x) > boxN) ? ns.cx + this.af+10 : ns.cx - this.af+10;
-                this.cpsy = ((ns.y + nt.y) > boxN) ? ns.cy - this.af+10 : ns.cy + this.af+10;
-                this.cpsz = ((ns.z + nt.z) > boxN) ? ns.cz + this.af+10 : ns.cz - this.af+10;
+                this.cpsx = ((ns.x + nt.x) > boxN) ? ns.cx + this.af + 10 : ns.cx - this.af + 10;
+                this.cpsy = ((ns.y + nt.y) > boxN) ? ns.cy - this.af + 10 : ns.cy + this.af + 10;
+                this.cpsz = ((ns.z + nt.z) > boxN) ? ns.cz + this.af + 10 : ns.cz - this.af + 10;
 
-                this.cptx = ((ns.x + nt.x) > boxN) ? nt.cx + this.af+10 : nt.cx - this.af+10;
-                this.cpty = ((ns.y + nt.y) > boxN) ? nt.cy - this.af+10 : nt.cy + this.af+10;
-                this.cptz = ((ns.z + nt.z) > boxN) ? nt.cz + this.af+10 : nt.cz - this.af+10;
+                this.cptx = ((ns.x + nt.x) > boxN) ? nt.cx + this.af + 10 : nt.cx - this.af + 10;
+                this.cpty = ((ns.y + nt.y) > boxN) ? nt.cy - this.af + 10 : nt.cy + this.af + 10;
+                this.cptz = ((ns.z + nt.z) > boxN) ? nt.cz + this.af + 10 : nt.cz - this.af + 10;
 
             }
 
             //beizerPoint
-            this.beizPx  = new float[qt];
-            this.beizPy  = new float[qt];
-            this.beizPz  = new float[qt];
+            this.beizPx = new float[qt];
+            this.beizPy = new float[qt];
+            this.beizPz = new float[qt];
 
             for (int i = 0; i < qt; i++) {
-                float t = i /  (float) qt ;
+                float t = i / (float) qt;
                 this.beizPx[i] = bezierPoint(
                         ns.cx,
                         cpsx,

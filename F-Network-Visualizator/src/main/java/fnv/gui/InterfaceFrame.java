@@ -106,12 +106,12 @@ public class InterfaceFrame extends JFrame {
             contentPane.add(appMenuBar, BorderLayout.NORTH);
     	    contentPane.add(footerPanel, BorderLayout.SOUTH);
 
-
+            pack();
         }
 
     	space.setNetwork(network);
 
-        pack();
+
     }
 
 //    public void instantChanged() {

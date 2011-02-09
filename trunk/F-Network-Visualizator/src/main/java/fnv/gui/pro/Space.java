@@ -162,7 +162,7 @@ public class Space extends PApplet {
         nodesDrawn = 0;
 
         edges = null;
-        colorMode(HSB, nodes.length, 100, 100);
+
     }
 
     public void initializeBox() {
@@ -175,13 +175,18 @@ public class Space extends PApplet {
             cam.lookAt(space / 2, -space / 2, space / 2, space * 2, 2000);
     }
 
+    boolean ogltrick = true;
+
     @Override
     public void setup() {
         System.out.println(spaceWidth + " " + spaceHeight);
 
-            size(spaceWidth, spaceHeight-8, P3D);
-            //size(spaceWidth, spaceHeight-8, OPENGL);
+        if (ogltrick) {
+            ogltrick = false;
+            //size(spaceWidth, spaceHeight-8, P3D);
+            size(spaceWidth, spaceHeight-8, OPENGL);
             //hint(ENABLE_OPENGL_4X_SMOOTH);
+        }
 
             g3d = (PGraphics3D) g;
 
@@ -554,9 +559,9 @@ public class Space extends PApplet {
                                         edge.beizPx[i],
                                         edge.beizPy[i],
                                         edge.beizPz[i]);
-                                fill(i * 20, 0, 100);
+                                fill(edge.c, 100, 100);
                                 //sphereDetail(3);
-                                //sphere(2);
+                                //sphere(3);
                                 box(3);
                                 popMatrix();
                             }
@@ -614,6 +619,9 @@ public class Space extends PApplet {
 
     @Override
     public void draw() {
+
+        colorMode(HSB, nodes.length, 100, 100);
+
             if (rotate) {
                 cam.rotateY(0.045);
             } else {

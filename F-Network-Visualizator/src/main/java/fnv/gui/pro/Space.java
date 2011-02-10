@@ -401,13 +401,24 @@ public class Space extends PApplet {
 
     //Disegna il Cubo dello spazio
     public void draw3DSpaceFlat() {
-        for (int i = 0; i <= space; i += space / boxN) {
-            stroke(0, 0, 50);
+        stroke(0, 0, 50);
+        /*for (int i = 0; i <= space; i += space / boxN) {
             line(i, 0, 0, i, 0, space);//Linee verticali
             line(0, 0, i, space, 0, i);//Linee orizzontali
-            stroke(0, 0, 50);
-        }
-
+        } */
+        noFill();
+        beginShape();
+        texture(loadImage("networks/euro.jpg"));
+        vertex(0, 0, 0,
+                0, 0);
+        vertex(0, 0, space,
+                0, 200);
+        vertex(space, 0, space,
+                200, 200);
+        vertex(space, 0, 0,
+                200, 0);
+        endShape(CLOSE);
+        stroke(0, 0, 50);
     }
 
     public void draw3DSpaceSphere() {

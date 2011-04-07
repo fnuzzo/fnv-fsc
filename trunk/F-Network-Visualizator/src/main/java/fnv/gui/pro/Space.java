@@ -80,7 +80,7 @@ public class Space extends PApplet {
     private PeasyCam cam;
 
     //Immagine da usare come texture
-    private PImage imageTexture;
+    private PImage imageTexture = null;
 
     private int spaceWidth;
     private int spaceHeight;
@@ -145,6 +145,9 @@ public class Space extends PApplet {
         }
         instant = -1;
         rotate = true;
+        if (!network.getImageFilename().isEmpty()) {
+            imageTexture = loadImage(network.getImageFilename());
+        }
         initializeBox();
         initializeNodes();
         initializeTimer();

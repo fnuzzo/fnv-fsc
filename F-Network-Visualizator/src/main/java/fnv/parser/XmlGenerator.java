@@ -23,7 +23,7 @@ import org.jdom.output.XMLOutputter;
  */
 public class XmlGenerator {
 
-    public static void generate(Network network) {
+    public static void generate(Network network, String filename) {
 	Element networkRoot = new Element(Constants.XML_ROOT);
 	Element networkStatic = new Element(Constants.XML_STATIC);
 	Element networkDynamic = new Element(Constants.XML_DYNAMIC);
@@ -55,9 +55,17 @@ public class XmlGenerator {
 	/* spazio dei nodi */
 	Element networkFlat = new Element(Constants.XML_FLAT);
 	networkFlat.setText(String.valueOf(network.flat));
+        
+        networkStatic.addContent(networkFlat);
+        
+        /* immagine da applicare */
+        if (!network.imageFilename.isEmpty()) {
+            Element networkImage = new Element(Constants.XML_IMAGE);
+            networkImage.setText(String.valueOf(network.imageFilename));
+        
+            networkStatic.addContent(networkImage);
+        }
 	
-	networkStatic.addContent(networkFlat);
-
 	/* interazioni tra i nodi */
 	for (int i = 0; i < network.getNumberOfInstants(); i++) {
 	    Element networkInstant = new Element(Constants.XML_INSTANT);
@@ -106,7 +114,7 @@ public class XmlGenerator {
 	    format.setIndent("\t");
 	    format.setLineSeparator("\n");
 	    outputter.setFormat(format);
-	    outputter.output(networkDocument, new FileOutputStream (network.getName() + ".xml"));
+	    outputter.output(networkDocument, new FileOutputStream (filename));
 	} catch (IOException e) {
 	    System.err.println(e);
 	}

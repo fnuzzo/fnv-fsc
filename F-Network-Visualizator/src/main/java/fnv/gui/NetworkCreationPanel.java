@@ -17,6 +17,7 @@ import fnv.network.Node;
 import fnv.network.NodesList;
 import fnv.network.PartialNetwork;
 import fnv.parser.XmlGenerator;
+import fnv.utils.Constants;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 
 /**
  *
@@ -104,6 +106,9 @@ public class NetworkCreationPanel extends javax.swing.JPanel {
         jTextField10 = new javax.swing.JTextField();
         jTextField11 = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
+        jTextField12 = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        jButton7 = new javax.swing.JButton();
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -144,6 +149,11 @@ public class NetworkCreationPanel extends javax.swing.JPanel {
         });
 
         jCheckBox2.setText("I nodi sono posizionati su una sfera");
+        jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Salva la rete non completata su disco");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -180,6 +190,17 @@ public class NetworkCreationPanel extends javax.swing.JPanel {
         jLabel12.setText("Istante:");
 
         jLabel13.setText("Quantita':");
+
+        jTextField12.setEditable(false);
+
+        jLabel14.setText("Immagine:");
+
+        jButton7.setText("Scegli");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -226,16 +247,15 @@ public class NetworkCreationPanel extends javax.swing.JPanel {
                                 .addComponent(jLabel9)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel13)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField11, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+                                .addGap(13, 13, 13)
+                                .addComponent(jTextField11, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel11)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(jButton2)
-                    .addComponent(jCheckBox2)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -251,7 +271,16 @@ public class NetworkCreationPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
-                        .addComponent(jButton3)))
+                        .addComponent(jButton3))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCheckBox2)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel14)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField12, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton7)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -301,7 +330,12 @@ public class NetworkCreationPanel extends javax.swing.JPanel {
                 .addComponent(jButton2)
                 .addGap(18, 18, 18)
                 .addComponent(jCheckBox2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14)
+                    .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton6)
                     .addComponent(jButton3))
@@ -340,6 +374,7 @@ public class NetworkCreationPanel extends javax.swing.JPanel {
 	    jTextField3.setText("");
 	    jTextField4.setText("");
 	    jTextField5.setText("");
+            jTextField12.setText("");
 	}
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -348,7 +383,8 @@ public class NetworkCreationPanel extends javax.swing.JPanel {
 	JFileChooser fileChooser = new JFileChooser();
 
 	partialNetwork.setNetworkName(jTextField1.getText().trim());
-	partialNetwork.setFlat(jCheckBox2.isSelected());
+//	partialNetwork.setFlat(jCheckBox2.isSelected());
+//        partialNetwork.setImageFilename(jTextField12.getText());
 	
 	int returnVal = fileChooser.showSaveDialog(this);
 	if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -366,20 +402,36 @@ public class NetworkCreationPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-	String networkName = jTextField1.getText().trim();
+	JFileChooser fileChooser = new JFileChooser("./");
+	File outputFile = null;
+        String filename = "";
+        
+        int returnVal = fileChooser.showSaveDialog(this);
 
-	if (!networkName.isEmpty()) {
-	    InteractionsCube interactionCube = partialNetwork.getInteractionsCube();
-
-	    ArrayList<Node> nodesList = new ArrayList<Node>();
-	    nodesList.addAll(partialNetwork.getNodes().values());
-
-	    XmlGenerator.generate(new Network(
-		    networkName,
-		    new NodesList(nodesList),
-		    interactionCube,
-		    partialNetwork.isFlat()));
+	if (returnVal == JFileChooser.APPROVE_OPTION) {
+	    outputFile = fileChooser.getSelectedFile();
+                filename = outputFile.getName();
+                if (!filename.endsWith(".xml")) {
+                    filename += ".xml";
+                }
 	}
+        
+        String networkName = jTextField1.getText().trim();
+
+        if (!networkName.isEmpty()) {
+            InteractionsCube interactionCube = partialNetwork.getInteractionsCube();
+
+            ArrayList<Node> nodesList = new ArrayList<Node>();
+            nodesList.addAll(partialNetwork.getNodes().values());
+
+            XmlGenerator.generate(new Network(
+                    networkName,
+                    new NodesList(nodesList),
+                    interactionCube,
+                    partialNetwork.isFlat(),
+                    partialNetwork.getImageFilename()),
+                    filename);
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     /*
@@ -457,6 +509,7 @@ public class NetworkCreationPanel extends javax.swing.JPanel {
 
 		jTextField1.setText(partialNetwork.getNetworkName());
 		jCheckBox2.setSelected(partialNetwork.isFlat());
+                jTextField12.setText(partialNetwork.getImageFilename());
 	    } catch (ClassNotFoundException ex) {
 		Logger.getLogger(NetworkCreationPanel.class.getName()).log(Level.SEVERE, null, ex);
 	    } catch (IOException ex) {
@@ -472,6 +525,48 @@ public class NetworkCreationPanel extends javax.swing.JPanel {
 	}
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        JFileChooser fc = new JFileChooser(Constants.FILE_CHOOSER_ROOT);
+	File inputFile = null;
+
+	fc.addChoosableFileFilter(new FileFilter() {
+
+	    @Override
+	    public boolean accept(File file) {
+		if (file.isDirectory()) {
+		    return true;
+		}
+
+		String filename = file.getName();
+		return (
+			filename.endsWith(Constants.FILE_CHOOSER_FILTER_JPG_LOWER) ||
+			filename.endsWith(Constants.FILE_CHOOSER_FILTER_JPG_UPPER) ||
+                        filename.endsWith(Constants.FILE_CHOOSER_FILTER_JPEG_LOWER) ||
+                        filename.endsWith(Constants.FILE_CHOOSER_FILTER_JPEG_UPPER));
+	    }
+
+	    @Override
+	    public String getDescription() {
+		return Constants.FILE_CHOOSER_JPG_FILTER_DESCRIPTION;
+	    }
+	});
+	int returnVal = fc.showOpenDialog(this);
+
+	if (returnVal == JFileChooser.APPROVE_OPTION) {
+	    inputFile = fc.getSelectedFile();
+	}
+            jTextField12.setText(inputFile.getName());
+            partialNetwork.setImageFilename(inputFile.getName());
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
+        if (jCheckBox2.isSelected()) {
+            partialNetwork.setFlat(true);
+        } else {
+            partialNetwork.setFlat(false);
+        }
+    }//GEN-LAST:event_jCheckBox2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -480,12 +575,14 @@ public class NetworkCreationPanel extends javax.swing.JPanel {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -497,6 +594,7 @@ public class NetworkCreationPanel extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;
+    private javax.swing.JTextField jTextField12;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;

@@ -73,6 +73,11 @@ public class InterfaceFrame extends JFrame {
     public Space getSpace() {
 	return space;
     }
+    
+    public void setImageTexture(String imageFilename) {
+        space.setImageTexture(imageFilename);
+    }
+    
     public void switchToNetworkCreationPanel(){
     
     	setPreferredSize(new Dimension(800, 600));

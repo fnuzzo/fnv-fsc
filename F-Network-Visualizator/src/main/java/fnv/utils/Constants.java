@@ -1,7 +1,5 @@
 package fnv.utils;
 
-import java.awt.event.KeyEvent;
-
 public final class Constants {
 	/* tag XML del file di input */
 	public final static String XML_ROOT = "network";
@@ -16,6 +14,7 @@ public final class Constants {
 	public final static String XML_NODE_Y_ATTR = "y";
 	public final static String XML_NODE_Z_ATTR = "z";
 	public final static String XML_FLAT = "flat";
+        public final static String XML_IMAGE = "image";
 	public final static String XML_INSTANT = "instant";
 	public final static String XML_INSTANT_VALUE_ATTR = "value";
 	public final static String XML_INSTANT_LABEL_ATTR = "label";
@@ -45,6 +44,7 @@ public final class Constants {
 	public final static String BUTTON_HELP_LABEL = "Shortcuts";
 	public final static String BUTTON_IMPORT_LABEL = "Importa una rete";
 	public final static String BUTTON_CREATE_LABEL = "Crea una nuova rete";
+        public final static String BUTTON_MAP_LABEL = "Applica una mappa";
 	public final static String BUTTON_EXIT_LABEL = "Esci";
 	public final static String BUTTON_STRUCTURE_LABEL = "Visualizza spazio 3D di riferimento (s)";
 	public final static String BUTTON_EDGEIN_LABEL = "Mostra solo archi entranti (e)";
@@ -59,6 +59,7 @@ public final class Constants {
 	public final static String BUTTON_HELP_ACTIONCOMMAND = "help";
 	public final static String BUTTON_IMPORT_ACTIONCOMMAND = "import";
 	public final static String BUTTON_CREATE_ACTIONCOMMAND = "create";
+        public final static String BUTTON_MAP_ACTIONCOMMAND = "map";
 	public final static String BUTTON_EXIT_ACTIONCOMMAND = "exit";
 	public final static String ICON_PLAY_ACTIONCOMMAND = "play";
 	public final static String ICON_PAUSE_ACTIONCOMMAND = "pause";
@@ -71,9 +72,14 @@ public final class Constants {
 	//
 	public final static String FILE_CHOOSER_ROOT = "./";
 	public final static String FILE_CHOOSER_ERR_MSG = "File di input mal formattato.";
-	public final static String FILE_CHOOSER_FILTER_DESCRIPTION = "xml files";
-	public final static String FILE_CHOOSER_FILTER_EXT_LOWER = "xml";
-	public final static String FILE_CHOOSER_FILTER_EXT_UPPER = "XML";
+	public final static String FILE_CHOOSER_XML_FILTER_DESCRIPTION = "xml files";
+        public final static String FILE_CHOOSER_JPG_FILTER_DESCRIPTION = "jpg, jpeg files";
+	public final static String FILE_CHOOSER_FILTER_XML_LOWER = "xml";
+	public final static String FILE_CHOOSER_FILTER_XML_UPPER = "XML";
+        public final static String FILE_CHOOSER_FILTER_JPG_LOWER = "jpg";
+	public final static String FILE_CHOOSER_FILTER_JPG_UPPER = "JPG";
+        public final static String FILE_CHOOSER_FILTER_JPEG_LOWER = "jpeg";
+	public final static String FILE_CHOOSER_FILTER_JPEG_UPPER = "JPEG";
 
 	//
 	public final static int FOOTER_HEIGHT = 200;
@@ -95,10 +101,4 @@ public final class Constants {
 		+"- 'e' + nodo selezionato visualizza solo le connessioni in entrata del nodo\n " 
 		+"- 'r' +nodo selezionato visualizza solo le connessioni del nodo selezionato\n"
 		+"- 's' nasconde la struttura";
-	
-	
-
-	
-	
-	
 }

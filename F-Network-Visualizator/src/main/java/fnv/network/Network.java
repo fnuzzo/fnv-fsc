@@ -15,6 +15,8 @@ public class Network {
     public final int maxCoordinate;
     /* indica se lo spazio dei nodi e' piatto (true) o sferico (false) */
     public final boolean flat;
+    /* indica il file da usare come mappa da applicare al modello 3D */
+    public String imageFilename = "";
     /* le interazioni presenti nella rete */
     private InteractionsCube interactionCube;
 
@@ -26,8 +28,30 @@ public class Network {
 	flat = true;
     }
 
-    public Network(String name, NodesList nodesList, InteractionsCube interactionCube, boolean flat) {
-	this.name = name;
+//    public Network(String name, NodesList nodesList, InteractionsCube interactionCube, boolean flat) {
+//	this.name = name;
+//	this.nodesList = nodesList;
+//	this.interactionCube = interactionCube;
+//	this.flat = flat;
+//
+//	int localMaxCoordinate = 0;
+//	for (Node node : nodesList.toArray()) {
+//	    if (node.x > localMaxCoordinate) {
+//		localMaxCoordinate = node.x;
+//	    }
+//	    if (node.y > localMaxCoordinate) {
+//		localMaxCoordinate = node.y;
+//	    }
+//	    if (node.z > localMaxCoordinate) {
+//		localMaxCoordinate = node.z;
+//	    }
+//	}
+//	maxCoordinate = localMaxCoordinate;
+//    }
+    
+    public Network(String name, NodesList nodesList, InteractionsCube interactionCube, boolean flat, String imageFilename) {
+        //this(name, nodesList, interactionCube, flat);
+        this.name = name;
 	this.nodesList = nodesList;
 	this.interactionCube = interactionCube;
 	this.flat = flat;
@@ -45,6 +69,8 @@ public class Network {
 	    }
 	}
 	maxCoordinate = localMaxCoordinate;
+        
+        this.imageFilename = imageFilename;
     }
 
     public String getName() {
@@ -61,6 +87,14 @@ public class Network {
 
     public int getNumberOfInstants() {
 	return interactionCube.getNumberOfInstants();
+    }
+    
+    public void setImageFilename(String imageFilename) {
+        this.imageFilename = imageFilename;
+    }
+    
+    public String getImageFilename() {
+        return imageFilename;
     }
 
     @Override

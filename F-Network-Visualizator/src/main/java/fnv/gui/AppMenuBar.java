@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,6 +38,7 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
     private JMenu about;
     private JMenuItem importNetwork;
     private JMenuItem createNetwork;
+    private JMenuItem map;
     private JMenuItem exit;
     private JMenuItem authors;
     private JMenuItem help;
@@ -52,6 +54,8 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
 	importNetwork.setActionCommand(Constants.BUTTON_IMPORT_ACTIONCOMMAND);
 	createNetwork = new JMenuItem(Constants.BUTTON_CREATE_LABEL);
 	createNetwork.setActionCommand(Constants.BUTTON_CREATE_ACTIONCOMMAND);
+        map = new JMenuItem(Constants.BUTTON_MAP_LABEL);
+        map.setActionCommand(Constants.BUTTON_MAP_ACTIONCOMMAND);
 	exit = new JMenuItem(Constants.BUTTON_EXIT_LABEL);
 	exit.setActionCommand(Constants.BUTTON_EXIT_ACTIONCOMMAND);
 
@@ -74,6 +78,7 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
 
 	importNetwork.addActionListener(this);
 	createNetwork.addActionListener(this);
+        map.addActionListener(this);
 	structure.addActionListener(this);
 	edgeIn.addActionListener(this);
 	allEdges.addActionListener(this);
@@ -84,6 +89,7 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
 	file = new JMenu(Constants.BUTTON_FILE_LABEL);
 	file.add(importNetwork);
 	file.add(createNetwork);
+        file.add(map);
 	file.add(exit);
 
 	view = new JMenu(Constants.BUTTON_VIEW_LABEL);
@@ -110,8 +116,9 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
 	    importNetwork();
 	} else if (actionCommand.equals(Constants.BUTTON_CREATE_ACTIONCOMMAND)) {
 	    createNetwork((JMenuItem) actionEvent.getSource());
-	    
-	} else if (actionCommand.equals(Constants.BUTTON_EXIT_ACTIONCOMMAND)) {
+	} else if (actionCommand.equals(Constants.BUTTON_MAP_ACTIONCOMMAND)) {
+            importMap();
+        } else if (actionCommand.equals(Constants.BUTTON_EXIT_ACTIONCOMMAND)) {
 	    System.exit(0);
 	} else if (actionCommand.equals(Constants.BUTTON_STRUCTURE_ACTIONCOMMAND)) {
 	    interfaceFrame.getSpace().setOptions(Constants.BUTTON_STRUCTURE_ACTIONCOMMAND);
@@ -129,8 +136,6 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
    	}
 
      private void importNetwork() {
-
-
 	JFileChooser fc = new JFileChooser(Constants.FILE_CHOOSER_ROOT);
 	File inputFile = null;
 	Network network = null;
@@ -145,13 +150,13 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
 
 		String filename = file.getName();
 		return (
-			filename.endsWith(Constants.FILE_CHOOSER_FILTER_EXT_LOWER) ||
-			filename.endsWith(Constants.FILE_CHOOSER_FILTER_EXT_UPPER));
+			filename.endsWith(Constants.FILE_CHOOSER_FILTER_XML_LOWER) ||
+			filename.endsWith(Constants.FILE_CHOOSER_FILTER_XML_UPPER));
 	    }
 
 	    @Override
 	    public String getDescription() {
-		return Constants.FILE_CHOOSER_FILTER_DESCRIPTION;
+		return Constants.FILE_CHOOSER_XML_FILTER_DESCRIPTION;
 	    }
 	});
 	int returnVal = fc.showOpenDialog(interfaceFrame);
@@ -176,11 +181,45 @@ public class AppMenuBar extends JMenuBar implements ActionListener {
 		System.out.println(Constants.FILE_CHOOSER_ERR_MSG);
 	    }
 	}
-	
-	
-	
     }
 
+     private void importMap() {
+	JFileChooser fc = new JFileChooser(Constants.FILE_CHOOSER_ROOT);
+	File inputFile = null;
+
+	fc.addChoosableFileFilter(new FileFilter() {
+
+	    @Override
+	    public boolean accept(File file) {
+		if (file.isDirectory()) {
+		    return true;
+		}
+
+		String filename = file.getName();
+		return (
+			filename.endsWith(Constants.FILE_CHOOSER_FILTER_JPG_LOWER) ||
+			filename.endsWith(Constants.FILE_CHOOSER_FILTER_JPG_UPPER) ||
+                        filename.endsWith(Constants.FILE_CHOOSER_FILTER_JPEG_LOWER) ||
+                        filename.endsWith(Constants.FILE_CHOOSER_FILTER_JPEG_UPPER));
+	    }
+
+	    @Override
+	    public String getDescription() {
+		return Constants.FILE_CHOOSER_JPG_FILTER_DESCRIPTION;
+	    }
+	});
+	int returnVal = fc.showOpenDialog(interfaceFrame);
+
+	if (returnVal == JFileChooser.APPROVE_OPTION) {
+	    inputFile = fc.getSelectedFile();
+	}
+        try {
+            interfaceFrame.setImageTexture(inputFile.getCanonicalPath());
+        } catch (IOException ex) {
+            Logger.getLogger(AppMenuBar.class.getName()).log(Level.SEVERE, null, ex);
+        }	
+    }
+     
     private void createNetwork(JMenuItem source) {
 	interfaceFrame.switchToNetworkCreationPanel();
     }

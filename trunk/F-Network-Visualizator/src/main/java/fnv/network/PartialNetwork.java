@@ -18,6 +18,7 @@ public class PartialNetwork implements Serializable {
 
     private String networkName;
     private boolean flat;
+    private String imageFilename;
     private int nodeID;
     private HashMap<String, Node> nodes;
     private InteractionsCube interactionsCube;
@@ -25,6 +26,7 @@ public class PartialNetwork implements Serializable {
     public PartialNetwork() {
 	networkName = "";
 	flat = true;
+        imageFilename = "";
 	nodeID = 0;
 	nodes = new HashMap<String, Node>();
 	interactionsCube = new InteractionsCube();
@@ -52,6 +54,14 @@ public class PartialNetwork implements Serializable {
 
     public void setFlat(boolean flat) {
 	this.flat = flat;
+    }
+    
+    public void setImageFilename(String imageFilename) {
+        this.imageFilename = imageFilename;
+    }
+    
+    public String getImageFilename() {
+        return imageFilename;
     }
 
     public int getNodeID() {

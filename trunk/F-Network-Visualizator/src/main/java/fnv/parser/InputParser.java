@@ -23,6 +23,7 @@ public class InputParser {
     private static String name = "";
     private static ArrayList<Node> nodesList = new ArrayList<Node>();
     private static boolean flat = true;
+    private static String imageFilename = "";
     private static InteractionsCube interactionCube = new InteractionsCube();
 
     /*
@@ -37,6 +38,7 @@ public class InputParser {
 	    name = "";
 	    nodesList = new ArrayList<Node>();
 	    flat = true;
+            imageFilename = "";
 	    interactionCube = new InteractionsCube();
 
 	    for (Iterator<Element> childrenIterator = rootElement.getChildren().iterator(); childrenIterator.hasNext();) {
@@ -60,7 +62,7 @@ public class InputParser {
 	    e.printStackTrace();
 	}
 
-	return new Network(name, new NodesList(nodesList), interactionCube, flat);
+	return new Network(name, new NodesList(nodesList), interactionCube, flat, imageFilename);
     }
 
     /*
@@ -93,7 +95,9 @@ public class InputParser {
 		}
 	    } else if (child.getName().equals(Constants.XML_FLAT)) {
 		flat = Boolean.valueOf(child.getValue());
-	    } else {
+	    } else if (child.getName().equals(Constants.XML_IMAGE)) {
+                imageFilename = child.getValue();
+            }else {
 		System.err.println("Elemento non riconosciuto.");
 		System.err.println(child.getName() + ", should be: " + Constants.XML_NETWORK_NAME + " or " + Constants.XML_NODES_LIST);
 	    }

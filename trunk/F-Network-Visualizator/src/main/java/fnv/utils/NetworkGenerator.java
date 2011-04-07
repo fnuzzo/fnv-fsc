@@ -90,8 +90,8 @@ public class NetworkGenerator {
 	    }
 	}
 
-	Network network = new Network(name, new NodesList(nodes), interactionCube, flat);
+	Network network = new Network(name, new NodesList(nodes), interactionCube, flat, "");
 
-	XmlGenerator.generate(network);
+	XmlGenerator.generate(network, network.getName() + ".xml");
     }
 }

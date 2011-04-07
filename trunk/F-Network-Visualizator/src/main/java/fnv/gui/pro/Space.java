@@ -80,7 +80,7 @@ public class Space extends PApplet {
     private PeasyCam cam;
 
     //Immagine da usare come texture
-    PImage imageTexture;
+    private PImage imageTexture;
 
     private int spaceWidth;
     private int spaceHeight;
@@ -100,6 +100,10 @@ public class Space extends PApplet {
         spaceHeight = height;
     }
 
+    public void setImageTexture(String imageFilename) {
+        imageTexture = loadImage(imageFilename);
+    }
+    
     public double getAnimationTime() {
         return animationTimeSec;
     }
@@ -503,11 +507,11 @@ public class Space extends PApplet {
         noFill();
     }
 
-    public boolean isNodeSelect() {
-        boolean selected = false;
-
-        return selected;
-    }
+//    public boolean isNodeSelect() {
+//        boolean selected = false;
+//
+//        return selected;
+//    }
 
     public void drawEdges() {
         if (instant != -1) {

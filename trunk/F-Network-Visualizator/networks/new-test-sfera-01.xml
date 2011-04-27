@@ -2,6 +2,7 @@
 <network>
 	<static-data>
 		<network-name>new-test-sfera-01</network-name>
+        <image>networks/world32k.jpg</image>
 		<nodes-list>
 			<node id="0" label="192.168.001.201" x="1" y="13" z="9" />
 			<node id="1" label="192.168.001.201" x="8" y="20" z="2" />

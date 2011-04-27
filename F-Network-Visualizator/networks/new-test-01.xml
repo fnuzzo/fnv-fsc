@@ -2,6 +2,7 @@
 <network>
 	<static-data>
 		<network-name>new-test-01</network-name>
+        <image>networks/asia.jpg</image>
 		<nodes-list>
 			<node id="0" label="192.168.001.201" x="11" y="0" z="6" />
 			<node id="1" label="192.168.001.201" x="0" y="0" z="1" />

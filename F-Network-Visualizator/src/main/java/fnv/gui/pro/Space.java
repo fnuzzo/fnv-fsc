@@ -203,8 +203,8 @@ public class Space extends PApplet {
             f = loadFont("ArialMT-48.vlw");
             textFont(f, fontSize);
 
-            imageTexture = loadImage("networks/asia.jpg");
-            texmap = loadImage("networks/world32k.jpg");
+            //imageTexture = loadImage("networks/asia.jpg");
+            //texmap = loadImage("networks/world32k.jpg");
             initializeSphere(sDetail);
 
             smooth();
@@ -418,23 +418,27 @@ public class Space extends PApplet {
     //Disegna il Cubo dello spazio
     public void draw3DSpaceFlat() {
         stroke(0, 0, 50);
-        /*for (int i = 0; i <= space; i += space / boxN) {
+        if (imageTexture == null) {
+
+            for (int i = 0; i <= space; i += space / boxN) {
             line(i, 0, 0, i, 0, space);//Linee verticali
             line(0, 0, i, space, 0, i);//Linee orizzontali
-        } */
-        noFill();
-        beginShape();
-        texture(imageTexture);
-        vertex(0, 0, 0,
+            }
+        } else {
+            noFill();
+            beginShape();
+            texture(imageTexture);
+            vertex(0, 0, 0,
                 0, 0);
-        vertex(0, 0, space,
+            vertex(0, 0, space,
                 0, 450);
-        vertex(space, 0, space,
+            vertex(space, 0, space,
                 450, 450);
-        vertex(space, 0, 0,
+            vertex(space, 0, 0,
                 450, 0);
-        endShape(CLOSE);
-        stroke(0, 0, 50);
+            endShape(CLOSE);
+            stroke(0, 0, 50);
+        }
     }
 
     public void draw3DSpaceSphere() {
@@ -732,6 +736,13 @@ public class Space extends PApplet {
             text(insLabel, width - textWidth(insLabel) - 20, height - fontSize);
         }
 
+        //if (rotate) {
+            fill(0, 0, 100, 150);
+            for (int i =0 ; i < credit.length; i++) {
+                text(credit[i], (width - textWidth(credit[i])) - 15, (fontSize*(i+1))+(15*i));
+            }
+        //}
+
         //Label
         for (int i = 0; i < nodes.length; i++) {
             if (nodes[i].selected) {
@@ -746,6 +757,8 @@ public class Space extends PApplet {
         popMatrix();
         g3d.camera = currCameraMatrix;
     }
+
+    private final String[] credit = {"http://code.google.com/p/fnv-fsc/", "by" , "@EnricoDAngelo", "@benve", "@fabrizionuzzo"};
 
     private boolean selectNode(ANode node) {
         float scrX, scrY;

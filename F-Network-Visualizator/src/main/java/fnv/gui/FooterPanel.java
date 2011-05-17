@@ -86,7 +86,6 @@ public class FooterPanel extends JPanel implements ActionListener, ChangeListene
 	jSlider.setValue(0);
 	jSlider.addChangeListener(this);
 
-	//TODO da mettere in constants?
 	SpinnerModel spinnerModel = new SpinnerNumberModel(interfaceFrame.getSpace().getAnimationTime(), 0, Double.MAX_VALUE, 0.5);
 	jSpinner = new JSpinner(spinnerModel);
 	Dimension spinnerDimension = new Dimension(50, 50);

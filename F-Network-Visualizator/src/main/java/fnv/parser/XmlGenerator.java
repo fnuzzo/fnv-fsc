@@ -72,24 +72,6 @@ public class XmlGenerator {
 	    networkInstant.setAttribute(Constants.XML_INSTANT_VALUE_ATTR, String.valueOf(i));
 	    networkInstant.setAttribute(Constants.XML_INSTANT_LABEL_ATTR, String.valueOf(i));
 
-//	    //TODO debug
-//	    if (network == null) {
-//		System.out.println("network e' null");
-//		System.out.println(network);
-//	    }
-//	    if (network.getInteractionCube() == null) {
-//		System.out.println("network.getInteractionCube() e' null");
-//		System.out.println(network);
-//	    }
-//	    if (network.getInteractionCube().getInstant(i) == null) {
-//		System.out.println("network.getInteractionCube().getInstant(" + i + ") e' null");
-//		System.out.println(network);
-//	    }
-//	    if (network.getInteractionCube().getInstant(i).getAllInteractions() == null) {
-//		System.out.println("network.getInteractionCube().getInstant(" + i + ").getAllInteractions() e' null");
-//		System.out.println(network);
-//	    }
-
 	    ArrayList<InteractionElement> allInteractions = network.getInteractionCube().getInstant(i).getAllInteractions();
 	    for (InteractionElement interactionElement : allInteractions) {
 		Element networkInteraction = new Element(Constants.XML_INTERACTION);
